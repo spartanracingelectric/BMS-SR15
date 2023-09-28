@@ -116,7 +116,7 @@ int main(void)
 	uint32_t prev = 0, curr = 0;
 
 //	const uint8_t REG_LEN = 8; // number of bytes in the register + 2 bytes for the PEC
-	uint8_t cmd[4], read_val[8] = {0};
+	uint8_t cmd[4], read_val[10] = {0};
 	uint16_t cmd_pec;
   /* USER CODE END 1 */
 
