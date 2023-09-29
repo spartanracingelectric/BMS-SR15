@@ -64,8 +64,8 @@ all: main-build
 main-build: SerialCheck.elf secondary-outputs
 
 # Tool invocations
-SerialCheck.elf SerialCheck.map: $(OBJS) $(USER_OBJS) C:\Users\shubh\Documents\BMSWorkspace\SerialCheck\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "SerialCheck.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\shubh\Documents\BMSWorkspace\SerialCheck\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SerialCheck.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+SerialCheck.elf SerialCheck.map: $(OBJS) $(USER_OBJS) C:\Spartan_Racing\SR15BMSDEV\BMS-SR15\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "SerialCheck.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Spartan_Racing\SR15BMSDEV\BMS-SR15\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SerialCheck.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

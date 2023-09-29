@@ -114,10 +114,10 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	uint32_t prev = 0, curr = 0;
-
-//	const uint8_t REG_LEN = 8; // number of bytes in the register + 2 bytes for the PEC
-	uint8_t cmd[4], read_val[10] = {0};
 	uint16_t cmd_pec;
+	uint16_t voltages[4];
+	//	const uint8_t REG_LEN = 8; // number of bytes in the register + 2 bytes for the PEC
+	uint8_t cmd[4], read_val[10] = {0};
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -147,9 +147,14 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  cmd[0] = 0x00;
+  cmd[1] = 0x04;
+  int cellNumber = 1;
   while (1)
   {
 	  curr = HAL_GetTick(); //Record current timestamp
+
+
 
 	  if (curr - prev > LTC_DELAY) {
 		  char buf[20];
@@ -160,8 +165,6 @@ int main(void)
 		  charToStr[1] = '\0';
 		  //cmd[0] = 0x07; //Returns 0xFF
 		  //cmd[1] = 0x12; //Returns 0xFF
-		  cmd[0] = 0x00; //Returns 0x00
-		  cmd[1] = 0x04; //Returns 0x00
 		  cmd_pec = pec15_calc(2, cmd);
 		  cmd[2] = (uint8_t)(cmd_pec >> 8);
 		  cmd[3] = (uint8_t)(cmd_pec);
@@ -177,13 +180,41 @@ int main(void)
 		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET); //Pull CS high
 
 
-		  for(int i = 0; i < 10; i++)
-		  {
-			  sprintf(buf, "%02X ", read_val[i]);
-			  strncat(outbuf, buf, 20);
-			  strncat(outbuf, charToStr, 3);
-		  }
 
+
+		  for (uint8_t i = 0; i < 6; i+=2) {
+			  uint16_t hb = (uint16_t)read_val[i+1];
+			  uint16_t lb = (uint16_t)read_val[i];
+			  uint16_t x = (hb << 8) | lb;
+			  voltages[(int)(i/2)] = x;
+		  }
+		  /*
+		  for(int i = 0; i < 7; i++)
+		  		  {
+		  			  sprintf(buf, "%02X", read_val[i]);
+		  			  strncat(outbuf, buf, 20);
+		  			  strncat(outbuf, charToStr, 3);
+		  		  }
+
+		  charToStr[0] = '\n';
+		  		  strncat(outbuf, charToStr, 3);
+		  		  CDC_Transmit_FS((uint8_t*)outbuf, sizeof(outbuf));
+		  		charToStr[0] = ' ';
+		  		*/
+		  	  	  voltages[3] = (uint8_t)cmd[1];
+		  		for(int i = 0; i < 3; i++)
+			  {
+		  		//int ones = getOnes(voltages[i]);
+		  		//int decimal = getDecimals(voltages[i]);
+				sprintf(buf, "%d: %d", cellNumber, voltages[i]);
+				strncat(outbuf, buf, 20);
+				strncat(outbuf, charToStr, 3);
+				cellNumber++;
+			  }
+			  charToStr[0] = '\n';
+			  //strncat(outbuf, charToStr, 3);
+
+			  CDC_Transmit_FS((uint8_t*)outbuf, sizeof(outbuf));
 		  /*
 		  uint16_t res_pec = pec15_calc(6, read_val);
 		  read_val[6] = (uint8_t)(res_pec >> 8);
@@ -195,9 +226,18 @@ int main(void)
 		  	strncat(outbuf, buf, 20);
 		  	strncat(outbuf, charToStr, 3);
 		  }
-		  */
+		  charToStr[0] = '\n';
 		  strncat(outbuf, charToStr, 3);
 		  CDC_Transmit_FS((uint8_t*)outbuf, sizeof(outbuf));
+		  */
+
+		  if (cmd[1] == 0x0A) {
+			  cmd[1] = 0x04;
+			  cellNumber = 1;
+		  }
+		  else {
+			  cmd[1]+=2;
+		  }
 
 
 		  prev = curr;
