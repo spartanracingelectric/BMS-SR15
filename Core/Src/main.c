@@ -219,7 +219,7 @@ int main(void) {
 				}
 				values[6] = '\0';
 
-				sprintf(buf, "%d: %sV", cellNumber, values);
+				sprintf(buf, "Cell %d: %sV", cellNumber, values);
 				strncat(outbuf, buf, 20);
 				strncat(outbuf, charToStr, 3);
 				cellNumber++;

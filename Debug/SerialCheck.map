@@ -4409,71 +4409,72 @@ LOAD C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
 .iplt           0x0000000008008eec        0x0
  .iplt          0x0000000008008eec        0x0 C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7-m/nofp/crtbegin.o
 
-.rodata         0x0000000008008eec      0x4c0
+.rodata         0x0000000008008eec      0x4c8
                 0x0000000008008eec                . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x0000000008008eec       0x20 ./Core/Src/main.o
- .rodata        0x0000000008008f0c       0x46 ./USB_DEVICE/App/usbd_desc.o
+ .rodata        0x0000000008008eec       0x25 ./Core/Src/main.o
+ *fill*         0x0000000008008f11        0x3 
+ .rodata        0x0000000008008f14       0x46 ./USB_DEVICE/App/usbd_desc.o
  *(.rodata*)
- *fill*         0x0000000008008f52        0x2 
+ *fill*         0x0000000008008f5a        0x2 
  .rodata.crc15Table
-                0x0000000008008f54      0x400 ./Core/Src/main.o
+                0x0000000008008f5c      0x400 ./Core/Src/main.o
  .rodata.AHBPrescTable
-                0x0000000008009354       0x10 ./Core/Src/system_stm32f1xx.o
-                0x0000000008009354                AHBPrescTable
+                0x000000000800935c       0x10 ./Core/Src/system_stm32f1xx.o
+                0x000000000800935c                AHBPrescTable
  .rodata.aPLLMULFactorTable.1
-                0x0000000008009364       0x10 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
+                0x000000000800936c       0x10 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
  .rodata.aPredivFactorTable.0
-                0x0000000008009374        0x2 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
+                0x000000000800937c        0x2 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
  .rodata._svfprintf_r.str1.1
-                0x0000000008009376       0x11 C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-nano-svfprintf.o)
+                0x000000000800937e       0x11 C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-nano-svfprintf.o)
  .rodata._printf_i.str1.1
-                0x0000000008009387       0x22 C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-nano-vfprintf_i.o)
-                0x00000000080093ac                . = ALIGN (0x4)
- *fill*         0x00000000080093a9        0x3 
+                0x000000000800938f       0x22 C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc_nano.a(libc_a-nano-vfprintf_i.o)
+                0x00000000080093b4                . = ALIGN (0x4)
+ *fill*         0x00000000080093b1        0x3 
 
-.rel.dyn        0x00000000080093ac        0x0
- .rel.iplt      0x00000000080093ac        0x0 C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7-m/nofp/crtbegin.o
+.rel.dyn        0x00000000080093b4        0x0
+ .rel.iplt      0x00000000080093b4        0x0 C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7-m/nofp/crtbegin.o
 
-.ARM.extab      0x00000000080093ac        0x0
-                0x00000000080093ac                . = ALIGN (0x4)
+.ARM.extab      0x00000000080093b4        0x0
+                0x00000000080093b4                . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x00000000080093ac                . = ALIGN (0x4)
+                0x00000000080093b4                . = ALIGN (0x4)
 
-.ARM            0x00000000080093ac        0x0
-                0x00000000080093ac                . = ALIGN (0x4)
-                0x00000000080093ac                __exidx_start = .
+.ARM            0x00000000080093b4        0x0
+                0x00000000080093b4                . = ALIGN (0x4)
+                0x00000000080093b4                __exidx_start = .
  *(.ARM.exidx*)
-                0x00000000080093ac                __exidx_end = .
-                0x00000000080093ac                . = ALIGN (0x4)
+                0x00000000080093b4                __exidx_end = .
+                0x00000000080093b4                . = ALIGN (0x4)
 
-.preinit_array  0x00000000080093ac        0x0
-                0x00000000080093ac                . = ALIGN (0x4)
-                0x00000000080093ac                PROVIDE (__preinit_array_start = .)
+.preinit_array  0x00000000080093b4        0x0
+                0x00000000080093b4                . = ALIGN (0x4)
+                0x00000000080093b4                PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x00000000080093ac                PROVIDE (__preinit_array_end = .)
-                0x00000000080093ac                . = ALIGN (0x4)
+                0x00000000080093b4                PROVIDE (__preinit_array_end = .)
+                0x00000000080093b4                . = ALIGN (0x4)
 
-.init_array     0x00000000080093ac        0x4
-                0x00000000080093ac                . = ALIGN (0x4)
-                0x00000000080093ac                PROVIDE (__init_array_start = .)
+.init_array     0x00000000080093b4        0x4
+                0x00000000080093b4                . = ALIGN (0x4)
+                0x00000000080093b4                PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x00000000080093ac        0x4 C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7-m/nofp/crtbegin.o
-                0x00000000080093b0                PROVIDE (__init_array_end = .)
-                0x00000000080093b0                . = ALIGN (0x4)
+ .init_array    0x00000000080093b4        0x4 C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7-m/nofp/crtbegin.o
+                0x00000000080093b8                PROVIDE (__init_array_end = .)
+                0x00000000080093b8                . = ALIGN (0x4)
 
-.fini_array     0x00000000080093b0        0x4
-                0x00000000080093b0                . = ALIGN (0x4)
+.fini_array     0x00000000080093b8        0x4
+                0x00000000080093b8                . = ALIGN (0x4)
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x00000000080093b0        0x4 C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7-m/nofp/crtbegin.o
+ .fini_array    0x00000000080093b8        0x4 C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7-m/nofp/crtbegin.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x00000000080093b4                . = ALIGN (0x4)
-                0x00000000080093b4                _sidata = LOADADDR (.data)
+                0x00000000080093bc                . = ALIGN (0x4)
+                0x00000000080093bc                _sidata = LOADADDR (.data)
 
-.data           0x0000000020000000      0x1cc load address 0x00000000080093b4
+.data           0x0000000020000000      0x1cc load address 0x00000000080093bc
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _sdata = .
  *(.data)
@@ -4533,11 +4534,11 @@ LOAD C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                 0x00000000200001cc                . = ALIGN (0x4)
                 0x00000000200001cc                _edata = .
 
-.igot.plt       0x00000000200001cc        0x0 load address 0x0000000008009580
+.igot.plt       0x00000000200001cc        0x0 load address 0x0000000008009588
  .igot.plt      0x00000000200001cc        0x0 C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.11.3.rel1.win32_1.1.1.202309131626/tools/bin/../lib/gcc/arm-none-eabi/11.3.1/thumb/v7-m/nofp/crtbegin.o
                 0x00000000200001cc                . = ALIGN (0x4)
 
-.bss            0x00000000200001cc     0x139c load address 0x0000000008009580
+.bss            0x00000000200001cc     0x139c load address 0x0000000008009588
                 0x00000000200001cc                _sbss = .
                 0x00000000200001cc                __bss_start__ = _sbss
  *(.bss)
@@ -4587,7 +4588,7 @@ LOAD C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                 0x0000000020001568                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x0000000020001568      0x600 load address 0x0000000008009580
+                0x0000000020001568      0x600 load address 0x0000000008009588
                 0x0000000020001568                . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
                 0x0000000020001568                PROVIDE (_end = .)
