@@ -4412,8 +4412,7 @@ LOAD C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
 .rodata         0x0000000008008eec      0x4c0
                 0x0000000008008eec                . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x0000000008008eec       0x1f ./Core/Src/main.o
- *fill*         0x0000000008008f0b        0x1 
+ .rodata        0x0000000008008eec       0x20 ./Core/Src/main.o
  .rodata        0x0000000008008f0c       0x46 ./USB_DEVICE/App/usbd_desc.o
  *(.rodata*)
  *fill*         0x0000000008008f52        0x2 

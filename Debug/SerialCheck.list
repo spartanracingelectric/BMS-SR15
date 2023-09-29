@@ -488,7 +488,7 @@ int main(void) {
  8000462:	2300      	movs	r3, #0
  8000464:	f887 3806 	strb.w	r3, [r7, #2054]	; 0x806
 
-				sprintf(buf, "%d: %s", cellNumber, values);
+				sprintf(buf, "%d: %sV", cellNumber, values);
  8000468:	f507 6300 	add.w	r3, r7, #2048	; 0x800
  800046c:	f607 000c 	addw	r0, r7, #2060	; 0x80c
  8000470:	f8d7 2850 	ldr.w	r2, [r7, #2128]	; 0x850
