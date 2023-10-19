@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "usb_device.h"
+#include "spi.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -47,7 +48,6 @@ char *data = "Hello from Controller\n";
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
 
@@ -172,14 +172,9 @@ int main(void) {
 			cmd[3] = (uint8_t) (cmd_pec);
 
 			char dummy = 0xFF;
-			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET); //Pull CS low
-			HAL_SPI_Transmit(&hspi1, (uint8_t*) (&dummy), 1, 100);
-			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET); //Pull CS high
+			HAL_SPI_Send(dummy);
 
-			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET); //Pull CS low
-			HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
-			HAL_SPI_Receive(&hspi1, (uint8_t*) read_val, 10, 100);
-			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET); //Pull CS high
+			HAL_SPI_Recieve(cmd, read_val);
 
 			for (uint8_t i = 0; i < 6; i += 2) {
 				uint16_t hb = (uint16_t) read_val[i + 1];

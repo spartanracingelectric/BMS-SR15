@@ -1,0 +1,2 @@
+../Core/Src/Utils/spi.c:30:6:HAL_SPI_Send	16	static
+../Core/Src/Utils/spi.c:37:6:HAL_SPI_Recieve	16	static
