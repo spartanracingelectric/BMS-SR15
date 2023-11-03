@@ -1,0 +1,7 @@
+../Core/Src/6811.c:54:10:LTC_PEC15_Calc	24	static
+../Core/Src/6811.c:71:6:LTC_Set_Num_Devices	16	static
+../Core/Src/6811.c:76:9:LTC_Get_Num_Devices	4	static
+../Core/Src/6811.c:81:6:LTC_Set_Num_Series_Groups	16	static
+../Core/Src/6811.c:86:9:LTC_Get_Num_Series_Groups	4	static
+../Core/Src/6811.c:91:23:LTC_Wakeup_Idle	16	static
+../Core/Src/6811.c:110:23:LTC_ReadRawCellVoltages	64	dynamic

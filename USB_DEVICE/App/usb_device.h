@@ -57,6 +57,8 @@
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
 
+void USB_Transmit(char* Buf, uint16_t Len);
+
 /* USER CODE END PFP */
 
 /*

@@ -42,6 +42,12 @@ void MX_SPI1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
+/* Pull nCS line to SPI1 HIGH */
+void LTC_nCS_High(void);
+
+/* Pull nCS line to SPI1 LOW */
+void LTC_nCS_Low(void);
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

@@ -1,0 +1,4 @@
+../Core/Src/can.c:31:6:MX_CAN1_Init	2
+../Core/Src/can.c:63:6:MX_CAN2_Init	2
+../Core/Src/can.c:97:6:HAL_CAN_MspInit	5
+../Core/Src/can.c:166:6:HAL_CAN_MspDeInit	5
