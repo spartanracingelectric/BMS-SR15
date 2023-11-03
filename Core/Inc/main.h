@@ -57,8 +57,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define MCU_USB_INT_Pin GPIO_PIN_0
+#define MCU_USB_INT_GPIO_Port GPIOA
 #define LTC_nCS_Pin GPIO_PIN_4
 #define LTC_nCS_GPIO_Port GPIOA
+#define MCU_HEARTBEAT_LED_Pin GPIO_PIN_6
+#define MCU_HEARTBEAT_LED_GPIO_Port GPIOC
+#define PMUX_ST_Pin GPIO_PIN_8
+#define PMUX_ST_GPIO_Port GPIOC
 
 /* USER CODE BEGIN Private defines */
 
