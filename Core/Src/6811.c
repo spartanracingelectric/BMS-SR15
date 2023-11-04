@@ -22,6 +22,9 @@ static const uint8_t LTC_SPI_TX_BIT_OFFSET = 0; //Num bits to shift RX status co
 static const uint8_t LTC_SPI_RX_BIT_OFFSET = 4; //Num bits to shift RX status code
 static const uint8_t REG_LEN = 8; // number of bytes in the register + 2 bytes for the PEC
 static const uint8_t LTC_SERIES_GROUPS_PER_RDCV = 3; //Number of cell voltage groups per 8 byte register
+static uint8_t num_devices; //Keep visibility within this file
+static uint8_t num_series_groups; //Number of series groups
+
 
 static const unsigned int crc15Table[256] = {0x0,0xc599, 0xceab, 0xb32, 0xd8cf, 0x1d56, 0x1664, 0xd3fd, 0xf407, 0x319e, 0x3aac,  //!<precomputed CRC15 Table
     0xff35, 0x2cc8, 0xe951, 0xe263, 0x27fa, 0xad97, 0x680e, 0x633c, 0xa6a5, 0x7558, 0xb0c1,
@@ -47,9 +50,6 @@ static const unsigned int crc15Table[256] = {0x0,0xc599, 0xceab, 0xb32, 0xd8cf, 
     0x2d02, 0xa76f, 0x62f6, 0x69c4, 0xac5d, 0x7fa0, 0xba39, 0xb10b, 0x7492, 0x5368, 0x96f1, 0x9dc3,
     0x585a, 0x8ba7, 0x4e3e, 0x450c, 0x8095
                                             };
-
-static uint8_t num_devices = 2; //Keep visibility within this file
-static uint8_t num_series_groups = 12; //Number of series groups
 
 uint16_t LTC_PEC15_Calc(uint8_t len, //Number of bytes that will be used to calculate a PEC
                     uint8_t *data //Array of data that will be used to calculate a PEC
