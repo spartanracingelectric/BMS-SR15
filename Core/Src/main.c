@@ -160,7 +160,7 @@ int main(void)
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
-			char buf[20];
+			char buf[30];
 			char out_buf[2048] = "";
 			char char_to_str[2];
 
