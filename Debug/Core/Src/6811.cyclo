@@ -4,4 +4,4 @@
 ../Core/Src/6811.c:81:6:LTC_Set_Num_Series_Groups	3
 ../Core/Src/6811.c:86:9:LTC_Get_Num_Series_Groups	1
 ../Core/Src/6811.c:91:23:LTC_Wakeup_Idle	2
-../Core/Src/6811.c:110:23:LTC_ReadRawCellVoltages	5
+../Core/Src/6811.c:110:23:LTC_ReadRawCellVoltages	6
