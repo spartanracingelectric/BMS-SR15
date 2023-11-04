@@ -48,7 +48,7 @@ static const unsigned int crc15Table[256] = {0x0,0xc599, 0xceab, 0xb32, 0xd8cf, 
     0x585a, 0x8ba7, 0x4e3e, 0x450c, 0x8095
                                             };
 
-static uint8_t num_devices = 1; //Keep visibility within this file
+static uint8_t num_devices = 2; //Keep visibility within this file
 static uint8_t num_series_groups = 12; //Number of series groups
 
 uint16_t LTC_PEC15_Calc(uint8_t len, //Number of bytes that will be used to calculate a PEC
@@ -108,47 +108,56 @@ LTC_SPI_StatusTypeDef LTC_Wakeup_Idle(void) {
 
 /* Read and store raw cell voltages at uint8_t 2d pointer */
 LTC_SPI_StatusTypeDef LTC_ReadRawCellVoltages(uint16_t *read_voltages) {
-	LTC_SPI_StatusTypeDef ret = LTC_SPI_OK;
-	LTC_SPI_StatusTypeDef hal_ret;
-	const uint8_t ARR_SIZE_REG = LTC_Get_Num_Devices()*REG_LEN;
-	uint8_t read_voltages_reg[ARR_SIZE_REG];
+  LTC_SPI_StatusTypeDef ret = LTC_SPI_OK;
+  LTC_SPI_StatusTypeDef hal_ret;
+  const uint8_t ARR_SIZE_REG = LTC_Get_Num_Devices() * REG_LEN;
+  uint8_t read_voltages_reg[ARR_SIZE_REG]; // Increased in size to handle multiple devices
 
-	// CMD0 write: CC[8:10]
-	// CMD1 write: CC[0:7]
-	// Page 59 LTC6813 datasheet
-	for (uint8_t i = 0; i < (LTC_Get_Num_Series_Groups()/LTC_SERIES_GROUPS_PER_RDCV); i++) {
-		uint8_t cmd[4];
-		uint16_t cmd_pec;
+  for (uint8_t i = 0; i < (LTC_Get_Num_Series_Groups() / LTC_SERIES_GROUPS_PER_RDCV); i++) {
+    uint8_t cmd[4];
+    uint16_t cmd_pec;
 
-		cmd[0] = (0xFF & (LTC_CMD_RDCV[i] >> 8)); //RDCVA
-		cmd[1] = (0xFF & (LTC_CMD_RDCV[i])); //RDCVA
-		cmd_pec = LTC_PEC15_Calc(2, cmd);
-		cmd[2] = (uint8_t)(cmd_pec >> 8);
-		cmd[3] = (uint8_t)(cmd_pec);
+    cmd[0] = (0xFF & (LTC_CMD_RDCV[i] >> 8)); //RDCV Register
+    cmd[1] = (0xFF & (LTC_CMD_RDCV[i])); //RDCV Register
+    cmd_pec = LTC_PEC15_Calc(2, cmd);
+    cmd[2] = (uint8_t)(cmd_pec >> 8);
+    cmd[3] = (uint8_t)(cmd_pec);
 
-		LTC_Wakeup_Idle(); //Wake LTC up
+    ret |= LTC_Wakeup_Idle(); //Wake LTC up
 
-		LTC_nCS_Low(); //Pull CS low
+    LTC_nCS_Low(); //Pull CS low
 
-		hal_ret = HAL_SPI_Transmit(&hspi1, (uint8_t *)cmd, 4, 100);
-		if (hal_ret) { //Non-zero means error
-			//Shift 1 by returned HAL_StatusTypeDef value to get LTC_SPI_StatusTypeDef equivalent
-			ret |= (1 << (hal_ret+LTC_SPI_TX_BIT_OFFSET)); //TX error
-		}
+    hal_ret = HAL_SPI_Transmit(&hspi1, (uint8_t *)cmd, 4, 100);
+    if (hal_ret) { //Non-zero means error
+      ret |= (1 << (hal_ret + LTC_SPI_TX_BIT_OFFSET)); //TX error
+    }
 
-		hal_ret = HAL_SPI_Receive(&hspi1, (uint8_t *)read_voltages_reg, ARR_SIZE_REG, 100);
-		if (hal_ret) { //Non-zero means error
-			//Shift 1 by returned HAL_StatusTypeDef value to get LTC_SPI_StatusTypeDef equivalent
-			ret |= (1 << (hal_ret+LTC_SPI_RX_BIT_OFFSET)); //RX error
-		}
-		for (uint8_t j = 0; j < LTC_Get_Num_Devices(); j++) {
-			memcpy(read_voltages+((i*(REG_LEN-2))+(j*LTC_Get_Num_Devices()*(REG_LEN-2)))/2, read_voltages_reg, sizeof(read_voltages_reg)-(2*sizeof(read_voltages_reg[0])) );
-		}
+    hal_ret = HAL_SPI_Receive(&hspi1, (uint8_t *)read_voltages_reg, ARR_SIZE_REG, 100);
+    if (hal_ret) { //Non-zero means error
+      ret |= (1 << (hal_ret + LTC_SPI_RX_BIT_OFFSET)); //RX error
+    }
 
-		LTC_nCS_High(); //Pull CS high
-	}
+    // Process the received data
+    for (uint8_t dev_idx = 0; dev_idx < LTC_Get_Num_Devices(); dev_idx++) {
+      // Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
+      // PEC for each device is the last two bytes of its data segment
+      uint8_t *data_ptr = &read_voltages_reg[dev_idx * REG_LEN];
+      uint16_t calculated_pec = LTC_PEC15_Calc(REG_LEN - 2, data_ptr); // Calculate PEC based on received data
 
-	return ret;
+      // Convert received PEC from two bytes to uint16_t
+      uint16_t received_pec = (data_ptr[REG_LEN - 2] << 8) | data_ptr[REG_LEN - 1];
+
+      if (received_pec == calculated_pec) {
+        // If PEC matches, copy the voltage data, omitting the PEC bytes
+        memcpy(&read_voltages[dev_idx * LTC_Get_Num_Series_Groups() + i * LTC_SERIES_GROUPS_PER_RDCV], data_ptr, REG_LEN - 2);
+      } else {
+        // Handle PEC mismatch error
+        ret |= LTC_SPI_RX_ERROR;
+      }
+    }
+
+    LTC_nCS_High(); //Pull CS high
+  }
+
+  return ret;
 }
-
-

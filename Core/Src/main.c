@@ -42,7 +42,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define NUM_DEVICES				1	//1 slave board
+#define NUM_DEVICES				2	//1 slave board
 
 #define LTC_DELAY				1000 //500ms update delay
 #define LED_HEARTBEAT_DELAY_MS	500 //500ms update delay
@@ -105,11 +105,7 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	GpioTimePacket tp_led_heartbeat;
 	TimerPacket timerpacket_ltc;
-	uint32_t prev = 0, curr = 0;
-
-	const uint8_t REG_LEN = 8; // number of bytes in the register + 2 bytes for the PEC
-	uint16_t read_val[12]; //2 bytes per series * 12 series
-	uint16_t cmd_pec;
+	uint16_t read_val[24]; //2 bytes per series * 12 series
 
   /* USER CODE END 1 */
 
@@ -173,9 +169,9 @@ int main(void)
 			char_to_str[0] = '\n';
 			char_to_str[1] = '\0';
 
-			for (uint8_t i = 0; i < 12; i++) {
+			for (uint8_t i = 0; i < 24; i++) {
 				sprintf(buf, "C%u:%u/1000 V", i+1, read_val[i]);
-				strncat(out_buf, buf, 20);
+				strncat(out_buf, buf, 24);
 				strncat(out_buf, char_to_str, 3);
 			}
 			strncat(out_buf, char_to_str, 3);
