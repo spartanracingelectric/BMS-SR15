@@ -29,9 +29,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
  12 .comment      00000043  00000000  00000000  000201f5  2**0
                   CONTENTS, READONLY
- 13 .debug_info   00019864  00000000  00000000  00020238  2**0
+ 13 .debug_info   00019865  00000000  00000000  00020238  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 000047e3  00000000  00000000  00039a9c  2**0
+ 14 .debug_abbrev 000047e3  00000000  00000000  00039a9d  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  15 .debug_aranges 00001830  00000000  00000000  0003e280  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -1680,7 +1680,7 @@ void MX_GPIO_Init(void)
 int main(void)
 {
  8000d80:	b580      	push	{r7, lr}
- 8000d82:	f5ad 6d05 	sub.w	sp, sp, #2128	; 0x850
+ 8000d82:	f6ad 0d68 	subw	sp, sp, #2152	; 0x868
  8000d86:	af00      	add	r7, sp, #0
   /* USER CODE END 1 */
 
@@ -1725,13 +1725,13 @@ int main(void)
 
   //Start timer
   GpioTimePacket_Init(&tp_led_heartbeat, MCU_HEARTBEAT_LED_GPIO_Port, MCU_HEARTBEAT_LED_Pin);
- 8000db8:	f607 033c 	addw	r3, r7, #2108	; 0x83c
+ 8000db8:	f607 0354 	addw	r3, r7, #2132	; 0x854
  8000dbc:	2240      	movs	r2, #64	; 0x40
  8000dbe:	493c      	ldr	r1, [pc, #240]	; (8000eb0 <main+0x130>)
  8000dc0:	4618      	mov	r0, r3
  8000dc2:	f000 f8e5 	bl	8000f90 <GpioTimePacket_Init>
   TimerPacket_Init(&timerpacket_ltc, LTC_DELAY);
- 8000dc6:	f507 6303 	add.w	r3, r7, #2096	; 0x830
+ 8000dc6:	f607 0348 	addw	r3, r7, #2120	; 0x848
  8000dca:	f44f 717a 	mov.w	r1, #1000	; 0x3e8
  8000dce:	4618      	mov	r0, r3
  8000dd0:	f000 f91e 	bl	8001010 <TimerPacket_Init>
@@ -1740,7 +1740,7 @@ int main(void)
   LTC_nCS_High();
  8000dd4:	f000 f9d2 	bl	800117c <LTC_nCS_High>
   LTC_Set_Num_Devices(NUM_DEVICES);
- 8000dd8:	2001      	movs	r0, #1
+ 8000dd8:	2002      	movs	r0, #2
  8000dda:	f7ff fbdd 	bl	8000598 <LTC_Set_Num_Devices>
   LTC_Set_Num_Series_Groups(NUM_SERIES_GROUP);
  8000dde:	200c      	movs	r0, #12
@@ -1751,13 +1751,13 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
- 8000de4:	f607 033c 	addw	r3, r7, #2108	; 0x83c
+ 8000de4:	f607 0354 	addw	r3, r7, #2132	; 0x854
  8000de8:	f44f 71fa 	mov.w	r1, #500	; 0x1f4
  8000dec:	4618      	mov	r0, r3
  8000dee:	f000 f8ec 	bl	8000fca <GpioFixedToggle>
 
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
- 8000df2:	f507 6303 	add.w	r3, r7, #2096	; 0x830
+ 8000df2:	f607 0348 	addw	r3, r7, #2120	; 0x848
  8000df6:	4618      	mov	r0, r3
  8000df8:	f000 f91d 	bl	8001036 <TimerPacket_FixedPulse>
  8000dfc:	4603      	mov	r3, r0
@@ -1765,8 +1765,8 @@ int main(void)
  8000e00:	d0f0      	beq.n	8000de4 <main+0x64>
 			char buf[20];
 			char out_buf[2048] = "";
- 8000e02:	f507 6305 	add.w	r3, r7, #2128	; 0x850
- 8000e06:	f5a3 6305 	sub.w	r3, r3, #2128	; 0x850
+ 8000e02:	f607 0368 	addw	r3, r7, #2152	; 0x868
+ 8000e06:	f6a3 0368 	subw	r3, r3, #2152	; 0x868
  8000e0a:	2200      	movs	r2, #0
  8000e0c:	601a      	str	r2, [r3, #0]
  8000e0e:	3304      	adds	r3, #4
@@ -1790,16 +1790,16 @@ int main(void)
 
 			for (uint8_t i = 0; i < NUM_CELLS; i++) {
  8000e32:	2300      	movs	r3, #0
- 8000e34:	f887 384f 	strb.w	r3, [r7, #2127]	; 0x84f
+ 8000e34:	f887 3867 	strb.w	r3, [r7, #2151]	; 0x867
  8000e38:	e022      	b.n	8000e80 <main+0x100>
 				sprintf(buf, "C%u:%u/1000 V", i+1, read_val[i]);
- 8000e3a:	f897 384f 	ldrb.w	r3, [r7, #2127]	; 0x84f
+ 8000e3a:	f897 3867 	ldrb.w	r3, [r7, #2151]	; 0x867
  8000e3e:	1c5a      	adds	r2, r3, #1
- 8000e40:	f897 384f 	ldrb.w	r3, [r7, #2127]	; 0x84f
+ 8000e40:	f897 3867 	ldrb.w	r3, [r7, #2151]	; 0x867
  8000e44:	005b      	lsls	r3, r3, #1
- 8000e46:	f503 6305 	add.w	r3, r3, #2128	; 0x850
+ 8000e46:	f603 0368 	addw	r3, r3, #2152	; 0x868
  8000e4a:	443b      	add	r3, r7
- 8000e4c:	f833 3c38 	ldrh.w	r3, [r3, #-56]
+ 8000e4c:	f833 3c50 	ldrh.w	r3, [r3, #-80]
  8000e50:	f607 0004 	addw	r0, r7, #2052	; 0x804
  8000e54:	4917      	ldr	r1, [pc, #92]	; (8000eb4 <main+0x134>)
  8000e56:	f007 fba9 	bl	80085ac <siprintf>
@@ -1816,11 +1816,11 @@ int main(void)
  8000e70:	4618      	mov	r0, r3
  8000e72:	f007 fbc3 	bl	80085fc <strncat>
 			for (uint8_t i = 0; i < NUM_CELLS; i++) {
- 8000e76:	f897 384f 	ldrb.w	r3, [r7, #2127]	; 0x84f
+ 8000e76:	f897 3867 	ldrb.w	r3, [r7, #2151]	; 0x867
  8000e7a:	3301      	adds	r3, #1
- 8000e7c:	f887 384f 	strb.w	r3, [r7, #2127]	; 0x84f
- 8000e80:	f897 384f 	ldrb.w	r3, [r7, #2127]	; 0x84f
- 8000e84:	2b0b      	cmp	r3, #11
+ 8000e7c:	f887 3867 	strb.w	r3, [r7, #2151]	; 0x867
+ 8000e80:	f897 3867 	ldrb.w	r3, [r7, #2151]	; 0x867
+ 8000e84:	2b17      	cmp	r3, #23
  8000e86:	d9d8      	bls.n	8000e3a <main+0xba>
 			}
 			strncat(out_buf, char_to_str, 2);

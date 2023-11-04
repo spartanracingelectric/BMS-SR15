@@ -44,7 +44,7 @@
 /* USER CODE BEGIN PD */
 
 //CHOOSE THE NUMBER OF MODULES IN THE ACCUMULATOR
-#define NUM_DEVICES				1	//1 slave board\
+#define NUM_DEVICES				2	//1 slave board
 
 #define NUM_SERIES_GROUP		12	//1 slave board
 #define NUM_CELLS				NUM_DEVICES*NUM_SERIES_GROUP	//multiple slave board

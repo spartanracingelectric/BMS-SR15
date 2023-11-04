@@ -1,4 +1,4 @@
-../Core/Src/main.c:105:5:main	2136	static
+../Core/Src/main.c:105:5:main	2160	static
 ../Core/Src/main.c:190:6:SystemClock_Config	120	static
 ../Core/Src/main.c:245:6:GpioTimePacket_Init	24	static
 ../Core/Src/main.c:255:6:GpioFixedToggle	16	static
