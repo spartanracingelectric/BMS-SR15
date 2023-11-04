@@ -38,11 +38,15 @@ extern SPI_HandleTypeDef hspi1;
 
 /* USER CODE END Private defines */
 
-void HAL_SPI_Send(char* dummy);
-
-void HAL_SPI_Recieve(uint8_t* cmd, uint8_t* read_val);
+void MX_SPI1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+
+/* Pull nCS line to SPI1 HIGH */
+void LTC_nCS_High(void);
+
+/* Pull nCS line to SPI1 LOW */
+void LTC_nCS_Low(void);
 
 /* USER CODE END Prototypes */
 
@@ -51,3 +55,4 @@ void HAL_SPI_Recieve(uint8_t* cmd, uint8_t* read_val);
 #endif
 
 #endif /* __SPI_H__ */
+

@@ -15,7 +15,6 @@ RM := rm -rf
 -include Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/subdir.mk
 -include Drivers/STM32F1xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
--include Core/Src/Utils/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
 
@@ -39,34 +38,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := SerialCheck
+BUILD_ARTIFACT_NAME := SR15_BMS_v2
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-SerialCheck.elf \
+SR15_BMS_v2.elf \
 
 MAP_FILES += \
-SerialCheck.map \
+SR15_BMS_v2.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-SerialCheck.list \
+SR15_BMS_v2.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: SerialCheck.elf secondary-outputs
+main-build: SR15_BMS_v2.elf secondary-outputs
 
 # Tool invocations
-SerialCheck.elf SerialCheck.map: $(OBJS) $(USER_OBJS) C:\Spartan_Racing\SR15BMSDEV\BMS-SR15\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "SerialCheck.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Spartan_Racing\SR15BMSDEV\BMS-SR15\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SerialCheck.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+SR15_BMS_v2.elf SR15_BMS_v2.map: $(OBJS) $(USER_OBJS) C:\Spartan_Racing\SR15BMSDEV\SR15_BMS_v2\STM32F105RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "SR15_BMS_v2.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Spartan_Racing\SR15BMSDEV\SR15_BMS_v2\STM32F105RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SR15_BMS_v2.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -75,14 +74,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-SerialCheck.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "SerialCheck.list"
+SR15_BMS_v2.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "SR15_BMS_v2.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) SerialCheck.elf SerialCheck.list SerialCheck.map default.size.stdout
+	-$(RM) SR15_BMS_v2.elf SR15_BMS_v2.list SR15_BMS_v2.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
