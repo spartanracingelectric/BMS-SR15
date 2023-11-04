@@ -42,7 +42,10 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define NUM_DEVICES				2	//1 slave board
+
+//CHOOSE THE NUMBER OF MODULES IN THE ACCUMULATOR
+#define NUM_DEVICES				1	//1 slave board\
+
 #define NUM_SERIES_GROUP		12	//1 slave board
 #define NUM_CELLS				NUM_DEVICES*NUM_SERIES_GROUP	//multiple slave board
 #define LTC_DELAY				1000 //500ms update delay
