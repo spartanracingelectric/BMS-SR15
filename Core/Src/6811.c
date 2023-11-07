@@ -161,3 +161,13 @@ LTC_SPI_StatusTypeDef LTC_ReadRawCellVoltages(uint16_t *read_voltages) {
 
   return ret;
 }
+
+
+/* Read and store raw cell voltages at uint8_t 2d pointer */
+int LTC_CalcPackVoltage(uint16_t *read_voltages) {
+	int packvoltage = 0;
+	for(int i = 0; i < LTC_Get_Num_Devices() * LTC_Get_Num_Series_Groups(); i++){
+		packvoltage += read_voltages[i];
+	}
+	return packvoltage;
+}

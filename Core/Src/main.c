@@ -44,7 +44,7 @@
 /* USER CODE BEGIN PD */
 
 //CHOOSE THE NUMBER OF MODULES IN THE ACCUMULATOR
-#define NUM_DEVICES				2	//1 slave board
+#define NUM_DEVICES				1	//1 slave board
 
 #define NUM_SERIES_GROUP		12	//1 slave board
 #define NUM_CELLS				NUM_DEVICES*NUM_SERIES_GROUP	//multiple slave board
@@ -161,14 +161,22 @@ int main(void)
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
+			char packV[30];
 			char buf[20];
 			char out_buf[2048] = "";
 			char char_to_str[2];
+			int packvoltage = 0;
 
 			LTC_ReadRawCellVoltages((uint16_t *)read_val);
+			packvoltage = LTC_CalcPackVoltage((uint16_t *) read_val);
+			sprintf(packV, "Pack Voltage: %d/1000 V", packvoltage);
+			strncat(out_buf, packV, 30);
+			strncat(out_buf, char_to_str, 2);
+
 
 			char_to_str[0] = '\n';
 			char_to_str[1] = '\0';
+
 
 			for (uint8_t i = 0; i < NUM_CELLS; i++) {
 				sprintf(buf, "C%u:%u/1000 V", i+1, read_val[i]);

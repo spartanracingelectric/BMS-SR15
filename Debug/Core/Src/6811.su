@@ -5,3 +5,4 @@
 ../Core/Src/6811.c:86:9:LTC_Get_Num_Series_Groups	4	static
 ../Core/Src/6811.c:91:23:LTC_Wakeup_Idle	16	static
 ../Core/Src/6811.c:110:23:LTC_ReadRawCellVoltages	72	dynamic
+../Core/Src/6811.c:167:5:LTC_CalcPackVoltage	32	static
