@@ -44,13 +44,18 @@
 /* USER CODE BEGIN PD */
 
 //CHOOSE THE NUMBER OF MODULES IN THE ACCUMULATOR
-#define NUM_DEVICES				1	//1 slave board
+#define NUM_DEVICES				2	//1 slave board
 
 #define NUM_SERIES_GROUP		12	//1 slave board
 #define NUM_CELLS				NUM_DEVICES*NUM_SERIES_GROUP	//multiple slave board
 #define LTC_DELAY				1000 //500ms update delay
 #define LED_HEARTBEAT_DELAY_MS	500 //500ms update delay
 #define LTC_CMD_RDSTATA			0x0010 //Read status register group A
+
+#define MD_7KHZ_3KHZ 			2
+#define CELL_CH_ALL 			0
+#define DCP_DISABLED 			0
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -167,9 +172,12 @@ int main(void)
 			char char_to_str[2];
 			int packvoltage = 0;
 
+			LTC_ADCV(MD_7KHZ_3KHZ,DCP_DISABLED,CELL_CH_ALL);
+			LTC_Wakeup_Idle();
+			LTC_PollAdc();
 			LTC_ReadRawCellVoltages((uint16_t *)read_val);
 			packvoltage = LTC_CalcPackVoltage((uint16_t *) read_val);
-			sprintf(packV, "Pack Voltage: %d/1000 V", packvoltage);
+			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
 			strncat(out_buf, packV, 30);
 			strncat(out_buf, char_to_str, 2);
 
@@ -179,7 +187,7 @@ int main(void)
 
 
 			for (uint8_t i = 0; i < NUM_CELLS; i++) {
-				sprintf(buf, "C%u:%u/1000 V", i+1, read_val[i]);
+				sprintf(buf, "C%u:%u/10000 V", i+1, read_val[i]);
 				strncat(out_buf, buf, 20);
 				strncat(out_buf, char_to_str, 2);
 			}
