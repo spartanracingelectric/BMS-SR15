@@ -3,5 +3,9 @@
 ../Core/Src/6811.c:76:9:LTC_Get_Num_Devices	1
 ../Core/Src/6811.c:81:6:LTC_Set_Num_Series_Groups	3
 ../Core/Src/6811.c:86:9:LTC_Get_Num_Series_Groups	1
-../Core/Src/6811.c:91:23:LTC_Wakeup_Idle	2
-../Core/Src/6811.c:110:23:LTC_ReadRawCellVoltages	6
+../Core/Src/6811.c:91:23:LTC_Wakeup_Idle	3
+../Core/Src/6811.c:113:6:LTC_Wakeup_Sleep	2
+../Core/Src/6811.c:123:23:LTC_ReadRawCellVoltages	6
+../Core/Src/6811.c:181:6:LTC_ADCV	1
+../Core/Src/6811.c:206:9:LTC_PollAdc	4
+../Core/Src/6811.c:242:5:LTC_CalcPackVoltage	2

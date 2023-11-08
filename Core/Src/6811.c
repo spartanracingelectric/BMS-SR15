@@ -95,16 +95,29 @@ LTC_SPI_StatusTypeDef LTC_Wakeup_Idle(void) {
 
 	LTC_nCS_Low(); //Pull CS low
 
-	hal_ret = HAL_SPI_Transmit(&hspi1, &hex_ff, 1, 100); //Send byte 0xFF to wake LTC up
-	if (hal_ret) { //Non-zero means error
-		//Shift 1 by returned HAL_StatusTypeDef value to get LTC_SPI_StatusTypeDef equivalent
-		ret |= (1 << (hal_ret+LTC_SPI_TX_BIT_OFFSET)); //TX error
+	for (int i = 0; i < num_devices; i++){
+		hal_ret = HAL_SPI_Transmit(&hspi1, &hex_ff, 1, 100); //Send byte 0xFF to wake LTC up
+		if (hal_ret) { //Non-zero means error
+			//Shift 1 by returned HAL_StatusTypeDef value to get LTC_SPI_StatusTypeDef equivalent
+			ret |= (1 << (hal_ret+LTC_SPI_TX_BIT_OFFSET)); //TX error
+		}
 	}
 
 	LTC_nCS_High(); //Pull CS high
 
 	return ret;
 }
+
+
+//wake up sleep
+void LTC_Wakeup_Sleep(void) {
+	LTC_nCS_Low();
+	for(int i = 0; i < num_devices; i++){
+		HAL_Delay(500);
+	}
+	LTC_nCS_High();
+}
+
 
 /* Read and store raw cell voltages at uint8_t 2d pointer */
 LTC_SPI_StatusTypeDef LTC_ReadRawCellVoltages(uint16_t *read_voltages) {
@@ -160,4 +173,76 @@ LTC_SPI_StatusTypeDef LTC_ReadRawCellVoltages(uint16_t *read_voltages) {
   }
 
   return ret;
+}
+
+/*
+Starts cell voltage conversion
+*/
+void LTC_ADCV(
+  uint8_t MD, //ADC Mode
+  uint8_t DCP, //Discharge Permit
+  uint8_t CH //Cell Channels to be measured
+) {
+  uint8_t cmd[4];
+  uint16_t cmd_pec;
+  uint8_t md_bits;
+
+  md_bits = (MD & 0x02) >> 1;
+  cmd[0] = md_bits + 0x02;
+  md_bits = (MD & 0x01) << 7;
+  cmd[1] =  md_bits + 0x60 + (DCP<<4) + CH;
+  cmd_pec = LTC_PEC15_Calc(2, cmd);
+  cmd[2] = (uint8_t)(cmd_pec >> 8);
+  cmd[3] = (uint8_t)(cmd_pec);
+
+
+  LTC_Wakeup_Idle(); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+  LTC_nCS_Low();
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)cmd, 4, 100);
+  LTC_nCS_High();
+}
+
+
+int32_t LTC_PollAdc()
+{
+  uint32_t counter = 0;
+  uint8_t finished = 0;
+  uint8_t current_time = 0;
+  uint8_t cmd[4];
+  uint16_t cmd_pec;
+
+  cmd[0] = 0x07;
+  cmd[1] = 0x14;
+  cmd_pec = LTC_PEC15_Calc(2, cmd);
+  cmd[2] = (uint8_t)(cmd_pec >> 8);
+  cmd[3] = (uint8_t)(cmd_pec);
+
+  LTC_Wakeup_Idle(); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+
+  LTC_nCS_Low();
+  HAL_SPI_Transmit(&hspi1, (uint8_t *)cmd, 4, 100);
+
+  while ((counter<200000)&&(finished == 0))
+  {
+    current_time = HAL_GetTick();
+    if (current_time>0)
+    {
+      finished = 1;
+    }
+    else
+    {
+      counter = counter + 10;
+    }
+  }
+  LTC_nCS_High();
+  return(counter);
+}
+
+/* Read and store raw cell voltages at uint8_t 2d pointer */
+int LTC_CalcPackVoltage(uint16_t *read_voltages) {
+	int packvoltage = 0;
+	for(int i = 0; i < LTC_Get_Num_Devices() * LTC_Get_Num_Series_Groups(); i++){
+		packvoltage += read_voltages[i];
+	}
+	return packvoltage;
 }
