@@ -173,7 +173,6 @@ int main(void)
 			int packvoltage = 0;
 
 			LTC_ADCV(MD_7KHZ_3KHZ,DCP_DISABLED,CELL_CH_ALL);
-			LTC_Wakeup_Idle();
 			LTC_PollAdc();
 			LTC_ReadRawCellVoltages((uint16_t *)read_val);
 			packvoltage = LTC_CalcPackVoltage((uint16_t *) read_val);

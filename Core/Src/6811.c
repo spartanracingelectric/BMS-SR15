@@ -136,7 +136,7 @@ LTC_SPI_StatusTypeDef LTC_ReadRawCellVoltages(uint16_t *read_voltages) {
     cmd[2] = (uint8_t)(cmd_pec >> 8);
     cmd[3] = (uint8_t)(cmd_pec);
 
-    //ret |= LTC_Wakeup_Idle(); //Wake LTC up
+    ret |= LTC_Wakeup_Idle(); //Wake LTC up
 
     LTC_nCS_Low(); //Pull CS low
 
