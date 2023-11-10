@@ -7,5 +7,6 @@
 ../Core/Src/6811.c:113:6:LTC_Wakeup_Sleep	2
 ../Core/Src/6811.c:123:23:LTC_ReadRawCellVoltages	6
 ../Core/Src/6811.c:181:6:LTC_ADCV	1
-../Core/Src/6811.c:206:9:LTC_PollAdc	4
-../Core/Src/6811.c:242:5:LTC_CalcPackVoltage	2
+../Core/Src/6811.c:205:6:LTC_ADAX	1
+../Core/Src/6811.c:236:9:LTC_PollAdc	4
+../Core/Src/6811.c:272:5:LTC_CalcPackVoltage	2

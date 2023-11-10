@@ -193,6 +193,13 @@ int main(void)
 			strncat(out_buf, char_to_str, 2);
 
 			USB_Transmit(out_buf, strlen(out_buf));
+
+			uint16_t aux_codes[2][6];
+			LTC_Wakeup_Idle();
+			LTC_ADAX(ADC_CONVERSION_MODE , AUX_CH_ALL);
+			LTC_Wakeup_Idle();
+			//ltc6811_rdaux(0,2,aux_codes); // Set to read back all aux registers
+
 		}
   }
   /* USER CODE END 3 */

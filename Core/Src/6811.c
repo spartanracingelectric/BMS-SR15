@@ -175,6 +175,62 @@ LTC_SPI_StatusTypeDef LTC_ReadRawCellVoltages(uint16_t *read_voltages) {
   return ret;
 }
 
+LTC_SPI_StatusTypeDef LTC_ReadRawCellTemps(uint16_t *read_voltages) {
+  LTC_SPI_StatusTypeDef ret = LTC_SPI_OK;
+  LTC_SPI_StatusTypeDef hal_ret;
+  const uint8_t ARR_SIZE_REG = LTC_Get_Num_Devices() * REG_LEN;
+  uint8_t read_voltages_reg[ARR_SIZE_REG]; // Increased in size to handle multiple devices
+
+  for (uint8_t i = 0; i < (LTC_Get_Num_Series_Groups() / LTC_SERIES_GROUPS_PER_RDCV); i++) {
+    uint8_t cmd[4];
+    uint16_t cmd_pec;
+
+    cmd[0] = (0xFF & (LTC_CMD_RDCV[i] >> 8)); //RDCV Register
+    cmd[1] = (0xFF & (LTC_CMD_RDCV[i])); //RDCV Register
+    cmd_pec = LTC_PEC15_Calc(2, cmd);
+    cmd[2] = (uint8_t)(cmd_pec >> 8);
+    cmd[3] = (uint8_t)(cmd_pec);
+
+    ret |= LTC_Wakeup_Idle(); //Wake LTC up
+
+    LTC_nCS_Low(); //Pull CS low
+
+    hal_ret = HAL_SPI_Transmit(&hspi1, (uint8_t *)cmd, 4, 100);
+    if (hal_ret) { //Non-zero means error
+      ret |= (1 << (hal_ret + LTC_SPI_TX_BIT_OFFSET)); //TX error
+    }
+
+    hal_ret = HAL_SPI_Receive(&hspi1, (uint8_t *)read_voltages_reg, ARR_SIZE_REG, 100);
+    if (hal_ret) { //Non-zero means error
+      ret |= (1 << (hal_ret + LTC_SPI_RX_BIT_OFFSET)); //RX error
+    }
+
+    // Process the received data
+    for (uint8_t dev_idx = 0; dev_idx < LTC_Get_Num_Devices(); dev_idx++) {
+      // Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
+      // PEC for each device is the last two bytes of its data segment
+      uint8_t *data_ptr = &read_voltages_reg[dev_idx * REG_LEN];
+      uint16_t calculated_pec = LTC_PEC15_Calc(REG_LEN - 2, data_ptr); // Calculate PEC based on received data
+
+      // Convert received PEC from two bytes to uint16_t
+      uint16_t received_pec = (data_ptr[REG_LEN - 2] << 8) | data_ptr[REG_LEN - 1];
+
+      if (received_pec == calculated_pec) {
+        // If PEC matches, copy the voltage data, omitting the PEC bytes
+        memcpy(&read_voltages[dev_idx * LTC_Get_Num_Series_Groups() + i * LTC_SERIES_GROUPS_PER_RDCV], data_ptr, REG_LEN - 2);
+      } else {
+        // Handle PEC mismatch error
+        ret |= LTC_SPI_RX_ERROR;
+      }
+    }
+
+    LTC_nCS_High(); //Pull CS high
+  }
+
+  return ret;
+}
+
+
 /*
 Starts cell voltage conversion
 */
@@ -201,6 +257,36 @@ void LTC_ADCV(
   HAL_SPI_Transmit(&hspi1, (uint8_t *)cmd, 4, 100);
   LTC_nCS_High();
 }
+
+void LTC_ADAX(
+		uint8_t MD, //ADC Mode
+		  uint8_t CHG //GPIO Channels to be measured)
+		)
+		{
+		  uint8_t cmd[4];
+		  uint16_t cmd_pec;
+		  uint8_t md_bits;
+
+		  md_bits = (MD & 0x02) >> 1;
+		  cmd[0] = md_bits + 0x04;
+		  md_bits = (MD & 0x01) << 7;
+		  cmd[1] = md_bits + 0x60 + CHG ;
+
+		  cmd_pec = pec15_calc(2, cmd);
+		  cmd[2] = (uint8_t)(cmd_pec >> 8);
+		  cmd[3] = (uint8_t)(cmd_pec);
+
+		  /*
+		  wakeup_idle (); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+		  output_low(LTC6811_CS);
+		  spi_write_array(4,cmd);
+		  output_high(LTC6811_CS);
+		  */
+		  LTC_Wakeup_Idle();
+		  LTC_nCS_Low();
+		  LTC_Wakeup_Idle();
+		  LTC_nCS_High();
+		}
 
 
 int32_t LTC_PollAdc()
