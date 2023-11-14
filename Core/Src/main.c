@@ -112,7 +112,8 @@ int main(void)
   /* USER CODE BEGIN 1 */
 	GpioTimePacket tp_led_heartbeat;
 	TimerPacket timerpacket_ltc;
-	uint16_t read_val[NUM_CELLS]; //2 bytes per series * 12 series
+	uint16_t read_volt[NUM_CELLS]; //2 bytes per series * 12 series
+	uint16_t read_temp[12];
 
   /* USER CODE END 1 */
 
@@ -174,8 +175,8 @@ int main(void)
 
 			LTC_ADCV(MD_7KHZ_3KHZ,DCP_DISABLED,CELL_CH_ALL);
 			LTC_PollAdc();
-			LTC_ReadRawCellVoltages((uint16_t *)read_val);
-			packvoltage = LTC_CalcPackVoltage((uint16_t *) read_val);
+			LTC_ReadRawCellVoltages((uint16_t *)read_volt);
+			packvoltage = LTC_CalcPackVoltage((uint16_t *) read_volt);
 			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
 			strncat(out_buf, packV, 30);
 			strncat(out_buf, char_to_str, 2);
@@ -186,7 +187,7 @@ int main(void)
 
 
 			for (uint8_t i = 0; i < NUM_CELLS; i++) {
-				sprintf(buf, "C%u:%u/10000 V", i+1, read_val[i]);
+				sprintf(buf, "C%u:%u/10000 V", i+1, read_volt[i]);
 				strncat(out_buf, buf, 20);
 				strncat(out_buf, char_to_str, 2);
 			}
@@ -194,12 +195,20 @@ int main(void)
 
 			USB_Transmit(out_buf, strlen(out_buf));
 
-			uint16_t aux_codes[2][6];
-			LTC_Wakeup_Idle();
-			LTC_ADAX(ADC_CONVERSION_MODE , AUX_CH_ALL);
-			LTC_Wakeup_Idle();
-			//ltc6811_rdaux(0,2,aux_codes); // Set to read back all aux registers
+			char buf2[20];
+			char out_buf2[2048] = "";
 
+			LTC_Wakeup_Idle();
+			LTC_ADAX(0, 2, 0);
+			LTC_Wakeup_Idle();
+			LTC_ReadRawCellTemps((uint16_t *) read_temp); // Set to read back all aux registers
+			for (uint8_t i = 0; i < 12; i++) {
+				sprintf(buf2, "C%u:%u C", i+1, read_temp[i]);
+				strncat(out_buf2, buf2, 20);
+				strncat(out_buf2, char_to_str, 2);
+			}
+			strncat(out_buf2, char_to_str, 2);
+			USB_Transmit(out_buf2, strlen(out_buf2));
 		}
   }
   /* USER CODE END 3 */
