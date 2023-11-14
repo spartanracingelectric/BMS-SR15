@@ -265,7 +265,6 @@ void LTC_ADAX(uint8_t MD, //ADC Mode
 	cmd[0] = md_bits + 0x04;
 	md_bits = (MD & 0x01) << 7;
 	cmd[1] = md_bits + 0x60 + CHG;
-
 	cmd_pec = LTC_PEC15_Calc(2, cmd);
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
 	cmd[3] = (uint8_t) (cmd_pec);
@@ -278,7 +277,7 @@ void LTC_ADAX(uint8_t MD, //ADC Mode
 	 */
 	LTC_Wakeup_Idle();
 	LTC_nCS_Low();
-	LTC_Wakeup_Idle();
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
 	LTC_nCS_High();
 }
 

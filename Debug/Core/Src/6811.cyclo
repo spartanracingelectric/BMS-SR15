@@ -9,5 +9,5 @@
 ../Core/Src/6811.c:182:23:LTC_ReadRawCellTemps	5
 ../Core/Src/6811.c:235:6:LTC_ADCV	1
 ../Core/Src/6811.c:257:6:LTC_ADAX	1
-../Core/Src/6811.c:285:9:LTC_PollAdc	4
-../Core/Src/6811.c:316:5:LTC_CalcPackVoltage	2
+../Core/Src/6811.c:284:9:LTC_PollAdc	4
+../Core/Src/6811.c:315:5:LTC_CalcPackVoltage	2

@@ -55,6 +55,8 @@
 #define MD_7KHZ_3KHZ 			2
 #define CELL_CH_ALL 			0
 #define DCP_DISABLED 			0
+#define AUX_CH_ALL 			0
+
 
 /* USER CODE END PD */
 
@@ -199,13 +201,20 @@ int main(void)
 			char out_buf2[2048] = "";
 
 			LTC_Wakeup_Idle();
-			LTC_ADAX(0, 2, 0);
-			LTC_Wakeup_Idle();
+			LTC_ADAX(MD_7KHZ_3KHZ, AUX_CH_ALL);
+			LTC_PollAdc();
 			LTC_ReadRawCellTemps((uint16_t *) read_temp); // Set to read back all aux registers
 			for (uint8_t i = 0; i < 12; i++) {
-				sprintf(buf2, "C%u:%u C", i+1, read_temp[i]);
-				strncat(out_buf2, buf2, 20);
-				strncat(out_buf2, char_to_str, 2);
+				if((i+1)%6 != 0){
+					sprintf(buf2, "C%u:%u C", i+1, read_temp[i]);
+					strncat(out_buf2, buf2, 20);
+					strncat(out_buf2, char_to_str, 2);
+				}
+				else{
+					sprintf(buf2, "Vref:%u", read_temp[i]);
+					strncat(out_buf2, buf2, 20);
+					strncat(out_buf2, char_to_str, 2);
+				}
 			}
 			strncat(out_buf2, char_to_str, 2);
 			USB_Transmit(out_buf2, strlen(out_buf2));
