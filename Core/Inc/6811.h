@@ -46,6 +46,24 @@ uint8_t LTC_Get_Num_Series_Groups(void);
 
 LTC_SPI_StatusTypeDef LTC_Wakeup_Idle(void);
 
+void LTC_Wakeup_Sleep(void);
+
 LTC_SPI_StatusTypeDef LTC_ReadRawCellVoltages(uint16_t *read_voltages);
+
+LTC_SPI_StatusTypeDef LTC_ReadRawCellTemps(uint16_t *read_auxiliary);
+
+void LTC_ADCV(uint8_t MD, //ADC Mode
+		uint8_t DCP, //Discharge Permit
+		uint8_t CH //Cell Channels to be measured
+		);
+
+void LTC_ADAX(uint8_t MD, //ADC Mode
+		uint8_t CHG //GPIO Channels to be measured)
+		);
+
+int32_t LTC_PollAdc();
+
+int LTC_CalcPackVoltage(uint16_t *read_voltages);
+
 
 
