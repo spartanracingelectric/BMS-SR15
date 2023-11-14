@@ -275,7 +275,7 @@ void LTC_ADAX(uint8_t MD, //ADC Mode
 	 spi_write_array(4,cmd);
 	 output_high(LTC6811_CS);
 	 */
-	LTC_Wakeup_Idle();
+	LTC_Wakeup_Idle(); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
 	LTC_nCS_Low();
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
 	LTC_nCS_High();

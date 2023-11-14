@@ -1,4 +1,4 @@
-../Core/Src/main.c:112:5:main	5
+../Core/Src/main.c:112:5:main	4
 ../Core/Src/main.c:230:6:SystemClock_Config	4
 ../Core/Src/main.c:285:6:GpioTimePacket_Init	1
 ../Core/Src/main.c:295:6:GpioFixedToggle	2

@@ -52,10 +52,10 @@
 #define LED_HEARTBEAT_DELAY_MS	500 //500ms update delay
 #define LTC_CMD_RDSTATA			0x0010 //Read status register group A
 
-#define MD_7KHZ_3KHZ 			2
-#define CELL_CH_ALL 			0
-#define DCP_DISABLED 			0
-#define AUX_CH_ALL 			0
+static const uint8_t MD_7KHZ_3KHZ = 2;
+static const uint8_t CELL_CH_ALL = 0;
+static const uint8_t DCP_DISABLED = 0;
+static const uint8_t AUX_CH_ALL = 0;
 
 
 /* USER CODE END PD */
@@ -175,27 +175,27 @@ int main(void)
 			char char_to_str[2];
 			int packvoltage = 0;
 
-			LTC_ADCV(MD_7KHZ_3KHZ,DCP_DISABLED,CELL_CH_ALL);
-			LTC_PollAdc();
-			LTC_ReadRawCellVoltages((uint16_t *)read_volt);
-			packvoltage = LTC_CalcPackVoltage((uint16_t *) read_volt);
-			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
-			strncat(out_buf, packV, 30);
-			strncat(out_buf, char_to_str, 2);
-
-
+//			LTC_ADCV(MD_7KHZ_3KHZ,DCP_DISABLED,CELL_CH_ALL);
+//			LTC_PollAdc();
+//			LTC_ReadRawCellVoltages((uint16_t *)read_volt);
+//			packvoltage = LTC_CalcPackVoltage((uint16_t *) read_volt);
+//			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
+//			strncat(out_buf, packV, 30);
+//			strncat(out_buf, char_to_str, 2);
+//
+//
 			char_to_str[0] = '\n';
 			char_to_str[1] = '\0';
-
-
-			for (uint8_t i = 0; i < NUM_CELLS; i++) {
-				sprintf(buf, "C%u:%u/10000 V", i+1, read_volt[i]);
-				strncat(out_buf, buf, 20);
-				strncat(out_buf, char_to_str, 2);
-			}
-			strncat(out_buf, char_to_str, 2);
-
-			USB_Transmit(out_buf, strlen(out_buf));
+//
+//
+//			for (uint8_t i = 0; i < NUM_CELLS; i++) {
+//				sprintf(buf, "C%u:%u/10000 V", i+1, read_volt[i]);
+//				strncat(out_buf, buf, 20);
+//				strncat(out_buf, char_to_str, 2);
+//			}
+//			strncat(out_buf, char_to_str, 2);
+//
+//			USB_Transmit(out_buf, strlen(out_buf));
 
 			char buf2[20];
 			char out_buf2[2048] = "";
