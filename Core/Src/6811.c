@@ -2,8 +2,8 @@
  * 6811.c
  *
  *  Created on: Nov 3, 2023
- *      Author: karth
  */
+#include <math.h>
 #include "6811.h"
 
 static const uint16_t LTC_CMD_RDCVA = 0x0004;
@@ -22,10 +22,14 @@ static const uint8_t LTC_SPI_TX_BIT_OFFSET = 0; //Num bits to shift RX status co
 static const uint8_t LTC_SPI_RX_BIT_OFFSET = 4; //Num bits to shift RX status code
 static const uint8_t REG_LEN = 8; // number of bytes in the register + 2 bytes for the PEC
 static const uint8_t LTC_SERIES_GROUPS_PER_RDCV = 3; //Number of cell voltage groups per 8 byte register
-static const uint8_t LTC_SERIES_GROUPS_PER_RDAUX = 3;
+static const uint8_t LTC_SERIES_GROUPS_PER_RDAUX = 3;						  //currently 4150 to work with SRE5 modules
 static const uint8_t num_aux_series_groups = 6; //Number of series groups
 static uint8_t num_devices; //Keep visibility within this file
 static uint8_t num_series_groups; //Number of series groups
+static const uint16_t BETA = 4150; //beta value of the thermistor should be 3380 for sr-15
+static const float LN_RT1 = 11.512925f; //ln(R_T1)  assuming R_T1 = 100000
+static const float C = 166.0f; // beta/T1 assuming T1 = 25 and beta value of 4150 (3380 for sr-15)
+
 
 static const unsigned int crc15Table[256] = { 0x0, 0xc599, 0xceab, 0xb32,
 		0xd8cf, 0x1d56, 0x1664, 0xd3fd, 0xf407, 0x319e,
@@ -179,6 +183,22 @@ LTC_SPI_StatusTypeDef LTC_ReadRawCellVoltages(uint16_t *read_voltages) {
 	return ret;
 }
 
+void getActualTemps(float *actual_temp, uint16_t *read_temp) {
+	//put first 5 into actual temps
+	for (int i = 0; i < 5; i++) {
+		float x = (float)log(read_temp[i]);
+		float bottom = x - LN_RT1 - C;
+		actual_temp[i] = -BETA/bottom;
+	}
+	//put 2nd set of 5 into actual temps
+	for (int i = 6; i < 11; i++) {
+		float x = (float)log(read_temp[i]);
+		float bottom = x - LN_RT1 - C;
+		actual_temp[i-1] = -BETA/bottom;
+	}
+
+}
+
 LTC_SPI_StatusTypeDef LTC_ReadRawCellTemps(uint16_t *read_auxiliary) {
 	LTC_SPI_StatusTypeDef ret = LTC_SPI_OK;
 	LTC_SPI_StatusTypeDef hal_ret;
@@ -216,6 +236,7 @@ LTC_SPI_StatusTypeDef LTC_ReadRawCellTemps(uint16_t *read_auxiliary) {
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint8_t *data_ptr = &read_auxiliary_reg[dev_idx * REG_LEN];
+
 
 			memcpy(
 					&read_auxiliary[dev_idx * num_aux_series_groups
