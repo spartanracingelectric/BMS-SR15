@@ -6,6 +6,11 @@
  */
 #include "6811.h"
 
+#define ntcNominal 100000.0f
+#define ntcSeriesResistance 100000.0f
+#define ntcBetaFactor 4250.0f
+#define ntcNominalTemp 25.0f
+
 static const uint16_t LTC_CMD_RDCVA = 0x0004;
 static const uint16_t LTC_CMD_RDCVB = 0x0006;
 static const uint16_t LTC_CMD_RDCVC = 0x0008;
@@ -177,6 +182,24 @@ LTC_SPI_StatusTypeDef LTC_ReadRawCellVoltages(uint16_t *read_voltages) {
 	}
 
 	return ret;
+}
+
+void getActualTemps(float *actual_temp, uint16_t *read_temp) {
+	static float scalar;
+	static float steinhart;
+
+	for (uint8_t i = 0; i < 12; i++) {
+		  scalar = 30000.0f / (float)(read_temp[i])- 1.0f;
+		  scalar = (float)ntcSeriesResistance / scalar;
+		  steinhart = scalar / (float)ntcNominal;               // (R/Ro)
+		  steinhart = log(steinhart);                           // ln(R/Ro)
+		  steinhart /= (float)ntcBetaFactor;                    // 1/B * ln(R/Ro)
+		  steinhart += 1.0f / ((float)ntcNominalTemp + 273.15f);       // + (1/To)
+		  steinhart = 1.0f / steinhart;                         // Invert
+		  steinhart -= 273.15f;    // convert to degree
+
+		  actual_temp[i] = steinhart;
+	}
 }
 
 LTC_SPI_StatusTypeDef LTC_ReadRawCellTemps(uint16_t *read_auxiliary) {
