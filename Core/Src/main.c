@@ -116,7 +116,6 @@ int main(void)
 	TimerPacket timerpacket_ltc;
 	uint16_t read_volt[NUM_CELLS]; //2 bytes per series * 12 series
 	uint16_t read_temp[12];
-	float actual_temp[12]; //only 10 actual temps, but 12 for rn cuz not enough time to mess with the loop
 
   /* USER CODE END 1 */
 
@@ -212,9 +211,7 @@ int main(void)
 					strncat(out_buf2, char_to_str, 2);
 				}
 				else{
-					getActualTemps(actual_temp, read_temp);
-					//sprintf(buf2, "Vref:%u", read_temp[i]);
-					sprintf(buf2, "temp: %0.2f", actual_temp[i]);
+					sprintf(buf2, "Vref:%u", read_temp[i]);
 					strncat(out_buf2, buf2, 20);
 					strncat(out_buf2, char_to_str, 2);
 				}
