@@ -206,18 +206,23 @@ int main(void)
 			LTC_PollAdc();
 			LTC_ReadRawCellTemps((uint16_t *) read_temp); // Set to read back all aux registers
 			for (uint8_t i = 0; i < 12; i++) {
-				if((i+1)%6 != 0){
-					sprintf(buf2, "C%u:%u C", i+1, read_temp[i]);
-					strncat(out_buf2, buf2, 20);
-					strncat(out_buf2, char_to_str, 2);
-				}
-				else{
-					getActualTemps(actual_temp, read_temp);
-					//sprintf(buf2, "Vref:%u", read_temp[i]);
-					sprintf(buf2, "temp: %0.2f", actual_temp[i]);
-					strncat(out_buf2, buf2, 20);
-					strncat(out_buf2, char_to_str, 2);
-				}
+//				if((i+1)%6 != 0){
+//					sprintf(buf2, "C%u:%u C", i+1, read_temp[i]);
+//					strncat(out_buf2, buf2, 20);
+//					strncat(out_buf2, char_to_str, 2);
+//				}
+//				else{
+//					getActualTemps(actual_temp, read_temp);
+//					//sprintf(buf2, "Vref:%u", read_temp[i]);
+//					sprintf(buf2, "temp: %0.2f", actual_temp[i]);
+//					strncat(out_buf2, buf2, 20);
+//					strncat(out_buf2, char_to_str, 2);
+//				}
+				getActualTemps(actual_temp, read_temp);
+				//sprintf(buf2, "Vref:%u", read_temp[i]);
+				sprintf(buf2, "temp: %0.2f     raw cell value: %u", actual_temp[i], read_temp[i]);
+				strncat(out_buf2, buf2, 20);
+				strncat(out_buf2, char_to_str, 2);
 			}
 			strncat(out_buf2, char_to_str, 2);
 			USB_Transmit(out_buf2, strlen(out_buf2));

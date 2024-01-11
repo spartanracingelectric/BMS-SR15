@@ -5,6 +5,7 @@
  *      Author: karth
  */
 #include "6811.h"
+#include <math.h>
 
 #define ntcNominal 100000.0f
 #define ntcSeriesResistance 100000.0f

@@ -65,5 +65,7 @@ int32_t LTC_PollAdc();
 
 int LTC_CalcPackVoltage(uint16_t *read_voltages);
 
+void getActualTemps(float *actual_temp, uint16_t *read_temp);
+
 
 
