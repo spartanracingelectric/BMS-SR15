@@ -190,16 +190,16 @@ void getActualTemps(float *actual_temp, uint16_t *read_temp) {
 	static float steinhart;
 
 	for (uint8_t i = 0; i < 12; i++) {
-		  scalar = 30000.0f / (float)(read_temp[i])- 1.0f;
-		  scalar = (float)ntcSeriesResistance / scalar;
-		  steinhart = scalar / (float)ntcNominal;               // (R/Ro)
-		  steinhart = log(steinhart);                           // ln(R/Ro)
-		  steinhart /= (float)ntcBetaFactor;                    // 1/B * ln(R/Ro)
-		  steinhart += 1.0f / ((float)ntcNominalTemp + 273.15f);       // + (1/To)
-		  steinhart = 1.0f / steinhart;                         // Invert
-		  steinhart -= 273.15f;    // convert to degree
+		scalar = 30000.0f / (float) (read_temp[i]) - 1.0f;
+		scalar = (float) ntcSeriesResistance / scalar;
+		steinhart = scalar / (float) ntcNominal;               // (R/Ro)
+		steinhart = log(steinhart);                           // ln(R/Ro)
+		steinhart /= (float) ntcBetaFactor;                    // 1/B * ln(R/Ro)
+		steinhart += 1.0f / ((float) ntcNominalTemp + 273.15f);      // + (1/To)
+		steinhart = 1.0f / steinhart;                         // Invert
+		steinhart -= 273.15f;    // convert to degree
 
-		  actual_temp[i] = steinhart;
+		actual_temp[i] = steinhart;
 	}
 }
 

@@ -158,6 +158,22 @@ int main(void)
   LTC_Set_Num_Devices(NUM_DEVICES);
   LTC_Set_Num_Series_Groups(NUM_SERIES_GROUP);
 
+  uint8_t startErr = (uint8_t)CAN1_Start();
+
+  	uint32_t testTxMailbox;
+  	uint8_t msg[8];
+
+  	msg[0] = 0xde;
+  	msg[1] = 0xad;
+  	msg[2] = 0xbe;
+  	msg[3] = 0xef;
+
+  	CAN_TxHeaderTypeDef testTx;
+  	testTx.IDE = CAN_ID_STD;
+  	testTx.StdId = 0x123;
+  	testTx.RTR = CAN_RTR_DATA;
+  	testTx.DLC = 4;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -175,6 +191,9 @@ int main(void)
 			char out_buf[2048] = "";
 			char char_to_str[2];
 			int packvoltage = 0;
+			uint8_t err;
+			err = (uint8_t)CAN1_Tx(&testTx, msg, &testTxMailbox);
+
 
 //			LTC_ADCV(MD_7KHZ_3KHZ,DCP_DISABLED,CELL_CH_ALL);
 //			LTC_PollAdc();
@@ -200,32 +219,22 @@ int main(void)
 
 			char buf2[20];
 			char out_buf2[2048] = "";
+			// CAN TX test
 
 			LTC_Wakeup_Idle();
 			LTC_ADAX(MD_7KHZ_3KHZ, AUX_CH_ALL);
 			LTC_PollAdc();
 			LTC_ReadRawCellTemps((uint16_t *) read_temp); // Set to read back all aux registers
 			for (uint8_t i = 0; i < 12; i++) {
-//				if((i+1)%6 != 0){
-//					sprintf(buf2, "C%u:%u C", i+1, read_temp[i]);
-//					strncat(out_buf2, buf2, 20);
-//					strncat(out_buf2, char_to_str, 2);
-//				}
-//				else{
-//					getActualTemps(actual_temp, read_temp);
-//					//sprintf(buf2, "Vref:%u", read_temp[i]);
-//					sprintf(buf2, "temp: %0.2f", actual_temp[i]);
-//					strncat(out_buf2, buf2, 20);
-//					strncat(out_buf2, char_to_str, 2);
-//				}
 				getActualTemps(actual_temp, read_temp);
 				//sprintf(buf2, "Vref:%u", read_temp[i]);
-				sprintf(buf2, "temp: %0.2f     raw cell value: %u", actual_temp[i], read_temp[i]);
+				sprintf(buf2, "temp: %0.2f", actual_temp[i]);
 				strncat(out_buf2, buf2, 20);
 				strncat(out_buf2, char_to_str, 2);
 			}
 			strncat(out_buf2, char_to_str, 2);
 			USB_Transmit(out_buf2, strlen(out_buf2));
+
 		}
   }
   /* USER CODE END 3 */
@@ -340,7 +349,6 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)
   {

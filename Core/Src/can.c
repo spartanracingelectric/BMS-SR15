@@ -212,5 +212,19 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* canHandle)
 }
 
 /* USER CODE BEGIN 1 */
+HAL_StatusTypeDef CAN1_Start() {
+	return HAL_CAN_Start(&hcan1);
+}
 
+HAL_StatusTypeDef CAN1_Tx(const CAN_TxHeaderTypeDef *pHeader, const uint8_t aData[], uint32_t *pTxMailbox) {
+	return HAL_CAN_AddTxMessage(&hcan1, pHeader, aData, pTxMailbox);
+}
+
+uint32_t CAN1_CheckError() {
+	return hcan1.ErrorCode;
+}
+
+uint32_t CAN1_GetTxMailboxesFreeLevel() {
+	return HAL_CAN_GetTxMailboxesFreeLevel(&hcan1);
+}
 /* USER CODE END 1 */
