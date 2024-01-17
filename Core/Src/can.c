@@ -21,7 +21,7 @@
 #include "can.h"
 
 /* USER CODE BEGIN 0 */
-
+struct CANMessage msg;
 /* USER CODE END 0 */
 
 CAN_HandleTypeDef hcan1;
@@ -121,18 +121,29 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* canHandle)
 
 HAL_StatusTypeDef CAN1_Start() {
 	return HAL_CAN_Start(&hcan1);
-	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
 }
 
 HAL_StatusTypeDef CAN1_Activate(){
 	return HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
 }
 
-//
-HAL_StatusTypeDef CAN1_Tx(const struct CANMessage *pHeader){
-	return HAL_CAN_AddTxMessage(&hcan1, &pHeader->TxHeader, &pHeader->data, &pHeader->TxMailbox);
+
+HAL_StatusTypeDef CAN1_Send(){
+	return HAL_CAN_AddTxMessage(&hcan1, &msg.TxHeader, &msg.data, &msg.TxMailbox);
 }
 
+void CAN1_SettingsInit(){
+	CAN1_Start();
+	CAN1_Activate();
+	msg.TxHeader.IDE= CAN_ID_STD;
+	msg.TxHeader.StdId = 0x00;
+	msg.TxHeader.RTR = CAN_RTR_DATA;
+	msg.TxHeader.DLC = 8;
+}
+
+void setCANId(struct CANMessage *pHeader, uint32_t id){
+	pHeader->TxHeader.StdId = id;
+}
 
 
 /* USER CODE END 1 */
