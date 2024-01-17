@@ -30,24 +30,32 @@ extern "C" {
 
 /* USER CODE BEGIN Includes */
 
+
+
 /* USER CODE END Includes */
 
 extern CAN_HandleTypeDef hcan1;
 
-extern CAN_HandleTypeDef hcan2;
-
 /* USER CODE BEGIN Private defines */
+struct CANMessage{
+	CAN_TxHeaderTypeDef TxHeader;
+	uint32_t TxMailbox;
+	uint32_t IDE;
+	uint32_t RTR;
+	uint32_t DLC;
+	uint32_t STDId;
+	uint8_t data[8];
+};
 
 /* USER CODE END Private defines */
 
 void MX_CAN1_Init(void);
-void MX_CAN2_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 HAL_StatusTypeDef CAN1_Start();
-HAL_StatusTypeDef CAN1_Tx(const CAN_TxHeaderTypeDef *pHeader, const uint8_t aData[], uint32_t *pTxMailbox);
-uint32_t CAN1_CheckError();
-uint32_t CAN1_GetTxMailboxesFreeLevel();
+HAL_StatusTypeDef CAN1_Activate();
+HAL_StatusTypeDef CAN1_Tx(const struct CANMessage *pHeader);
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

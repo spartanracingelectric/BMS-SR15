@@ -1,8 +1,6 @@
-../Core/Src/can.c:31:6:MX_CAN1_Init	8	static
-../Core/Src/can.c:63:6:MX_CAN2_Init	8	static
-../Core/Src/can.c:97:6:HAL_CAN_MspInit	56	static
-../Core/Src/can.c:166:6:HAL_CAN_MspDeInit	16	static
-../Core/Src/can.c:215:19:CAN1_Start	8	static
-../Core/Src/can.c:219:19:CAN1_Tx	24	static
-../Core/Src/can.c:223:10:CAN1_CheckError	4	static
-../Core/Src/can.c:227:10:CAN1_GetTxMailboxesFreeLevel	8	static
+../Core/Src/can.c:30:6:MX_CAN1_Init	8	static
+../Core/Src/can.c:62:6:HAL_CAN_MspInit	48	static
+../Core/Src/can.c:97:6:HAL_CAN_MspDeInit	16	static
+../Core/Src/can.c:122:19:CAN1_Start	8	static
+../Core/Src/can.c:127:19:CAN1_Activate	8	static
+../Core/Src/can.c:132:19:CAN1_Tx	16	static

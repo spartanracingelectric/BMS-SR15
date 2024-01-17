@@ -45,12 +45,16 @@
 
 //CHOOSE THE NUMBER OF MODULES IN THE ACCUMULATOR
 #define NUM_DEVICES				2	//1 slave board
-
+#define NUM_MODULES 			24 //number of modules
 #define NUM_SERIES_GROUP		12	//1 slave board
 #define NUM_CELLS				NUM_DEVICES*NUM_SERIES_GROUP	//multiple slave board
 #define LTC_DELAY				1000 //500ms update delay
 #define LED_HEARTBEAT_DELAY_MS	500 //500ms update delay
 #define LTC_CMD_RDSTATA			0x0010 //Read status register group A
+
+
+#define NUM_CELLS_PER_PACKET 4 //number of cells that an be read at once
+#define offsetCellMACRO (NUM_CELLS_PER_PACKET * currentModule) //use to interate through voltage array
 
 static const uint8_t MD_7KHZ_3KHZ = 2;
 static const uint8_t CELL_CH_ALL = 0;
@@ -83,6 +87,8 @@ typedef struct _TimerPacket {
 } TimerPacket;
 
 
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -112,7 +118,7 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	GpioTimePacket tp_led_heartbeat;
+//	GpioTimePacket tp_led_heartbeat;
 	TimerPacket timerpacket_ltc;
 	uint16_t read_volt[NUM_CELLS]; //2 bytes per series * 12 series
 	uint16_t read_temp[12];
@@ -141,7 +147,6 @@ int main(void)
   MX_ADC1_Init();
   MX_ADC2_Init();
   MX_CAN1_Init();
-  MX_CAN2_Init();
   MX_TIM7_Init();
   MX_SPI1_Init();
   MX_USART2_UART_Init();
@@ -149,30 +154,29 @@ int main(void)
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
-  //Start timer
-  GpioTimePacket_Init(&tp_led_heartbeat, MCU_HEARTBEAT_LED_GPIO_Port, MCU_HEARTBEAT_LED_Pin);
-  TimerPacket_Init(&timerpacket_ltc, LTC_DELAY);
+  // Starts CAN1
+  CAN1_Start();
+  CAN1_Activate();
+
+//
+//  uint8_t TxData[8];
+  	struct CANMessage myCANtest;
+  	myCANtest.TxHeader.IDE = CAN_ID_STD;
+  	myCANtest.TxHeader.StdId= 0x630; //ID
+  	myCANtest.TxHeader.RTR = CAN_RTR_DATA;
+  	myCANtest.TxHeader.DLC= 8; //data length
+
+
 
   //Pull SPI1 nCS HIGH (deselect)
   LTC_nCS_High();
   LTC_Set_Num_Devices(NUM_DEVICES);
   LTC_Set_Num_Series_Groups(NUM_SERIES_GROUP);
 
-  uint8_t startErr = (uint8_t)CAN1_Start();
+  /* This enum holds all states of the FSM to output can messages for battery modules
+   * There are 8 modules, each module will have 3 parts A, B, C
+   */
 
-  	uint32_t testTxMailbox;
-  	uint8_t msg[8];
-
-  	msg[0] = 0xde;
-  	msg[1] = 0xad;
-  	msg[2] = 0xbe;
-  	msg[3] = 0xef;
-
-  	CAN_TxHeaderTypeDef testTx;
-  	testTx.IDE = CAN_ID_STD;
-  	testTx.StdId = 0x123;
-  	testTx.RTR = CAN_RTR_DATA;
-  	testTx.DLC = 4;
 
   /* USER CODE END 2 */
 
@@ -183,43 +187,46 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
+//		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 
-		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
+
+	  // Iterate through each module
+
+
+
+//		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
 			char packV[30];
 			char buf[20];
 			char out_buf[2048] = "";
 			char char_to_str[2];
 			int packvoltage = 0;
-			uint8_t err;
-			err = (uint8_t)CAN1_Tx(&testTx, msg, &testTxMailbox);
 
 
-//			LTC_ADCV(MD_7KHZ_3KHZ,DCP_DISABLED,CELL_CH_ALL);
-//			LTC_PollAdc();
-//			LTC_ReadRawCellVoltages((uint16_t *)read_volt);
-//			packvoltage = LTC_CalcPackVoltage((uint16_t *) read_volt);
-//			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
-//			strncat(out_buf, packV, 30);
-//			strncat(out_buf, char_to_str, 2);
+
+			LTC_ADCV(MD_7KHZ_3KHZ,DCP_DISABLED,CELL_CH_ALL);
+			LTC_PollAdc();
+			LTC_ReadRawCellVoltages((uint16_t *)read_volt);
+			packvoltage = LTC_CalcPackVoltage((uint16_t *) read_volt);
+			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
+			strncat(out_buf, packV, 30);
+			strncat(out_buf, char_to_str, 2);
 //
 //
 			char_to_str[0] = '\n';
 			char_to_str[1] = '\0';
 //
 //
-//			for (uint8_t i = 0; i < NUM_CELLS; i++) {
-//				sprintf(buf, "C%u:%u/10000 V", i+1, read_volt[i]);
-//				strncat(out_buf, buf, 20);
-//				strncat(out_buf, char_to_str, 2);
-//			}
-//			strncat(out_buf, char_to_str, 2);
+			for (uint8_t i = 0; i < NUM_CELLS; i++) {
+				sprintf(buf, "C%u:%u/10000 V", i+1, read_volt[i]);
+				strncat(out_buf, buf, 20);
+				strncat(out_buf, char_to_str, 2);
+			}
+			strncat(out_buf, char_to_str, 2);
 //
-//			USB_Transmit(out_buf, strlen(out_buf));
+			USB_Transmit(out_buf, strlen(out_buf));
 
 			char buf2[20];
 			char out_buf2[2048] = "";
-			// CAN TX test
 
 			LTC_Wakeup_Idle();
 			LTC_ADAX(MD_7KHZ_3KHZ, AUX_CH_ALL);
@@ -233,10 +240,72 @@ int main(void)
 				strncat(out_buf2, char_to_str, 2);
 			}
 			strncat(out_buf2, char_to_str, 2);
-			USB_Transmit(out_buf2, strlen(out_buf2));
 
+			uint16_t read_volt[96] = {
+			    0x0000, 0x002B, 0x0057, 0x0083,
+			    0x00AF, 0x00DA, 0x0106, 0x0132,
+			    0x015E, 0x0189, 0x01B5, 0x01E1,
+			    0x020D, 0x0238, 0x0264, 0x0290,
+			    0x02BC, 0x02E7, 0x0313, 0x033F,
+			    0x036B, 0x0396, 0x03C2, 0x03EE,
+			    0x041A, 0x0446, 0x0471, 0x049D,
+			    0x04C9, 0x04F5, 0x0520, 0x054C,
+			    0x0578, 0x05A4, 0x05CF, 0x05FB,
+			    0x0627, 0x0653, 0x067F, 0x06AA,
+			    0x06D6, 0x0702, 0x072E, 0x0759,
+			    0x0785, 0x07B1, 0x07DD, 0x0808,
+			    0x0834, 0x0860, 0x088C, 0x08B7,
+			    0x08E3, 0x090F, 0x093B, 0x0966,
+			    0x0992, 0x09BE, 0x09EA, 0x0A15,
+			    0x0A41, 0x0A6D, 0x0A99, 0x0AC4,
+			    0x0AF0, 0x0B1C, 0x0B48, 0x0B73,
+			    0x0B9F, 0x0BCB, 0x0BF7, 0x0C22,
+			    0x0C4E, 0x0C7A, 0x0CA6, 0x0CD1,
+			    0x0CFD, 0x0D29, 0x0D55, 0x0D80,
+			    0x0DAC, 0x0DD8, 0x0E04, 0x0E2F,
+			    0x0E5B, 0x0E87, 0x0EB3, 0x0EDE,
+			    0x0F0A, 0x0F36, 0x0F62, 0x0F8D,
+			    0x0FB9, 0x0FE5, 0x1011, 0x103C,
+			    0x1068, 0x1094, 0x10C0, 0x10EB,
+			    0x1117, 0x1143, 0x116F, 0x119A,
+			    0x11C6, 0x11F2
+			};
+
+
+//			CAN1_Tx(&myCANtest);
+			for (uint8_t currentModule = 0; currentModule < NUM_MODULES; currentModule++) {
+				      // Package High bits and low bits of voltage readings into buffer
+
+				      // Cell 0
+				      myCANtest.data[0] = (uint8_t)read_volt[0 + offsetCellMACRO];
+				      myCANtest.data[1] = read_volt[0 + offsetCellMACRO] >> 8;
+
+				      // Cell 1
+				      myCANtest.data[2] = (uint8_t)read_volt[1 + offsetCellMACRO];
+				      myCANtest.data[3] = read_volt[1 + offsetCellMACRO] >> 8;
+
+				      // Cell 2
+				      myCANtest.data[4] = (uint8_t)read_volt[2 + offsetCellMACRO];
+				      myCANtest.data[5] = read_volt[2 + offsetCellMACRO] >> 8;
+
+				      // Cell 3
+				      myCANtest.data[6] = (uint8_t)read_volt[3 + offsetCellMACRO];
+				      myCANtest.data[7] = read_volt[3 + offsetCellMACRO] >> 8;
+
+				      // Send out the packet
+				      CAN1_Tx(&myCANtest);
+
+				      HAL_Delay(30000); // This delays the execution for 1000 milliseconds (1 second)
+
+
+			}
+			USB_Transmit(out_buf2, strlen(out_buf2));
 		}
-  }
+
+
+
+
+
   /* USER CODE END 3 */
 }
 
