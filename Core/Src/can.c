@@ -141,7 +141,7 @@ void CAN1_SettingsInit(){
 	msg.TxHeader.DLC = 8;
 }
 
-void setCANId(struct CANMessage *pHeader, uint32_t id){
+void setCANId(uint32_t id){
 	pHeader->TxHeader.StdId = id;
 }
 
