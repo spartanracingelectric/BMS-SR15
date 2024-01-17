@@ -142,7 +142,7 @@ void CAN1_SettingsInit(){
 }
 
 void setCANId(uint32_t id){
-	pHeader->TxHeader.StdId = id;
+	msg.TxHeader.StdId = id;
 }
 
 

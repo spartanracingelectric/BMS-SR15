@@ -43,24 +43,6 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-//CHOOSE THE NUMBER OF MODULES IN THE ACCUMULATOR
-#define NUM_DEVICES				2	//1 slave board
-#define NUM_MODULES 			24 //number of modules
-#define NUM_SERIES_GROUP		12	//1 slave board
-#define NUM_CELLS				NUM_DEVICES*NUM_SERIES_GROUP	//multiple slave board
-#define LTC_DELAY				1000 //500ms update delay
-#define LED_HEARTBEAT_DELAY_MS	500 //500ms update delay
-#define LTC_CMD_RDSTATA			0x0010 //Read status register group A
-
-
-#define NUM_CELLS_PER_PACKET 4 //number of cells that an be read at once
-#define offsetCellMACRO (NUM_CELLS_PER_PACKET * currentModule) //use to interate through voltage array
-
-static const uint8_t MD_7KHZ_3KHZ = 2;
-static const uint8_t CELL_CH_ALL = 0;
-static const uint8_t DCP_DISABLED = 0;
-static const uint8_t AUX_CH_ALL = 0;
-
 
 /* USER CODE END PD */
 
@@ -86,8 +68,8 @@ typedef struct _TimerPacket {
 	uint32_t		delay;		//Amount to delay
 } TimerPacket;
 
-
-
+#define NUM_CELLS_PER_PACKET 4 //number of cells that an be read at once
+#define offsetCellMACRO (NUM_CELLS_PER_PACKET * currentModule) //use to interate through voltage array
 
 /* USER CODE END PV */
 
@@ -195,23 +177,126 @@ int main(void)
 			LTC_PollAdc();
 			LTC_ReadRawCellVoltages((uint16_t *)read_volt);
 			packvoltage = LTC_CalcPackVoltage((uint16_t *) read_volt);
-			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
-			strncat(out_buf, packV, 30);
-			strncat(out_buf, char_to_str, 2);
+
+							      // Package High bits and low bits of voltage readings into buffer
+			uint16_t CAN_ID = 0x630;
+			setCANId(CAN_ID);
+
+//			uint16_t read_volt[96] = {0};
+
+//
+//						uint16_t read_volt[96] = {
+//									    0x0000, 0x002B, 0x0057, 0x0083,
+//									    0x00AF, 0x00DA, 0x0106, 0x0132,
+//									    0x015E, 0x0189, 0x01B5, 0x01E1,
+//									    0x020D, 0x0238, 0x0264, 0x0290,
+//									    0x02BC, 0x02E7, 0x0313, 0x033F,
+//									    0x036B, 0x0396, 0x03C2, 0x03EE,
+//									    0x041A, 0x0446, 0x0471, 0x049D,
+//									    0x04C9, 0x04F5, 0x0520, 0x054C,
+//									    0x0578, 0x05A4, 0x05CF, 0x05FB,
+//									    0x0627, 0x0653, 0x067F, 0x06AA,
+//									    0x06D6, 0x0702, 0x072E, 0x0759,
+//									    0x0785, 0x07B1, 0x07DD, 0x0808,
+//									    0x0834, 0x0860, 0x088C, 0x08B7,
+//									    0x08E3, 0x090F, 0x093B, 0x0966,
+//									    0x0992, 0x09BE, 0x09EA, 0x0A15,
+//									    0x0A41, 0x0A6D, 0x0A99, 0x0AC4,
+//									    0x0AF0, 0x0B1C, 0x0B48, 0x0B73,
+//									    0x0B9F, 0x0BCB, 0x0BF7, 0x0C22,
+//									    0x0C4E, 0x0C7A, 0x0CA6, 0x0CD1,
+//									    0x0CFD, 0x0D29, 0x0D55, 0x0D80,
+//									    0x0DAC, 0x0DD8, 0x0E04, 0x0E2F,
+//									    0x0E5B, 0x0E87, 0x0EB3, 0x0EDE,
+//									    0x0F0A, 0x0F36, 0x0F62, 0x0F8D,
+//									    0x0FB9, 0x0FE5, 0x1011, 0x103C
+//						};
+
+			uint8_t index = 0;
+
+			for(uint8_t currentModule = 0; currentModule < NUM_MODULES; currentModule++){
+
+//				// Cell 1
+//				msg.data[0] = (uint8_t)read_volt[i];
+//				msg.data[1] = read_volt[i] >> 8;
+//
+//				// Cell 2
+//				msg.data[2] = (uint8_t)read_volt[i + 1];
+//				msg.data[3] = read_volt[i + 1] >> 8;
+//
+//				// Cell 3
+//				msg.data[4] = (uint8_t)read_volt[i + 2];
+//				msg.data[5] = read_volt[i + 2] >> 8;
+//
+//				// Cell 4
+//				msg.data[6] = (uint8_t)read_volt[i + 3];
+//				msg.data[7] = read_volt[i + 3] >> 8;
+
+
+
+
+
+			      // Cell 0
+				msg.data[0] = (uint8_t)read_volt[0 + offsetCellMACRO];
+				msg.data[1] = read_volt[0 + offsetCellMACRO] >> 8;
+
+			      // Cell 1
+				msg.data[2] = (uint8_t)read_volt[1 + offsetCellMACRO];
+				msg.data[3] = read_volt[1 + offsetCellMACRO] >> 8;
+
+			      // Cell 2
+				msg.data[4] = (uint8_t)read_volt[2 + offsetCellMACRO];
+				msg.data[5] = read_volt[2 + offsetCellMACRO] >> 8;
+
+			      // Cell 3
+				msg.data[6] = (uint8_t)read_volt[3 + offsetCellMACRO];
+				msg.data[7] = read_volt[3 + offsetCellMACRO] >> 8;
+
+
+
+
+
+
+
+
+
+
+
+
+							      // Send out the packet
+				CAN1_Send();
+
+//				if(index % 25 != 0 ){
+//					CAN_ID++;
+//				} else {
+//					CAN_ID = 0x630;
+//				}
+//					index++;
+//					setCANId(CAN_ID);
+				    HAL_Delay(1000);
+
+			}
+							   // This delays the execution for 1000 milliseconds (1 second)
+
+
+
+//			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
+//			strncat(out_buf, packV, 30);
+//			strncat(out_buf, char_to_str, 2);
 //
 //
 			char_to_str[0] = '\n';
 			char_to_str[1] = '\0';
 //
 //
-			for (uint8_t i = 0; i < NUM_CELLS; i++) {
-				sprintf(buf, "C%u:%u/10000 V", i+1, read_volt[i]);
-				strncat(out_buf, buf, 20);
-				strncat(out_buf, char_to_str, 2);
-			}
-			strncat(out_buf, char_to_str, 2);
+//			for (uint8_t i = 0; i < NUM_CELLS; i++) {
+//				sprintf(buf, "C%u:%u/10000 V", i+1, read_volt[i]);
+//				strncat(out_buf, buf, 20);
+//				strncat(out_buf, char_to_str, 2);
+//			}
+//			strncat(out_buf, char_to_str, 2);
 //
-			USB_Transmit(out_buf, strlen(out_buf));
+//			USB_Transmit(out_buf, strlen(out_buf));
 
 			char buf2[20];
 			char out_buf2[2048] = "";
@@ -223,40 +308,15 @@ int main(void)
 			for (uint8_t i = 0; i < 12; i++) {
 				getActualTemps(actual_temp, read_temp);
 				//sprintf(buf2, "Vref:%u", read_temp[i]);
-				sprintf(buf2, "temp: %0.2f", actual_temp[i]);
-				strncat(out_buf2, buf2, 20);
-				strncat(out_buf2, char_to_str, 2);
+//				sprintf(buf2, "temp: %0.2f", actual_temp[i]);
+//				strncat(out_buf2, buf2, 20);
+//				strncat(out_buf2, char_to_str, 2);
 			}
 			strncat(out_buf2, char_to_str, 2);
 
 
-//			CAN1_Tx(&myCANtest);
-			for (uint8_t currentModule = 0; currentModule < NUM_MODULES; currentModule++) {
-				      // Package High bits and low bits of voltage readings into buffer
 
-				      // Cell 0
-				      msg.data[0] = (uint8_t)read_volt[0 + offsetCellMACRO];
-				      msg.data[1] = read_volt[0 + offsetCellMACRO] >> 8;
-
-				      // Cell 1
-				      msg.data[2] = (uint8_t)read_volt[1 + offsetCellMACRO];
-				      msg.data[3] = read_volt[1 + offsetCellMACRO] >> 8;
-
-				      // Cell 2
-				      msg.data[4] = (uint8_t)read_volt[2 + offsetCellMACRO];
-				      msg.data[5] = read_volt[2 + offsetCellMACRO] >> 8;
-
-				      // Cell 3
-				      msg.data[6] = (uint8_t)read_volt[3 + offsetCellMACRO];
-				      msg.data[7] = read_volt[3 + offsetCellMACRO] >> 8;
-
-				      // Send out the packet
-				      CAN1_Send();
-//				      HAL_Delay(30000); // This delays the execution for 1000 milliseconds (1 second)
-
-
-			}
-			USB_Transmit(out_buf2, strlen(out_buf2));
+//			USB_Transmit(out_buf2, strlen(out_buf2));
 		}
 
 
