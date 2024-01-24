@@ -31,7 +31,6 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 
 
-
 /* USER CODE END Includes */
 
 extern CAN_HandleTypeDef hcan1;
@@ -40,13 +39,9 @@ extern CAN_HandleTypeDef hcan1;
 struct CANMessage{
 	CAN_TxHeaderTypeDef TxHeader;
 	uint32_t TxMailbox;
-	uint32_t IDE;
-	uint32_t RTR;
-	uint32_t DLC;
-	uint32_t STDId;
 	uint8_t data[8];
 };
-
+extern struct CANMessage msg;
 /* USER CODE END Private defines */
 
 void MX_CAN1_Init(void);
@@ -54,7 +49,9 @@ void MX_CAN1_Init(void);
 /* USER CODE BEGIN Prototypes */
 HAL_StatusTypeDef CAN1_Start();
 HAL_StatusTypeDef CAN1_Activate();
-HAL_StatusTypeDef CAN1_Tx(const struct CANMessage *pHeader);
+HAL_StatusTypeDef CAN1_Send();
+void CAN1_SettingsInit();
+void setCANId(uint32_t id);
 
 /* USER CODE END Prototypes */
 

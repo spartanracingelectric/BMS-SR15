@@ -2,5 +2,7 @@
 ../Core/Src/can.c:62:6:HAL_CAN_MspInit	2
 ../Core/Src/can.c:97:6:HAL_CAN_MspDeInit	2
 ../Core/Src/can.c:122:19:CAN1_Start	1
-../Core/Src/can.c:127:19:CAN1_Activate	1
-../Core/Src/can.c:132:19:CAN1_Tx	1
+../Core/Src/can.c:126:19:CAN1_Activate	1
+../Core/Src/can.c:131:19:CAN1_Send	1
+../Core/Src/can.c:135:6:CAN1_SettingsInit	1
+../Core/Src/can.c:144:6:setCANId	1

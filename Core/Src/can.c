@@ -129,7 +129,7 @@ HAL_StatusTypeDef CAN1_Activate(){
 
 
 HAL_StatusTypeDef CAN1_Send(){
-	return HAL_CAN_AddTxMessage(&hcan1, &msg.TxHeader, &msg.data, &msg.TxMailbox);
+	return HAL_CAN_AddTxMessage(&hcan1, &msg.TxHeader, msg.data, &msg.TxMailbox);
 }
 
 void CAN1_SettingsInit(){

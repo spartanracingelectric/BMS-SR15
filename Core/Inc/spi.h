@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -41,12 +41,6 @@ extern SPI_HandleTypeDef hspi1;
 void MX_SPI1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
-/* Pull nCS line to SPI1 HIGH */
-void LTC_nCS_High(void);
-
-/* Pull nCS line to SPI1 LOW */
-void LTC_nCS_Low(void);
 
 /* USER CODE END Prototypes */
 
