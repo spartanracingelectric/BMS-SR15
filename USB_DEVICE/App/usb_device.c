@@ -37,7 +37,10 @@
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-
+void USB_Transmit(char* Buf, uint16_t Len)
+{
+	CDC_Transmit_FS((uint8_t*)Buf, Len); //Explicit conversion of char ptr to uint8_t ptr
+}
 /* USER CODE END PFP */
 
 /* USB Device Core handle declaration. */
