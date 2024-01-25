@@ -2189,7 +2189,7 @@ int main(void) {
 
 			LTC_Wakeup_Idle();
  8001026:	f7ff fab7 	bl	8000598 <LTC_Wakeup_Idle>
-			LTC_ADAX(MD_7KHZ_3KHZ, 0); //doing GPIO1 conversion
+			LTC_ADAX(MD_7KHZ_3KHZ, 0); //doing GPIO all conversion
  800102a:	2302      	movs	r3, #2
  800102c:	2100      	movs	r1, #0
  800102e:	4618      	mov	r0, r3
@@ -2199,7 +2199,7 @@ int main(void) {
 			LTC_ReadRawCellTemps((uint16_t*) read_auxreg); // Set to read back all aux registers
  8001038:	f8d7 0854 	ldr.w	r0, [r7, #2132]	; 0x854
  800103c:	f7ff fb9e 	bl	800077c <LTC_ReadRawCellTemps>
-			//start for printing over serial for voltages
+
 			uint16_t *data_ptr = &read_auxreg[0];
  8001040:	f8d7 3854 	ldr.w	r3, [r7, #2132]	; 0x854
  8001044:	f8c7 3850 	str.w	r3, [r7, #2128]	; 0x850
@@ -2253,6 +2253,7 @@ int main(void) {
  80010aa:	f887 3867 	strb.w	r3, [r7, #2151]	; 0x867
 			}
 
+			//start for printing over serial for voltages
 			for (uint8_t i = 0; i < NUM_CELLS; i++) {
  80010ae:	2300      	movs	r3, #0
  80010b0:	f887 3866 	strb.w	r3, [r7, #2150]	; 0x866
@@ -2304,7 +2305,7 @@ int main(void) {
  800111e:	4611      	mov	r1, r2
  8001120:	4618      	mov	r0, r3
  8001122:	f006 fe8c 	bl	8007e3e <USB_Transmit>
-			//end for printing over serail for voltages
+			//end for printing over serial for voltages
 		}
 
 		if (TimerPacket_FixedPulse(&timerpacket_can1)) {

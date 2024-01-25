@@ -194,10 +194,10 @@ int main(void) {
 			//end for printing over serial for pack voltage
 
 			LTC_Wakeup_Idle();
-			LTC_ADAX(MD_7KHZ_3KHZ, 0); //doing GPIO1 conversion
+			LTC_ADAX(MD_7KHZ_3KHZ, 0); //doing GPIO all conversion
 			LTC_PollAdc();
 			LTC_ReadRawCellTemps((uint16_t*) read_auxreg); // Set to read back all aux registers
-			//start for printing over serial for voltages
+
 			uint16_t *data_ptr = &read_auxreg[0];
 			memcpy(&read_temp[tempindex], data_ptr, 1);
 
@@ -214,6 +214,7 @@ int main(void) {
 				tempindex += 1;
 			}
 
+			//start for printing over serial for voltages
 			for (uint8_t i = 0; i < NUM_CELLS; i++) {
 				sprintf(buf, "C%u:%u/10000", i + 1, read_auxreg[0]);
 				strncat(out_buf, buf, 20);
@@ -222,7 +223,7 @@ int main(void) {
 			strncat(out_buf, char_to_str, 2);
 			HAL_Delay(300);
 			USB_Transmit(out_buf, strlen(out_buf));
-			//end for printing over serail for voltages
+			//end for printing over serial for voltages
 		}
 
 		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
