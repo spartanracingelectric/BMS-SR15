@@ -145,13 +145,90 @@ int main(void) {
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
-	uint8_t BMS_IC[6] = { };
-	BMS_IC[0] = 0x69; // Icom Start(6) + I2C_address D0 (0x90)
-	BMS_IC[1] = 0x28; // Fcom master NACK(8)
-	BMS_IC[2] = 0x0F; // Icom Blank (0) + eeprom address D1 (0xF8)
-	BMS_IC[3] = 0xF9; // Fcom master NACK + Stop(9)
-	BMS_IC[4] = 0x7F; // NO TRANSMIT
-	BMS_IC[5] = 0xF9; // Fcom master NACK + Stop(9)
+	uint8_t BMS_IC[12][6] = { };
+	BMS_IC[0][0] = 0x69; // Icom Start(6) + I2C_address D0 (0x90)
+	BMS_IC[0][1] = 0x28; // Fcom master NACK(8)
+	BMS_IC[0][2] = 0x0F; // Icom Blank (0) + eeprom address D1 (0xF8)
+	BMS_IC[0][3] = 0xF9; // Fcom master NACK + Stop(9)
+	BMS_IC[0][4] = 0x7F; // NO TRANSMIT
+	BMS_IC[0][5] = 0xF9; // Fcom master NACK + Stop(9)
+
+	BMS_IC[1][0] = 0x69;
+	BMS_IC[1][1] = 0x28;
+	BMS_IC[1][2] = 0x0F;
+	BMS_IC[1][3] = 0xE9;
+	BMS_IC[1][4] = 0x7F;
+	BMS_IC[1][5] = 0xF9;
+
+	BMS_IC[2][0] = 0x69;
+	BMS_IC[2][1] = 0x28;
+	BMS_IC[2][2] = 0x0F;
+	BMS_IC[2][3] = 0xD9;
+	BMS_IC[2][4] = 0x7F;
+	BMS_IC[2][5] = 0xF9;
+
+	BMS_IC[3][0] = 0x69;
+	BMS_IC[3][1] = 0x28;
+	BMS_IC[3][2] = 0x0F;
+	BMS_IC[3][3] = 0xC9;
+	BMS_IC[3][4] = 0x7F;
+	BMS_IC[3][5] = 0xF9;
+
+	BMS_IC[4][0] = 0x69;
+	BMS_IC[4][1] = 0x28;
+	BMS_IC[4][2] = 0x0F;
+	BMS_IC[4][3] = 0xB9;
+	BMS_IC[4][4] = 0x7F;
+	BMS_IC[4][5] = 0xF9;
+
+	BMS_IC[5][0] = 0x69;
+	BMS_IC[5][1] = 0x28;
+	BMS_IC[5][2] = 0x0F;
+	BMS_IC[5][3] = 0xA9;
+	BMS_IC[5][4] = 0x7F;
+	BMS_IC[5][5] = 0xF9;
+
+	BMS_IC[6][0] = 0x69;
+	BMS_IC[6][1] = 0x28;
+	BMS_IC[6][2] = 0x0F;
+	BMS_IC[6][3] = 0x99;
+	BMS_IC[6][4] = 0x7F;
+	BMS_IC[6][5] = 0xF9;
+
+	BMS_IC[7][0] = 0x69;
+	BMS_IC[7][1] = 0x28;
+	BMS_IC[7][2] = 0x0F;
+	BMS_IC[7][3] = 0x89;
+	BMS_IC[7][4] = 0x7F;
+	BMS_IC[7][5] = 0xF9;
+
+	BMS_IC[8][0] = 0x69;
+	BMS_IC[8][1] = 0x08;
+	BMS_IC[8][2] = 0x0F;
+	BMS_IC[8][3] = 0xF9;
+	BMS_IC[8][4] = 0x7F;
+	BMS_IC[8][5] = 0xF9;
+
+	BMS_IC[9][0] = 0x69;
+	BMS_IC[9][1] = 0x08;
+	BMS_IC[9][2] = 0x0F;
+	BMS_IC[9][3] = 0xE9;
+	BMS_IC[9][4] = 0x7F;
+	BMS_IC[9][5] = 0xF9;
+
+	BMS_IC[10][0] = 0x69;
+	BMS_IC[10][1] = 0x08;
+	BMS_IC[10][2] = 0x0F;
+	BMS_IC[10][3] = 0xD9;
+	BMS_IC[10][4] = 0x7F;
+	BMS_IC[10][5] = 0xF9;
+
+	BMS_IC[11][0] = 0x69;
+	BMS_IC[11][1] = 0x08;
+	BMS_IC[11][2] = 0x0F;
+	BMS_IC[11][3] = 0xC9;
+	BMS_IC[11][4] = 0x7F;
+	BMS_IC[11][5] = 0xF9;
 	uint8_t tempindex = 0;
 	while (1) {
 		/* USER CODE END WHILE */
@@ -180,7 +257,7 @@ int main(void) {
 
 			//start sending to mux to read temperatures
 			LTC_Wakeup_Sleep();
-			ltc6811_wrcomm(NUM_DEVICES, BMS_IC);
+			ltc6811_wrcomm(NUM_DEVICES, BMS_IC[tempindex]);
 			LTC_Wakeup_Idle();
 			ltc6811_stcomm();
 			//end sending to mux to read temperatures
@@ -201,20 +278,9 @@ int main(void) {
 			uint16_t *data_ptr = &read_auxreg[0];
 			memcpy(&read_temp[tempindex], data_ptr, 1);
 
-			if (tempindex == 11) {
-				tempindex = 0;
-				BMS_IC[1] = 0x28;
-				BMS_IC[3] = 0xF9;
-			} else if (tempindex == 7) {
-				BMS_IC[1] = 0x08;
-				BMS_IC[3] = 0xF9;
-				tempindex += 1;
-			} else {
-				BMS_IC[3] -= 0x10;
-				tempindex += 1;
-			}
-
+			tempindex++; //incrementing the index
 			//start for printing over serial for voltages
+
 			for (uint8_t i = 0; i < NUM_CELLS; i++) {
 				sprintf(buf, "C%u:%u/10000", i + 1, read_auxreg[0]);
 				strncat(out_buf, buf, 20);
