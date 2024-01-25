@@ -98,8 +98,10 @@ int main(void) {
 	TimerPacket timerpacket_ltc;
 	TimerPacket timerpacket_can1;
 
-	uint16_t *read_val;
-	read_val = (uint16_t*) malloc(12 * sizeof(uint16_t));
+	uint16_t *read_volt;
+	read_volt = (uint16_t*) malloc(NUM_CELLS * sizeof(uint16_t));
+	uint16_t *read_temp;
+	read_temp = (uint16_t*) malloc(NUM_CELLS * sizeof(uint16_t));
 	/* USER CODE END 1 */
 
 	/* MCU Configuration--------------------------------------------------------*/
@@ -147,49 +149,79 @@ int main(void) {
 		/* USER CODE BEGIN 3 */
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
-			char packV[30];
+//			int packvoltage = 0;
+
+			//starting for printing over serial
+//			char packV[30];
 			char buf[20];
 			char out_buf[2048] = "";
 			char char_to_str[2];
-			int packvoltage = 0;
+			char_to_str[0] = '\n';
+			char_to_str[1] = '\0';
+			//end for printing over serial
+
+			//reading voltages
 			LTC_Wakeup_Sleep();
 			LTC_ADCV(MD_7KHZ_3KHZ, DCP_DISABLED, CELL_CH_ALL);
 			LTC_PollAdc();
-			LTC_ReadRawCellVoltages((uint16_t*) read_val);
-			packvoltage = LTC_CalcPackVoltage((uint16_t*) read_val);
-			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
-			strncat(out_buf, packV, 30);
-			strncat(out_buf, char_to_str, 2);
-			char_to_str[0] = '\n';
-			char_to_str[1] = '\0';
+			LTC_ReadRawCellVoltages((uint16_t*) read_volt);
+//			packvoltage = LTC_CalcPackVoltage((uint16_t*) read_volt);
+
+			//start sending to mux to read temperatures
+			uint8_t BMS_IC[6] = { };
+			BMS_IC[0] = 0x69; // Icom Start(6) + I2C_address D0 (0x90)
+			BMS_IC[1] = 0x28; // Fcom master NACK(8)
+			BMS_IC[2] = 0x0F; // Icom Blank (0) + eeprom address D1 (0xF8)
+			BMS_IC[3] = 0xE9; // Fcom master NACK + Stop(9)
+			BMS_IC[4] = 0x7F; // NO TRANSMIT
+			BMS_IC[5] = 0xF9; // Fcom master NACK + Stop(9)
+			LTC_Wakeup_Sleep();
+			ltc6811_wrcomm(1, BMS_IC);
+			LTC_Wakeup_Idle();
+			ltc6811_stcomm();
+			//end sending to mux to read temperatures
+
+			//start for printing over serial for pack voltage
+//			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
+//			strncat(out_buf, packV, 30);
+//			strncat(out_buf, char_to_str, 2);
+			//end for printing over serial for pack voltage
+
+			LTC_Wakeup_Idle();
+			LTC_ADAX(MD_7KHZ_3KHZ, 0); //doing GPIO1 conversion
+			LTC_PollAdc();
+			LTC_ReadRawCellTemps((uint16_t*) read_temp); // Set to read back all aux registers
+
+			//start for printing over serial for voltages
 			for (uint8_t i = 0; i < NUM_CELLS; i++) {
-				sprintf(buf, "C%u:%u/10000 V", i + 1, read_val[i]);
+				sprintf(buf, "C%u:%u/10000", i + 1, read_volt[i]);
 				strncat(out_buf, buf, 20);
 				strncat(out_buf, char_to_str, 2);
 			}
 			strncat(out_buf, char_to_str, 2);
 			HAL_Delay(400);
 			USB_Transmit(out_buf, strlen(out_buf));
+			//end for printing over serail for voltages
 		}
 
 		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
 
 			uint16_t CAN_ID = 0x630;
 			setCANId(CAN_ID);
-			for (int i = 0; i < 12; i++) {
+			for (int i = 0; i < NUM_CELLS; i++) {
 				if (i % 4 == 0) {
 					uint8_t temp_volt = i;
-					msg.data[0] = read_val[temp_volt];
-					msg.data[1] = read_val[temp_volt] >> 8;
+					msg.data[0] = read_volt[temp_volt];
+					msg.data[1] = read_volt[temp_volt] >> 8;
 					temp_volt += 1;
-					msg.data[2] = read_val[temp_volt];
-					msg.data[3] = read_val[temp_volt] >> 8;
+					msg.data[2] = read_volt[temp_volt];
+					msg.data[3] = read_volt[temp_volt] >> 8;
 					temp_volt += 1;
-					msg.data[4] = read_val[temp_volt];
-					msg.data[5] = read_val[temp_volt] >> 8;
+					msg.data[4] = read_volt[temp_volt];
+					msg.data[5] = read_volt[temp_volt] >> 8;
 					temp_volt += 1;
-					msg.data[6] = read_val[temp_volt];
-					msg.data[7] = read_val[temp_volt] >> 8;
+					msg.data[6] = read_volt[temp_volt];
+					msg.data[7] = read_volt[temp_volt] >> 8;
 				}
 				if (i % 4 == 0) {
 					CAN_ID = CAN_ID + 0x01;
