@@ -102,6 +102,8 @@ int main(void) {
 	read_volt = (uint16_t*) malloc(NUM_CELLS * sizeof(uint16_t));
 	uint16_t *read_temp;
 	read_temp = (uint16_t*) malloc(NUM_CELLS * sizeof(uint16_t));
+	uint16_t *read_auxreg;
+	read_auxreg = (uint16_t*) malloc(6 * sizeof(uint16_t));
 	/* USER CODE END 1 */
 
 	/* MCU Configuration--------------------------------------------------------*/
@@ -143,6 +145,14 @@ int main(void) {
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
+	uint8_t BMS_IC[6] = { };
+	BMS_IC[0] = 0x69; // Icom Start(6) + I2C_address D0 (0x90)
+	BMS_IC[1] = 0x28; // Fcom master NACK(8)
+	BMS_IC[2] = 0x0F; // Icom Blank (0) + eeprom address D1 (0xF8)
+	BMS_IC[3] = 0xF9; // Fcom master NACK + Stop(9)
+	BMS_IC[4] = 0x7F; // NO TRANSMIT
+	BMS_IC[5] = 0xF9; // Fcom master NACK + Stop(9)
+	uint8_t tempindex = 0;
 	while (1) {
 		/* USER CODE END WHILE */
 
@@ -160,26 +170,22 @@ int main(void) {
 			char_to_str[1] = '\0';
 			//end for printing over serial
 
-			//reading voltages
-			LTC_Wakeup_Sleep();
-			LTC_ADCV(MD_7KHZ_3KHZ, DCP_DISABLED, CELL_CH_ALL);
-			LTC_PollAdc();
-			LTC_ReadRawCellVoltages((uint16_t*) read_volt);
+			//start reading voltages
+//			LTC_Wakeup_Sleep();
+//			LTC_ADCV(MD_7KHZ_3KHZ, DCP_DISABLED, CELL_CH_ALL);
+//			LTC_PollAdc();
+//			LTC_ReadRawCellVoltages((uint16_t*) read_volt);
 //			packvoltage = LTC_CalcPackVoltage((uint16_t*) read_volt);
+			//stop reading voltages
 
 			//start sending to mux to read temperatures
-			uint8_t BMS_IC[6] = { };
-			BMS_IC[0] = 0x69; // Icom Start(6) + I2C_address D0 (0x90)
-			BMS_IC[1] = 0x28; // Fcom master NACK(8)
-			BMS_IC[2] = 0x0F; // Icom Blank (0) + eeprom address D1 (0xF8)
-			BMS_IC[3] = 0xE9; // Fcom master NACK + Stop(9)
-			BMS_IC[4] = 0x7F; // NO TRANSMIT
-			BMS_IC[5] = 0xF9; // Fcom master NACK + Stop(9)
 			LTC_Wakeup_Sleep();
-			ltc6811_wrcomm(1, BMS_IC);
+			ltc6811_wrcomm(NUM_DEVICES, BMS_IC);
 			LTC_Wakeup_Idle();
 			ltc6811_stcomm();
 			//end sending to mux to read temperatures
+
+			HAL_Delay(100);
 
 			//start for printing over serial for pack voltage
 //			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
@@ -190,16 +196,31 @@ int main(void) {
 			LTC_Wakeup_Idle();
 			LTC_ADAX(MD_7KHZ_3KHZ, 0); //doing GPIO1 conversion
 			LTC_PollAdc();
-			LTC_ReadRawCellTemps((uint16_t*) read_temp); // Set to read back all aux registers
-
+			LTC_ReadRawCellTemps((uint16_t*) read_auxreg); // Set to read back all aux registers
 			//start for printing over serial for voltages
+			uint16_t *data_ptr = &read_auxreg[0];
+			memcpy(&read_temp[tempindex], data_ptr, 1);
+
+			if (tempindex == 11) {
+				tempindex = 0;
+				BMS_IC[1] = 0x28;
+				BMS_IC[3] = 0xF9;
+			} else if (tempindex == 7) {
+				BMS_IC[1] = 0x08;
+				BMS_IC[3] = 0xF9;
+				tempindex += 1;
+			} else {
+				BMS_IC[3] -= 0x10;
+				tempindex += 1;
+			}
+
 			for (uint8_t i = 0; i < NUM_CELLS; i++) {
-				sprintf(buf, "C%u:%u/10000", i + 1, read_volt[i]);
+				sprintf(buf, "C%u:%u/10000", i + 1, read_auxreg[0]);
 				strncat(out_buf, buf, 20);
 				strncat(out_buf, char_to_str, 2);
 			}
 			strncat(out_buf, char_to_str, 2);
-			HAL_Delay(400);
+			HAL_Delay(300);
 			USB_Transmit(out_buf, strlen(out_buf));
 			//end for printing over serail for voltages
 		}
