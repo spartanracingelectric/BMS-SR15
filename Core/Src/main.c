@@ -294,11 +294,13 @@ int main(void) {
 			if (increment != 0) {
 				tempindex++; //incrementing the index
 			}
+			else if(increment == 0){
+				increment++;
+			}
 
 			if (tempindex == 12) {
 				tempindex = 0;
 			}
-			increment++;
 
 		}
 
