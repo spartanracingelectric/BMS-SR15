@@ -257,7 +257,7 @@ int main(void) {
 
 			//start sending to mux to read temperatures
 			LTC_Wakeup_Sleep();
-			ltc6811_wrcomm(NUM_DEVICES, BMS_IC[0]);
+			ltc6811_wrcomm(NUM_DEVICES, BMS_IC[tempindex]);
 			LTC_Wakeup_Idle();
 			ltc6811_stcomm();
 			//end sending to mux to read temperatures
