@@ -42,7 +42,7 @@
 #define NUM_DEVICES				1	//1 slave board
 #define NUM_SERIES_GROUP		12	//1 slave board
 #define NUM_CELLS				NUM_DEVICES*NUM_SERIES_GROUP	//multiple slave board
-#define LTC_DELAY				1000 //500ms update delay
+#define LTC_DELAY				2000 //500ms update delay
 #define CAN1_DELAY				10
 #define LED_HEARTBEAT_DELAY_MS	500  //500ms update delay
 #define LTC_CMD_RDSTATA			0x0010 //Read status register group A
@@ -102,8 +102,7 @@ int main(void) {
 	read_volt = (uint16_t*) malloc(NUM_CELLS * sizeof(uint16_t));
 	uint16_t *read_temp;
 	read_temp = (uint16_t*) malloc(NUM_CELLS * sizeof(uint16_t));
-	uint16_t *read_auxreg;
-	read_auxreg = (uint16_t*) malloc(6 * sizeof(uint16_t));
+	uint16_t *read_auxreg = (uint16_t*) malloc(6 * sizeof(uint16_t));
 	/* USER CODE END 1 */
 
 	/* MCU Configuration--------------------------------------------------------*/
@@ -234,6 +233,7 @@ int main(void) {
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
+
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
 //			int packvoltage = 0;
@@ -257,12 +257,12 @@ int main(void) {
 
 			//start sending to mux to read temperatures
 			LTC_Wakeup_Sleep();
-			ltc6811_wrcomm(NUM_DEVICES, BMS_IC[tempindex]);
+			ltc6811_wrcomm(NUM_DEVICES, BMS_IC[0]);
 			LTC_Wakeup_Idle();
 			ltc6811_stcomm();
 			//end sending to mux to read temperatures
 
-			HAL_Delay(100);
+			HAL_Delay(1000);
 
 			//start for printing over serial for pack voltage
 //			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
@@ -275,21 +275,24 @@ int main(void) {
 			LTC_PollAdc();
 			LTC_ReadRawCellTemps((uint16_t*) read_auxreg); // Set to read back all aux registers
 
-			uint16_t *data_ptr = &read_auxreg[0];
-			memcpy(&read_temp[tempindex], data_ptr, 1);
+			//memcpy(&read_temp[tempindex], data_ptr, 1);
+			read_temp[tempindex] = (uint16_t) read_auxreg[0];
 
-			tempindex++; //incrementing the index
-			//start for printing over serial for voltages
-
-			for (uint8_t i = 0; i < NUM_CELLS; i++) {
-				sprintf(buf, "C%u:%u/10000", i + 1, read_auxreg[0]);
+			for (uint8_t i = 0; i < 12; i++) {
+				sprintf(buf, "C%u:%u/10000", i + 1, read_temp[i]);
 				strncat(out_buf, buf, 20);
 				strncat(out_buf, char_to_str, 2);
 			}
 			strncat(out_buf, char_to_str, 2);
-			HAL_Delay(300);
+			HAL_Delay(400);
 			USB_Transmit(out_buf, strlen(out_buf));
 			//end for printing over serial for voltages
+
+			tempindex++; //incrementing the index
+						 //start for printing over serial for voltages
+			if (tempindex == 12) {
+				tempindex = 0;
+			}
 		}
 
 		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
