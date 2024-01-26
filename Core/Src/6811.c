@@ -58,7 +58,7 @@ uint8_t LTC_Get_Num_Series_Groups(void) {
 /* Wake LTC up from IDLE state into READY state */
 void LTC_Wakeup_Idle(void) {
 	uint8_t hex_ff = 0xFF;
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < LTC_Get_Num_Devices(); i++) {
 		LTC_nCS_Low(); //Pull CS low
 		HAL_SPI_Transmit(&hspi1, &hex_ff, 1, 100); //Send byte 0xFF to wake LTC up
 		LTC_nCS_High(); //Pull CS high
@@ -68,7 +68,7 @@ void LTC_Wakeup_Idle(void) {
 //wake up sleep
 void LTC_Wakeup_Sleep(void) {
 
-	for (int i = 0; i < 1; i++) {
+	for (int i = 0; i < LTC_Get_Num_Devices(); i++) {
 		LTC_nCS_Low();
 		HAL_Delay(300);
 		LTC_nCS_High();
