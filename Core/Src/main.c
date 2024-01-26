@@ -229,6 +229,8 @@ int main(void) {
 	BMS_IC[11][4] = 0x7F;
 	BMS_IC[11][5] = 0xF9;
 	uint8_t tempindex = 0;
+	uint8_t increment = 0;
+	uint16_t data = 0;
 	while (1) {
 		/* USER CODE END WHILE */
 
@@ -274,10 +276,11 @@ int main(void) {
 			LTC_ADAX(MD_7KHZ_3KHZ, 0); //doing GPIO all conversion
 			LTC_PollAdc();
 			LTC_ReadRawCellTemps((uint16_t*) read_auxreg); // Set to read back all aux registers
+			data = read_auxreg[0];
+			memcpy((void*) &read_temp[tempindex], (void*) &data, (size_t) 2);
+			//read_temp[tempindex] = (uint16_t) read_auxreg[0];
 
-			//memcpy(&read_temp[tempindex], data_ptr, 1);
-			read_temp[tempindex] = (uint16_t) read_auxreg[0];
-
+			//start for printing over serial for voltages
 			for (uint8_t i = 0; i < 12; i++) {
 				sprintf(buf, "C%u:%u/10000", i + 1, read_temp[i]);
 				strncat(out_buf, buf, 20);
@@ -288,11 +291,15 @@ int main(void) {
 			USB_Transmit(out_buf, strlen(out_buf));
 			//end for printing over serial for voltages
 
-			tempindex++; //incrementing the index
-						 //start for printing over serial for voltages
+			if (increment != 0) {
+				tempindex++; //incrementing the index
+			}
+
 			if (tempindex == 12) {
 				tempindex = 0;
 			}
+			increment++;
+
 		}
 
 		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
