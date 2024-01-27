@@ -29,6 +29,7 @@
 /* USER CODE BEGIN Includes */
 #include "string.h"
 #include "6811.h"
+#include "print.h"
 
 /* USER CODE END Includes */
 
@@ -42,7 +43,7 @@
 #define NUM_DEVICES				1	//1 slave board
 #define NUM_SERIES_GROUP		12	//1 slave board
 #define NUM_CELLS				NUM_DEVICES*NUM_SERIES_GROUP	//multiple slave board
-#define LTC_DELAY				1000 //500ms update delay
+#define LTC_DELAY				2500 //500ms update delay
 #define CAN1_DELAY				10
 #define LED_HEARTBEAT_DELAY_MS	500  //500ms update delay
 #define LTC_CMD_RDSTATA			0x0010 //Read status register group A
@@ -242,11 +243,6 @@ int main(void) {
 
 			//starting for printing over serial
 //			char packV[30];
-			char buf[20];
-			char out_buf[2048] = "";
-			char char_to_str[2];
-			char_to_str[0] = '\n';
-			char_to_str[1] = '\0';
 			//end for printing over serial
 
 			//start reading voltages
@@ -264,7 +260,7 @@ int main(void) {
 			ltc6811_stcomm();
 			//end sending to mux to read temperatures
 
-			//HAL_Delay(1000);
+
 
 			//start for printing over serial for pack voltage
 //			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
@@ -275,58 +271,52 @@ int main(void) {
 			LTC_Wakeup_Idle();
 			LTC_ADAX(MD_7KHZ_3KHZ, 0); //doing GPIO all conversion
 			LTC_PollAdc();
-			LTC_ReadRawCellTemps((uint16_t*) read_auxreg); // Set to read back all aux registers
+			LTC_ReadRawCellTemps((uint16_t *) read_auxreg); // Set to read back all aux registers
 			data = read_auxreg[0];
-			//read_temp[tempindex] = *data;
-			memcpy((void*) &read_temp[tempindex], (void*) &data, sizeof(uint16_t));
+			read_temp[tempindex] = data;
 			//read_temp[tempindex] = (uint16_t) read_auxreg[0];
 
 			//start for printing over serial for voltages
-			for (uint8_t i = 0; i < 8; i++) {
-				sprintf(buf, "C%u:%u/10000", i + 1, read_temp[i]);
-				strncat(out_buf, buf, 20);
-				strncat(out_buf, char_to_str, 2);
-			}
-			strncat(out_buf, char_to_str, 2);
+			print(12, (uint16_t *) read_temp);
 			HAL_Delay(400);
-			USB_Transmit(out_buf, strlen(out_buf));
 			//end for printing over serial for voltages
 
 			tempindex++;
 
-			if (tempindex == 8) {
+			if (tempindex == 12) {
 				tempindex = 0;
 			}
+			HAL_Delay(1000);
 
 		} //STOPSTOSPTOPSOTSTPO
 
-		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
-
-			uint16_t CAN_ID = 0x630;
-			setCANId(CAN_ID);
-			for (int i = 0; i < NUM_CELLS; i++) {
-				if (i % 4 == 0) {
-					uint8_t temp_volt = i;
-					msg.data[0] = read_volt[temp_volt];
-					msg.data[1] = read_volt[temp_volt] >> 8;
-					temp_volt += 1;
-					msg.data[2] = read_volt[temp_volt];
-					msg.data[3] = read_volt[temp_volt] >> 8;
-					temp_volt += 1;
-					msg.data[4] = read_volt[temp_volt];
-					msg.data[5] = read_volt[temp_volt] >> 8;
-					temp_volt += 1;
-					msg.data[6] = read_volt[temp_volt];
-					msg.data[7] = read_volt[temp_volt] >> 8;
-				}
-				if (i % 4 == 0) {
-					CAN_ID = CAN_ID + 0x01;
-					setCANId(CAN_ID);
-				}
-				HAL_Delay(10);
-				CAN1_Send();
-			}
-		}
+//		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
+//
+//			uint16_t CAN_ID = 0x630;
+//			setCANId(CAN_ID);
+//			for (int i = 0; i < NUM_CELLS; i++) {
+//				if (i % 4 == 0) {
+//					uint8_t temp_volt = i;
+//					msg.data[0] = read_volt[temp_volt];
+//					msg.data[1] = read_volt[temp_volt] >> 8;
+//					temp_volt += 1;
+//					msg.data[2] = read_volt[temp_volt];
+//					msg.data[3] = read_volt[temp_volt] >> 8;
+//					temp_volt += 1;
+//					msg.data[4] = read_volt[temp_volt];
+//					msg.data[5] = read_volt[temp_volt] >> 8;
+//					temp_volt += 1;
+//					msg.data[6] = read_volt[temp_volt];
+//					msg.data[7] = read_volt[temp_volt] >> 8;
+//				}
+//				if (i % 4 == 0) {
+//					CAN_ID = CAN_ID + 0x01;
+//					setCANId(CAN_ID);
+//				}
+//				HAL_Delay(10);
+//				CAN1_Send();
+//			}
+//		}
 	}
 	/* USER CODE END 3 */
 }
