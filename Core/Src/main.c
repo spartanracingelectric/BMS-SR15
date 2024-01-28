@@ -271,20 +271,22 @@ int main(void) {
 			LTC_Wakeup_Idle();
 			LTC_ADAX(MD_7KHZ_3KHZ, 0); //doing GPIO all conversion
 			LTC_PollAdc();
-			LTC_ReadRawCellTemps((uint16_t *) read_auxreg); // Set to read back all aux registers
-			data = read_auxreg[0];
-			read_temp[tempindex] = data;
-			//read_temp[tempindex] = (uint16_t) read_auxreg[0];
+			if (!LTC_ReadRawCellTemps((uint16_t *) read_auxreg)) // Set to read back all aux registers
+			{
+				data = read_auxreg[0];
+				read_temp[tempindex] = data;
+				//read_temp[tempindex] = (uint16_t) read_auxreg[0];
 
-			//start for printing over serial for voltages
-			print(12, (uint16_t *) read_temp);
-			HAL_Delay(400);
-			//end for printing over serial for voltages
+				//start for printing over serial for voltages
+				print(12, (uint16_t *) read_temp);
+				HAL_Delay(400);
+				//end for printing over serial for voltages
 
-			tempindex++;
+				tempindex++;
 
-			if (tempindex == 12) {
-				tempindex = 0;
+				if (tempindex == 12) {
+					tempindex = 0;
+				}
 			}
 			HAL_Delay(1000);
 
