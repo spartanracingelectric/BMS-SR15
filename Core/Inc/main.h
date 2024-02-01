@@ -70,7 +70,8 @@ void Error_Handler(void);
 #define NUM_DEVICES				1	//1 slave board
 #define NUM_SERIES_GROUP		12	//1 slave board
 #define NUM_CELLS				NUM_DEVICES*NUM_SERIES_GROUP	//multiple slave board
-#define LTC_DELAY				500 //500ms update delay
+#define LTC_DELAY1				1000 //500ms update delay
+#define LTC_DELAY2				500 //500ms update delay
 #define CAN1_DELAY				10
 #define LED_HEARTBEAT_DELAY_MS	500  //500ms update delay
 #define LTC_CMD_RDSTATA			0x0010 //Read status register group A

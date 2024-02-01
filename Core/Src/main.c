@@ -30,6 +30,7 @@
 #include "string.h"
 #include "6811.h"
 #include "print.h"
+#include "module.h"
 
 /* USER CODE END Includes */
 
@@ -86,13 +87,12 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
 int main(void) {
 	/* USER CODE BEGIN 1 */
 	GpioTimePacket tp_led_heartbeat;
-	TimerPacket timerpacket_ltc;
+	TimerPacket timerpacket_ltc1;
+	TimerPacket timerpacket_ltc2;
 	TimerPacket timerpacket_can1;
 
-	uint16_t *read_volt;
-	read_volt = (uint16_t*) malloc(NUM_CELLS * sizeof(uint16_t));
-	uint16_t *read_temp;
-	read_temp = (uint16_t*) malloc(NUM_CELLS * sizeof(uint16_t));
+	uint16_t *read_volt = (uint16_t*) malloc(NUM_CELLS * sizeof(uint16_t));
+	uint16_t *read_temp = (uint16_t*) malloc(NUM_CELLS * sizeof(uint16_t));
 	uint16_t *read_auxreg = (uint16_t*) malloc(6 * sizeof(uint16_t));
 	/* USER CODE END 1 */
 
@@ -125,7 +125,8 @@ int main(void) {
 	//Start timer
 	GpioTimePacket_Init(&tp_led_heartbeat, MCU_HEARTBEAT_LED_GPIO_Port,
 	MCU_HEARTBEAT_LED_Pin);
-	TimerPacket_Init(&timerpacket_ltc, LTC_DELAY);
+	TimerPacket_Init(&timerpacket_ltc1, LTC_DELAY1);
+	TimerPacket_Init(&timerpacket_ltc2, LTC_DELAY2);
 	TimerPacket_Init(&timerpacket_can1, CAN1_DELAY);
 	//Pull SPI1 nCS HIGH (deselect)
 	LTC_nCS_High();
@@ -142,10 +143,13 @@ int main(void) {
 		/* USER CODE BEGIN 3 */
 
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
-		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
-			//start sending to mux to read temperatures
+		if (TimerPacket_FixedPulse(&timerpacket_ltc1)) {
 			LTC_Wakeup_Sleep();
 			readVolt(read_volt);
+		}
+		if (TimerPacket_FixedPulse(&timerpacket_ltc2)) {
+			//start sending to mux to read temperatures
+			LTC_Wakeup_Sleep();
 			readTemp(tempindex, read_temp, read_auxreg);
 			tempindex++;
 			if (tempindex == 12) {
@@ -155,7 +159,7 @@ int main(void) {
 			else if(tempindex == 8){
 				HAL_Delay(2300);
 			}
-		} //STOPSTOSPTOPSOTSTPO
+		}
 
 	}
 	/* USER CODE END 3 */
