@@ -67,6 +67,19 @@ void Error_Handler(void);
 #define PMUX_ST_GPIO_Port GPIOC
 
 /* USER CODE BEGIN Private defines */
+#define NUM_DEVICES				1	//1 slave board
+#define NUM_SERIES_GROUP		12	//1 slave board
+#define NUM_CELLS				NUM_DEVICES*NUM_SERIES_GROUP	//multiple slave board
+#define LTC_DELAY				500 //500ms update delay
+#define CAN1_DELAY				10
+#define LED_HEARTBEAT_DELAY_MS	500  //500ms update delay
+#define LTC_CMD_RDSTATA			0x0010 //Read status register group A
+
+
+#define ntcNominal 50000.0f
+#define ntcSeriesResistance 50000.0f
+#define ntcBetaFactor 3380.0f
+#define ntcNominalTemp 25.0f
 
 /* USER CODE END Private defines */
 

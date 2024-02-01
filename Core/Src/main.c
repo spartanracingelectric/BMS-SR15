@@ -40,17 +40,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define NUM_DEVICES				1	//1 slave board
-#define NUM_SERIES_GROUP		12	//1 slave board
-#define NUM_CELLS				NUM_DEVICES*NUM_SERIES_GROUP	//multiple slave board
-#define LTC_DELAY				2500 //500ms update delay
-#define CAN1_DELAY				10
-#define LED_HEARTBEAT_DELAY_MS	500  //500ms update delay
-#define LTC_CMD_RDSTATA			0x0010 //Read status register group A
 
-static const uint8_t MD_7KHZ_3KHZ = 2;
-static const uint8_t CELL_CH_ALL = 0;
-static const uint8_t DCP_DISABLED = 0;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -145,93 +135,7 @@ int main(void) {
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
-	uint8_t BMS_IC[12][6] = { };
-	BMS_IC[0][0] = 0x69; // Icom Start(6) + I2C_address D0 (0x90)
-	BMS_IC[0][1] = 0x28; // Fcom master NACK(8)
-	BMS_IC[0][2] = 0x0F; // Icom Blank (0) + eeprom address D1 (0xF8)
-	BMS_IC[0][3] = 0xF9; // Fcom master NACK + Stop(9)
-	BMS_IC[0][4] = 0x7F; // NO TRANSMIT
-	BMS_IC[0][5] = 0xF9; // Fcom master NACK + Stop(9)
-
-	BMS_IC[1][0] = 0x69;
-	BMS_IC[1][1] = 0x28;
-	BMS_IC[1][2] = 0x0F;
-	BMS_IC[1][3] = 0xE9;
-	BMS_IC[1][4] = 0x7F;
-	BMS_IC[1][5] = 0xF9;
-
-	BMS_IC[2][0] = 0x69;
-	BMS_IC[2][1] = 0x28;
-	BMS_IC[2][2] = 0x0F;
-	BMS_IC[2][3] = 0xD9;
-	BMS_IC[2][4] = 0x7F;
-	BMS_IC[2][5] = 0xF9;
-
-	BMS_IC[3][0] = 0x69;
-	BMS_IC[3][1] = 0x28;
-	BMS_IC[3][2] = 0x0F;
-	BMS_IC[3][3] = 0xC9;
-	BMS_IC[3][4] = 0x7F;
-	BMS_IC[3][5] = 0xF9;
-
-	BMS_IC[4][0] = 0x69;
-	BMS_IC[4][1] = 0x28;
-	BMS_IC[4][2] = 0x0F;
-	BMS_IC[4][3] = 0xB9;
-	BMS_IC[4][4] = 0x7F;
-	BMS_IC[4][5] = 0xF9;
-
-	BMS_IC[5][0] = 0x69;
-	BMS_IC[5][1] = 0x28;
-	BMS_IC[5][2] = 0x0F;
-	BMS_IC[5][3] = 0xA9;
-	BMS_IC[5][4] = 0x7F;
-	BMS_IC[5][5] = 0xF9;
-
-	BMS_IC[6][0] = 0x69;
-	BMS_IC[6][1] = 0x28;
-	BMS_IC[6][2] = 0x0F;
-	BMS_IC[6][3] = 0x99;
-	BMS_IC[6][4] = 0x7F;
-	BMS_IC[6][5] = 0xF9;
-
-	BMS_IC[7][0] = 0x69;
-	BMS_IC[7][1] = 0x28;
-	BMS_IC[7][2] = 0x0F;
-	BMS_IC[7][3] = 0x89;
-	BMS_IC[7][4] = 0x7F;
-	BMS_IC[7][5] = 0xF9;
-
-	BMS_IC[8][0] = 0x69;
-	BMS_IC[8][1] = 0x08;
-	BMS_IC[8][2] = 0x0F;
-	BMS_IC[8][3] = 0xF9;
-	BMS_IC[8][4] = 0x7F;
-	BMS_IC[8][5] = 0xF9;
-
-	BMS_IC[9][0] = 0x69;
-	BMS_IC[9][1] = 0x08;
-	BMS_IC[9][2] = 0x0F;
-	BMS_IC[9][3] = 0xE9;
-	BMS_IC[9][4] = 0x7F;
-	BMS_IC[9][5] = 0xF9;
-
-	BMS_IC[10][0] = 0x69;
-	BMS_IC[10][1] = 0x08;
-	BMS_IC[10][2] = 0x0F;
-	BMS_IC[10][3] = 0xD9;
-	BMS_IC[10][4] = 0x7F;
-	BMS_IC[10][5] = 0xF9;
-
-	BMS_IC[11][0] = 0x69;
-	BMS_IC[11][1] = 0x08;
-	BMS_IC[11][2] = 0x0F;
-	BMS_IC[11][3] = 0xC9;
-	BMS_IC[11][4] = 0x7F;
-	BMS_IC[11][5] = 0xF9;
 	uint8_t tempindex = 0;
-	uint8_t increment = 0;
-	uint16_t data = 0;
 	while (1) {
 		/* USER CODE END WHILE */
 
@@ -239,86 +143,20 @@ int main(void) {
 
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
-//			int packvoltage = 0;
-
-			//starting for printing over serial
-//			char packV[30];
-			//end for printing over serial
-
-			//start reading voltages
-//			LTC_Wakeup_Sleep();
-//			LTC_ADCV(MD_7KHZ_3KHZ, DCP_DISABLED, CELL_CH_ALL);
-//			LTC_PollAdc();
-//			LTC_ReadRawCellVoltages((uint16_t*) read_volt);
-//			packvoltage = LTC_CalcPackVoltage((uint16_t*) read_volt);
-			//stop reading voltages
-
 			//start sending to mux to read temperatures
 			LTC_Wakeup_Sleep();
-			ltc6811_wrcomm(NUM_DEVICES, BMS_IC[tempindex]);
-			LTC_Wakeup_Idle();
-			ltc6811_stcomm();
-			//end sending to mux to read temperatures
-
-
-
-			//start for printing over serial for pack voltage
-//			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
-//			strncat(out_buf, packV, 30);
-//			strncat(out_buf, char_to_str, 2);
-			//end for printing over serial for pack voltage
-
-			LTC_Wakeup_Idle();
-			LTC_ADAX(MD_7KHZ_3KHZ, 0); //doing GPIO all conversion
-			LTC_PollAdc();
-			if (!LTC_ReadRawCellTemps((uint16_t *) read_auxreg)) // Set to read back all aux registers
-			{
-				data = read_auxreg[0];
-				read_temp[tempindex] = data;
-				//read_temp[tempindex] = (uint16_t) read_auxreg[0];
-
-				//start for printing over serial for voltages
-				print(12, (uint16_t *) read_temp);
-				HAL_Delay(400);
-				//end for printing over serial for voltages
-
-				tempindex++;
-
-				if (tempindex == 12) {
-					tempindex = 0;
-				}
+			readVolt(read_volt);
+			readTemp(tempindex, read_temp, read_auxreg);
+			tempindex++;
+			if (tempindex == 12) {
+				tempindex = 0;
+				HAL_Delay(2300);
 			}
-			HAL_Delay(1000);
-
+			else if(tempindex == 8){
+				HAL_Delay(2300);
+			}
 		} //STOPSTOSPTOPSOTSTPO
 
-//		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
-//
-//			uint16_t CAN_ID = 0x630;
-//			setCANId(CAN_ID);
-//			for (int i = 0; i < NUM_CELLS; i++) {
-//				if (i % 4 == 0) {
-//					uint8_t temp_volt = i;
-//					msg.data[0] = read_volt[temp_volt];
-//					msg.data[1] = read_volt[temp_volt] >> 8;
-//					temp_volt += 1;
-//					msg.data[2] = read_volt[temp_volt];
-//					msg.data[3] = read_volt[temp_volt] >> 8;
-//					temp_volt += 1;
-//					msg.data[4] = read_volt[temp_volt];
-//					msg.data[5] = read_volt[temp_volt] >> 8;
-//					temp_volt += 1;
-//					msg.data[6] = read_volt[temp_volt];
-//					msg.data[7] = read_volt[temp_volt] >> 8;
-//				}
-//				if (i % 4 == 0) {
-//					CAN_ID = CAN_ID + 0x01;
-//					setCANId(CAN_ID);
-//				}
-//				HAL_Delay(10);
-//				CAN1_Send();
-//			}
-//		}
 	}
 	/* USER CODE END 3 */
 }
