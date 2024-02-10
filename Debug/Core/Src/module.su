@@ -1,0 +1,3 @@
+../Core/Src/module.c:14:6:getActualTemps	24	static
+../Core/Src/module.c:31:6:readVolt	16	static
+../Core/Src/module.c:38:6:readTemp	40	static

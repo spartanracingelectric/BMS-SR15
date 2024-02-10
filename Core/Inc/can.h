@@ -33,25 +33,24 @@ extern "C" {
 
 /* USER CODE END Includes */
 
-extern CAN_HandleTypeDef hcan1;
+extern CAN_HandleTypeDef hcan2;
 
 /* USER CODE BEGIN Private defines */
-struct CANMessage{
-	CAN_TxHeaderTypeDef TxHeader;
-	uint32_t TxMailbox;
-	uint8_t data[8];
-};
-extern struct CANMessage msg;
 /* USER CODE END Private defines */
 
-void MX_CAN1_Init(void);
+void MX_CAN2_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 HAL_StatusTypeDef CAN1_Start();
 HAL_StatusTypeDef CAN1_Activate();
-HAL_StatusTypeDef CAN1_Send();
-void CAN1_SettingsInit();
-void setCANId(uint32_t id);
+HAL_StatusTypeDef CAN1_Send(struct CANMessage *ptr);
+void CAN1_SettingsInit(struct CANMessage *ptr);
+void setCANId(struct CANMessage *ptr, uint32_t id);
+
+void CAN1_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt);
+void CAN1_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp);
+void CAN1_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModuleVoltage *batt);
+void CAN1_Send_Safety_Checker(struct CANMessage *ptr, uint16_t *checker);
 
 /* USER CODE END Prototypes */
 

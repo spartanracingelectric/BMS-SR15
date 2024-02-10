@@ -55,13 +55,11 @@ void ltc6811_wrcomm(uint8_t total_ic, //The number of ICs being written to
                     uint8_t comm[6] //A two dimensional array of the comm data that will be written
                    );
 
-void ltc6811_stcomm();
+void ltc6811_stcomm(uint8_t len);
 
 uint8_t ltc6811_rdcomm(uint8_t total_ic, //Number of ICs in the system
                       uint8_t r_comm[][8] //A two dimensional array that the function stores the read configuration data.
                      );
-
-void getActualTemps(float *actual_temp, uint16_t *read_temp);
 
 LTC_SPI_StatusTypeDef LTC_ReadRawCellTemps(uint16_t *read_auxiliary);
 
@@ -77,5 +75,3 @@ void LTC_ADAX(uint8_t MD, //ADC Mode
 int32_t LTC_PollAdc();
 
 int LTC_CalcPackVoltage(uint16_t *read_voltages);
-
-void getActualTemps(float *actual_temp, uint16_t *read_temp);

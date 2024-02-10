@@ -29,6 +29,9 @@
 /* USER CODE BEGIN Includes */
 #include "string.h"
 #include "6811.h"
+#include "print.h"
+#include "module.h"
+#include "safety.h"
 
 /* USER CODE END Includes */
 
@@ -39,17 +42,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define NUM_DEVICES				1	//1 slave board
-#define NUM_SERIES_GROUP		12	//1 slave board
-#define NUM_CELLS				NUM_DEVICES*NUM_SERIES_GROUP	//multiple slave board
-#define LTC_DELAY				1000 //500ms update delay
-#define CAN1_DELAY				10
-#define LED_HEARTBEAT_DELAY_MS	500  //500ms update delay
-#define LTC_CMD_RDSTATA			0x0010 //Read status register group A
 
-static const uint8_t MD_7KHZ_3KHZ = 2;
-static const uint8_t CELL_CH_ALL = 0;
-static const uint8_t DCP_DISABLED = 0;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -89,169 +82,174 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
 /* USER CODE END 0 */
 
 /**
- * @brief  The application entry point.
- * @retval int
- */
-int main(void) {
-	/* USER CODE BEGIN 1 */
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+  /* USER CODE BEGIN 1 */
 	GpioTimePacket tp_led_heartbeat;
-	TimerPacket timerpacket_ltc;
+	TimerPacket timerpacket_ltc1;
+	TimerPacket timerpacket_ltc2;
 	TimerPacket timerpacket_can1;
 
-	uint16_t *read_val;
-	read_val = (uint16_t*) malloc(12 * sizeof(uint16_t));
-	/* USER CODE END 1 */
+	struct batteryModuleVoltage modVoltage = { .cell_volt = (uint16_t*) malloc(
+	NUM_CELLS * sizeof(uint16_t)), .cell_temp = (uint16_t*) malloc(
+	NUM_THERM_TOTAL * sizeof(uint16_t)), .read_auxreg = (uint16_t*) malloc(
+			NUM_AUXES * sizeof(uint16_t)) };
 
-	/* MCU Configuration--------------------------------------------------------*/
+	struct CANMessage msg;
+	uint16_t safetyChecker;
 
-	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-	HAL_Init();
+  /* USER CODE END 1 */
 
-	/* USER CODE BEGIN Init */
+  /* MCU Configuration--------------------------------------------------------*/
 
-	/* USER CODE END Init */
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
 
-	/* Configure the system clock */
-	SystemClock_Config();
+  /* USER CODE BEGIN Init */
 
-	/* USER CODE BEGIN SysInit */
+  /* USER CODE END Init */
 
-	/* USER CODE END SysInit */
+  /* Configure the system clock */
+  SystemClock_Config();
 
-	/* Initialize all configured peripherals */
-	MX_GPIO_Init();
-	MX_ADC1_Init();
-	MX_ADC2_Init();
-	MX_CAN1_Init();
-	MX_TIM7_Init();
-	MX_SPI1_Init();
-	MX_USB_DEVICE_Init();
-	/* USER CODE BEGIN 2 */
-	CAN1_SettingsInit(); // Start CAN at 0x00
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_ADC1_Init();
+  MX_ADC2_Init();
+  MX_TIM7_Init();
+  MX_SPI1_Init();
+  MX_USB_DEVICE_Init();
+  MX_CAN2_Init();
+  /* USER CODE BEGIN 2 */
+	CAN1_SettingsInit(&msg); // Start CAN at 0x00
 	//Start timer
 	GpioTimePacket_Init(&tp_led_heartbeat, MCU_HEARTBEAT_LED_GPIO_Port,
 	MCU_HEARTBEAT_LED_Pin);
-	TimerPacket_Init(&timerpacket_ltc, LTC_DELAY);
+	TimerPacket_Init(&timerpacket_ltc1, LTC_DELAY1);
+	TimerPacket_Init(&timerpacket_ltc2, LTC_DELAY2);
 	TimerPacket_Init(&timerpacket_can1, CAN1_DELAY);
 	//Pull SPI1 nCS HIGH (deselect)
 	LTC_nCS_High();
 	LTC_Set_Num_Devices(NUM_DEVICES);
-	LTC_Set_Num_Series_Groups(NUM_SERIES_GROUP);
-	/* USER CODE END 2 */
+	LTC_Set_Num_Series_Groups(NUM_CELL_SERIES_GROUP);
+  /* USER CODE END 2 */
 
-	/* Infinite loop */
-	/* USER CODE BEGIN WHILE */
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+	uint8_t tempindex = 0;
+	uint8_t indexpause = 8;
+	uint8_t loop_count = 0;
 	while (1) {
-		/* USER CODE END WHILE */
+    /* USER CODE END WHILE */
 
-		/* USER CODE BEGIN 3 */
+    /* USER CODE BEGIN 3 */
+		loop_count++;
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
-		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
-			char packV[30];
-			char buf[20];
-			char out_buf[2048] = "";
-			char char_to_str[2];
-			int packvoltage = 0;
+		if (TimerPacket_FixedPulse(&timerpacket_ltc1)) {
 			LTC_Wakeup_Sleep();
-			LTC_ADCV(MD_7KHZ_3KHZ, DCP_DISABLED, CELL_CH_ALL);
-			LTC_PollAdc();
-			LTC_ReadRawCellVoltages((uint16_t*) read_val);
-			packvoltage = LTC_CalcPackVoltage((uint16_t*) read_val);
-			sprintf(packV, "Pack Voltage: %d/10000 V", packvoltage);
-			strncat(out_buf, packV, 30);
-			strncat(out_buf, char_to_str, 2);
-			char_to_str[0] = '\n';
-			char_to_str[1] = '\0';
-			for (uint8_t i = 0; i < NUM_CELLS; i++) {
-				sprintf(buf, "C%u:%u/10000 V", i + 1, read_val[i]);
-				strncat(out_buf, buf, 20);
-				strncat(out_buf, char_to_str, 2);
+			readVolt(modVoltage.cell_volt);
+			print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
+		}
+
+		if (TimerPacket_FixedPulse(&timerpacket_ltc2)) {
+			//start sending to mux to read temperatures
+			LTC_Wakeup_Sleep();
+			for (uint8_t i = tempindex; i < indexpause; i++) {
+				readTemp(i, modVoltage.cell_temp, modVoltage.read_auxreg);
+				HAL_Delay(100);
 			}
-			strncat(out_buf, char_to_str, 2);
-			HAL_Delay(400);
-			USB_Transmit(out_buf, strlen(out_buf));
+			if (indexpause == 8) {
+				tempindex = 8;
+				indexpause = 12;
+			} else if (indexpause == 12) {
+				indexpause = 8;
+				tempindex = 0;
+			}
+			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
+			HAL_Delay(2300);
+		}
+
+		if(loop_count >= 3){
+
+			fault_and_warning(&modVoltage,&safetyChecker);
+
+		// TODO: add if statement for if safetyChecker has a single bit flip for first 8 bits?
+
 		}
 
 		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
+			CAN1_Send_Safety_Checker(&msg,&safetyChecker);
+			cellSummary(&modVoltage);
+			CAN1_Send_Cell_Summary(&msg, &modVoltage);
+			CAN1_Send_Voltage(&msg, modVoltage.cell_volt);
+			CAN1_Send_Temperature(&msg, modVoltage.cell_temp);
 
-			uint16_t CAN_ID = 0x630;
-			setCANId(CAN_ID);
-			for (int i = 0; i < 12; i++) {
-				if (i % 4 == 0) {
-					uint8_t temp_volt = i;
-					msg.data[0] = read_val[temp_volt];
-					msg.data[1] = read_val[temp_volt] >> 8;
-					temp_volt += 1;
-					msg.data[2] = read_val[temp_volt];
-					msg.data[3] = read_val[temp_volt] >> 8;
-					temp_volt += 1;
-					msg.data[4] = read_val[temp_volt];
-					msg.data[5] = read_val[temp_volt] >> 8;
-					temp_volt += 1;
-					msg.data[6] = read_val[temp_volt];
-					msg.data[7] = read_val[temp_volt] >> 8;
-				}
-				if (i % 4 == 0) {
-					CAN_ID = CAN_ID + 0x01;
-					setCANId(CAN_ID);
-				}
-				HAL_Delay(10);
-				CAN1_Send();
-			}
 		}
+
 	}
-	/* USER CODE END 3 */
+  /* USER CODE END 3 */
 }
 
 /**
- * @brief System Clock Configuration
- * @retval None
- */
-void SystemClock_Config(void) {
-	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
-	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
-	RCC_PeriphCLKInitTypeDef PeriphClkInit = { 0 };
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-	/** Initializes the RCC Oscillators according to the specified parameters
-	 * in the RCC_OscInitTypeDef structure.
-	 */
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-	RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV5;
-	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-	RCC_OscInitStruct.Prediv1Source = RCC_PREDIV1_SOURCE_PLL2;
-	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-	RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
-	RCC_OscInitStruct.PLL2.PLL2State = RCC_PLL2_ON;
-	RCC_OscInitStruct.PLL2.PLL2MUL = RCC_PLL2_MUL8;
-	RCC_OscInitStruct.PLL2.HSEPrediv2Value = RCC_HSE_PREDIV2_DIV5;
-	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-		Error_Handler();
-	}
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV5;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.Prediv1Source = RCC_PREDIV1_SOURCE_PLL2;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+  RCC_OscInitStruct.PLL2.PLL2State = RCC_PLL2_ON;
+  RCC_OscInitStruct.PLL2.PLL2MUL = RCC_PLL2_MUL8;
+  RCC_OscInitStruct.PLL2.HSEPrediv2Value = RCC_HSE_PREDIV2_DIV5;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
 
-	/** Initializes the CPU, AHB and APB buses clocks
-	 */
-	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
-			| RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
-		Error_Handler();
-	}
-	PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC | RCC_PERIPHCLK_USB;
-	PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
-	PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV3;
-	if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
-		Error_Handler();
-	}
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC|RCC_PERIPHCLK_USB;
+  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
+  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV3;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+  {
+    Error_Handler();
+  }
 
-	/** Configure the Systick interrupt time
-	 */
-	__HAL_RCC_PLLI2S_ENABLE();
+  /** Configure the Systick interrupt time
+  */
+  __HAL_RCC_PLLI2S_ENABLE();
 }
 
 /* USER CODE BEGIN 4 */
@@ -291,16 +289,17 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp) {
 /* USER CODE END 4 */
 
 /**
- * @brief  This function is executed in case of error occurrence.
- * @retval None
- */
-void Error_Handler(void) {
-	/* USER CODE BEGIN Error_Handler_Debug */
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
 	__disable_irq();
 	while (1) {
 	}
-	/* USER CODE END Error_Handler_Debug */
+  /* USER CODE END Error_Handler_Debug */
 }
 
 #ifdef  USE_FULL_ASSERT

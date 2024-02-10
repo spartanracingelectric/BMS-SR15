@@ -1,0 +1,3 @@
+../Core/Src/module.c:14:6:getActualTemps	1
+../Core/Src/module.c:31:6:readVolt	1
+../Core/Src/module.c:38:6:readTemp	3
