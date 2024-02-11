@@ -204,14 +204,14 @@ void CAN1_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModuleVoltage 
 	uint16_t CAN_ID = 0x622;
 	setCANId(ptr, CAN_ID);
 
-	ptr->data[0] = *batt->cell_temp_highest;
-	ptr->data[1] = (*batt->cell_volt_highest) >> 8;
-	ptr->data[2] = *batt->cell_volt_lowest;
-	ptr->data[3] = (*batt->cell_volt_lowest) >> 8;
-	ptr->data[4] = *batt->cell_temp_highest;
-	ptr->data[5] = (*batt->cell_temp_highest) >> 8;
-	ptr->data[6] = *batt->cell_temp_lowest;
-	ptr->data[7] = (*batt->cell_temp_lowest) >> 8;
+	ptr->data[0] = batt->cell_temp_highest;
+	ptr->data[1] = (batt->cell_volt_highest) >> 8;
+	ptr->data[2] = batt->cell_volt_lowest;
+	ptr->data[3] = (batt->cell_volt_lowest) >> 8;
+	ptr->data[4] = batt->cell_temp_highest;
+	ptr->data[5] = (batt->cell_temp_highest) >> 8;
+	ptr->data[6] = batt->cell_temp_lowest;
+	ptr->data[7] = (batt->cell_temp_lowest) >> 8;
 
 	HAL_Delay(10);
 	CAN1_Send(ptr);

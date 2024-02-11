@@ -92,6 +92,7 @@ int main(void)
 	TimerPacket timerpacket_ltc1;
 	TimerPacket timerpacket_ltc2;
 	TimerPacket timerpacket_can1;
+	TimerPacket timerpacket_safety;
 
 	struct batteryModuleVoltage modVoltage = { .cell_volt = (uint16_t*) malloc(
 	NUM_CELLS * sizeof(uint16_t)), .cell_temp = (uint16_t*) malloc(
@@ -99,7 +100,8 @@ int main(void)
 			NUM_AUXES * sizeof(uint16_t)) };
 
 	struct CANMessage msg;
-	uint16_t safetyChecker;
+	uint8_t safetyFaults = 0;
+	uint8_t safetyWarnings = 0;
 
   /* USER CODE END 1 */
 
@@ -135,6 +137,7 @@ int main(void)
 	TimerPacket_Init(&timerpacket_ltc1, LTC_DELAY1);
 	TimerPacket_Init(&timerpacket_ltc2, LTC_DELAY2);
 	TimerPacket_Init(&timerpacket_can1, CAN1_DELAY);
+	TimerPacket_Init(&timerpacket_safety, SAFETY_DELAY);
 	//Pull SPI1 nCS HIGH (deselect)
 	LTC_nCS_High();
 	LTC_Set_Num_Devices(NUM_DEVICES);
@@ -154,7 +157,7 @@ int main(void)
 		if (TimerPacket_FixedPulse(&timerpacket_ltc1)) {
 			LTC_Wakeup_Sleep();
 			readVolt(modVoltage.cell_volt);
-			print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
+			//print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
 		}
 
 		if (TimerPacket_FixedPulse(&timerpacket_ltc2)) {
@@ -171,25 +174,38 @@ int main(void)
 				indexpause = 8;
 				tempindex = 0;
 			}
-			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
+			print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
 			HAL_Delay(2300);
 		}
 
 		if(loop_count == 0){
+			if(TimerPacket_FixedPulse(&timerpacket_safety)){
+				cellSummary(&modVoltage);
+				fault_and_warning(&modVoltage,&safetyFaults, &safetyWarnings);
+ 				if(safetyFaults != 0){
+					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
+				}
 
-			fault_and_warning(&modVoltage,&safetyChecker);
-
-		// TODO: add if statement for if safetyChecker has a single bit flip for first 8 bits?
-
+			}
 		}
 		else{
 			loop_count--;
 		}
 
 
+
+//			if(safetyChecker & 0b111110000000000000000){
+//				HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
+//				//CDC_Transmit_FS((uint16_t *) safetyChecker, (size_t)strlen(safetyChecker));
+//			}
+
+		// TODO: add if statement for if safetyChecker has a single bit flip for first 8 bits?
+
+
+
+
 		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
-			CAN1_Send_Safety_Checker(&msg,&safetyChecker);
-			cellSummary(&modVoltage);
+//			CAN1_Send_Safety_Checker(&msg,&safetyChecker);
 			CAN1_Send_Cell_Summary(&msg, &modVoltage);
 			CAN1_Send_Voltage(&msg, modVoltage.cell_volt);
 			CAN1_Send_Temperature(&msg, modVoltage.cell_temp);

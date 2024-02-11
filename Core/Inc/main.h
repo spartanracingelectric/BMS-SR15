@@ -40,11 +40,11 @@ extern "C" {
 struct batteryModuleVoltage {
 	uint16_t *cell_volt;
 	uint16_t *cell_temp;
-	uint16_t *cell_volt_lowest;
-	uint16_t *cell_volt_highest;
-	uint16_t *cell_temp_lowest;
-	uint16_t *cell_temp_highest;
-	uint16_t *pack_voltage;
+	uint16_t cell_volt_lowest;
+	uint16_t cell_volt_highest;
+	uint16_t cell_temp_lowest;
+	uint16_t cell_temp_highest;
+	uint16_t pack_voltage;
 	uint16_t *read_auxreg;
 
 };
@@ -84,6 +84,8 @@ void Error_Handler(void);
 #define MCU_HEARTBEAT_LED_GPIO_Port GPIOC
 #define PMUX_ST_Pin GPIO_PIN_8
 #define PMUX_ST_GPIO_Port GPIOC
+#define Fault_Pin GPIO_PIN_1
+#define Fault_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 #define NUM_DEVICES				1	//1 slave board
@@ -96,6 +98,7 @@ void Error_Handler(void);
 #define LTC_DELAY1				1000 //500ms update delay
 #define LTC_DELAY2				0 //500ms update delay
 #define CAN1_DELAY				100
+#define SAFETY_DELAY			50
 #define LED_HEARTBEAT_DELAY_MS	500  //500ms update delay
 #define LTC_CMD_RDSTATA			0x0010 //Read status register group A
 
