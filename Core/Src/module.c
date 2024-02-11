@@ -12,10 +12,10 @@ uint8_t BMS_IC[12][6] = { { 0x69, 0x28, 0x0F, 0xF9, 0x7F, 0xF9 }, { 0x69, 0x28,
 		{ 0x69, 0x08, 0x0F, 0xD9, 0x7F, 0xF9 }, { 0x69, 0x08, 0x0F, 0xC9, 0x7F, 0xF9 } };
 
 void getActualTemps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
-		uint16_t data, uint16_t vref) {
+		uint16_t data) {
 	static float scalar;
 	static float steinhart;
-	scalar = (float) vref / (float) (data) - 1.0f;
+	scalar = 30000.0f / (float) (data) - 1.0f;
 	scalar = (float) ntcSeriesResistance / scalar;
 	steinhart = scalar / (float) ntcNominal;               // (R/Ro)
 	steinhart = log(steinhart);                           // ln(R/Ro)
@@ -52,8 +52,7 @@ void readTemp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
 			// PEC for each device is the last two bytes of its data segment
 			uint16_t data = read_auxreg[dev_idx * NUM_AUX_GROUP];
 			//read_temp[dev_idx * NUM_THERM_PER_MOD + tempindex] = data;
-			getActualTemps(dev_idx, tempindex, (uint16_t*) read_temp, data,
-					read_auxreg[dev_idx * NUM_AUX_GROUP + 5]); //+5 because vref is the last reg
+			getActualTemps(dev_idx, tempindex, (uint16_t*) read_temp, data); //+5 because vref is the last reg
 
 		}
 	}

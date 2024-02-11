@@ -35,21 +35,21 @@ void cellSummary(struct batteryModuleVoltage *batt){
 
 
 void fault_and_warning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_t *warnings){
-	if(batt->pack_voltage >= PACK_HIGH_VOLT_FAULT){
-		*fault |= 0b10000000;
-	}
-
-	if(batt->pack_voltage <= PACK_LOW_VOLT_FAULT){
-		*fault |= 0b01000000;
-	}
-
-	if(batt->cell_volt_lowest <= CELL_LOW_VOLT_FAULT){
-		*fault |= 0b00100000;
-	}
-
-	if(batt->cell_volt_highest>= CELL_HIGH_VOLT_FAULT){
-		*fault |= 0b00010000;
-	}
+//	if(batt->pack_voltage >= PACK_HIGH_VOLT_FAULT){
+//		*fault |= 0b10000000;
+//	}
+//
+//	if(batt->pack_voltage <= PACK_LOW_VOLT_FAULT){
+//		*fault |= 0b01000000;
+//	}
+//
+//	if(batt->cell_volt_lowest <= CELL_LOW_VOLT_FAULT){
+//		*fault |= 0b00100000;
+//	}
+//
+//	if(batt->cell_volt_highest>= CELL_HIGH_VOLT_FAULT){
+//		*fault |= 0b00010000;
+//	}
 
 	if(batt->cell_temp_highest >= CELL_HIGH_TEMP_FAULT){
 		*fault |= 0b00001000;
