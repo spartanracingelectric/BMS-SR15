@@ -217,11 +217,11 @@ void CAN1_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModuleVoltage 
 	CAN1_Send(ptr);
 }
 
-void CAN1_Send_Safety_Checker(struct CANMessage *ptr, uint16_t *checker){
+void CAN1_Send_Safety_Checker(struct CANMessage *ptr, uint8_t *faults, uint8_t *warnings){
 	uint16_t CAN_ID = 0x600;
 	setCANId(ptr, CAN_ID);
-	ptr->data[0] = *checker & 0xFF;
-	ptr->data[1] = (*(checker) >> 8) & 0xFF;
+	ptr->data[0] = *faults & 0xFF;
+	ptr->data[1] = *warnings & 0xFF;
 	HAL_Delay(10);
 	CAN1_Send(ptr);
 }

@@ -64,8 +64,8 @@ all: main-build
 main-build: SR15_BMS_v2.elf secondary-outputs
 
 # Tool invocations
-SR15_BMS_v2.elf SR15_BMS_v2.map: $(OBJS) $(USER_OBJS) C:\Spartan_Racing\SR15BMSDEV\BMS-SR15\STM32F105RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "SR15_BMS_v2.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Spartan_Racing\SR15BMSDEV\BMS-SR15\STM32F105RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SR15_BMS_v2.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+SR15_BMS_v2.elf SR15_BMS_v2.map: $(OBJS) $(USER_OBJS) C:\Users\shubh\Documents\BMS-SR15\STM32F105RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "SR15_BMS_v2.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\shubh\Documents\BMS-SR15\STM32F105RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SR15_BMS_v2.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

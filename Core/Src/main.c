@@ -205,7 +205,7 @@ int main(void)
 
 
 		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
-//			CAN1_Send_Safety_Checker(&msg,&safetyChecker);
+			CAN1_Send_Safety_Checker(&msg,&safetyFaults, &safetyWarnings);
 			CAN1_Send_Cell_Summary(&msg, &modVoltage);
 			CAN1_Send_Voltage(&msg, modVoltage.cell_volt);
 			CAN1_Send_Temperature(&msg, modVoltage.cell_temp);

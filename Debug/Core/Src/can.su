@@ -9,4 +9,4 @@
 ../Core/Src/can.c:147:6:CAN1_Send_Voltage	32	static
 ../Core/Src/can.c:175:6:CAN1_Send_Temperature	24	static
 ../Core/Src/can.c:203:6:CAN1_Send_Cell_Summary	24	static
-../Core/Src/can.c:220:6:CAN1_Send_Safety_Checker	24	static
+../Core/Src/can.c:220:6:CAN1_Send_Safety_Checker	32	static
