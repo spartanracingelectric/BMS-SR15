@@ -145,12 +145,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
-	uint8_t loop_count = 0;
+	uint8_t loop_count = 3;
 	while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		loop_count++;
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc1)) {
 			LTC_Wakeup_Sleep();
@@ -176,13 +175,17 @@ int main(void)
 			HAL_Delay(2300);
 		}
 
-		if(loop_count >= 3){
+		if(loop_count == 0){
 
 			fault_and_warning(&modVoltage,&safetyChecker);
 
 		// TODO: add if statement for if safetyChecker has a single bit flip for first 8 bits?
 
 		}
+		else{
+			loop_count--;
+		}
+
 
 		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
 			CAN1_Send_Safety_Checker(&msg,&safetyChecker);
