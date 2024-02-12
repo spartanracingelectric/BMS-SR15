@@ -1,7 +1,7 @@
 ../Core/Src/main.c:88:5:main	10
-../Core/Src/main.c:223:6:SystemClock_Config	4
-../Core/Src/main.c:277:6:GpioTimePacket_Init	1
-../Core/Src/main.c:285:6:GpioFixedToggle	2
-../Core/Src/main.c:294:6:TimerPacket_Init	1
-../Core/Src/main.c:300:9:TimerPacket_FixedPulse	2
-../Core/Src/main.c:314:6:Error_Handler	1
+../Core/Src/main.c:212:6:SystemClock_Config	4
+../Core/Src/main.c:266:6:GpioTimePacket_Init	1
+../Core/Src/main.c:274:6:GpioFixedToggle	2
+../Core/Src/main.c:283:6:TimerPacket_Init	1
+../Core/Src/main.c:289:9:TimerPacket_FixedPulse	2
+../Core/Src/main.c:303:6:Error_Handler	1

@@ -193,17 +193,6 @@ int main(void)
 		}
 
 
-
-//			if(safetyChecker & 0b111110000000000000000){
-//				HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
-//				//CDC_Transmit_FS((uint16_t *) safetyChecker, (size_t)strlen(safetyChecker));
-//			}
-
-		// TODO: add if statement for if safetyChecker has a single bit flip for first 8 bits?
-
-
-
-
 		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
 //			CAN1_Send_Safety_Checker(&msg,&safetyChecker);
 			CAN1_Send_Cell_Summary(&msg, &modVoltage);

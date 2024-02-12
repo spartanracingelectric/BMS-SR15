@@ -39,9 +39,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_macro  00024104  00000000  00000000  0003e3b5  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0001e9a0  00000000  00000000  000624b9  2**0
+ 18 .debug_line   0001e99e  00000000  00000000  000624b9  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000bf22e  00000000  00000000  00080e59  2**0
+ 19 .debug_str    000bf22e  00000000  00000000  00080e57  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  20 .debug_frame  00006698  00000000  00000000  00140088  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -4331,9 +4331,7 @@ int main(void)
  80024da:	f897 3085 	ldrb.w	r3, [r7, #133]	; 0x85
  80024de:	3b01      	subs	r3, #1
  80024e0:	f887 3085 	strb.w	r3, [r7, #133]	; 0x85
-		// TODO: add if statement for if safetyChecker has a single bit flip for first 8 bits?
-
-
+		}
 
 
 		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
