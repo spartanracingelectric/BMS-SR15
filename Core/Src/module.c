@@ -29,25 +29,25 @@ void getActualTemps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
 }
 
 void readVolt(uint16_t *read_volt) {
-	LTC_Wakeup_Idle();
-	LTC_ADCV(MD_7KHZ_3KHZ, DCP_DISABLED, CELL_CH_ALL);
-	LTC_PollAdc();
-	LTC_ReadRawCellVoltages((uint16_t*) read_volt);
+	wakeup_idle();
+	ltc_adcv(MD_7KHZ_3KHZ, DCP_DISABLED, CELL_CH_ALL);
+	ltc_polladc();
+	read_cell_volt((uint16_t*) read_volt);
 }
 
 void readTemp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
-	LTC_Wakeup_Idle();
-	ltc6811_wrcomm(NUM_DEVICES, BMS_IC[tempindex]);
-	LTC_Wakeup_Idle();
-	ltc6811_stcomm(2);
+	wakeup_idle();
+	ltc_wrcomm(NUM_DEVICES, BMS_IC[tempindex]);
+	wakeup_idle();
+	ltc_stcomm(2);
 	//end sending to mux to read temperatures
 
-	LTC_Wakeup_Idle();
-	LTC_ADAX(MD_7KHZ_3KHZ, 1); //doing GPIO all conversion
-	LTC_PollAdc();
-	if (!LTC_ReadRawCellTemps((uint16_t*) read_auxreg)) // Set to read back all aux registers
+	wakeup_idle();
+	ltc_adax(MD_7KHZ_3KHZ, 1); //doing GPIO all conversion
+	ltc_polladc();
+	if (!read_cell_temps((uint16_t*) read_auxreg)) // Set to read back all aux registers
 			{
-		for (uint8_t dev_idx = 0; dev_idx < LTC_Get_Num_Devices(); dev_idx++) {
+		for (uint8_t dev_idx = 0; dev_idx < get_num_devices(); dev_idx++) {
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint16_t data = read_auxreg[dev_idx * NUM_AUX_GROUP];

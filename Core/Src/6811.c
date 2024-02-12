@@ -25,34 +25,34 @@ static const uint8_t LTC_SERIES_GROUPS_PER_RDCV = 3; //Number of cell voltage gr
 static const uint8_t LTC_SERIES_GROUPS_PER_RDAUX = 3;
 static const uint8_t num_aux_series_groups = 6; //Number of series groups
 static uint8_t num_devices; //Keep visibility within this file
-static uint8_t num_series_groups; //Number of series groups
+static uint8_t series_groups; //Number of series groups
 
 /* Set number of LTC6813/slave devices */
-void LTC_Set_Num_Devices(uint8_t num) {
+void set_num_devices(uint8_t num) {
 	if (num)
 		num_devices = num; //Non-zero
 }
 
 /* Get number of LTC6813/slave devices */
-uint8_t LTC_Get_Num_Devices(void) {
+uint8_t get_num_devices(void) {
 	return num_devices;
 }
 
 /* Set number of series groups per LTC6813/slave */
-void LTC_Set_Num_Series_Groups(uint8_t num) {
+void set_series_groups(uint8_t num) {
 	if (num && (num <= 18))
-		num_series_groups = num; //Non-zero and 18 or less
+		series_groups = num; //Non-zero and 18 or less
 }
 
 /* Get number of series groups per LTC6813/slave */
-uint8_t LTC_Get_Num_Series_Groups(void) {
-	return num_series_groups;
+uint8_t get_series_groups(void) {
+	return series_groups;
 }
 
 /* Wake LTC up from IDLE state into READY state */
-void LTC_Wakeup_Idle(void) {
+void wakeup_idle(void) {
 	uint8_t hex_ff = 0xFF;
-	for (int i = 0; i < LTC_Get_Num_Devices(); i++) {
+	for (int i = 0; i < get_num_devices(); i++) {
 		LTC_nCS_Low(); //Pull CS low
 		HAL_SPI_Transmit(&hspi1, &hex_ff, 1, 100); //Send byte 0xFF to wake LTC up
 		LTC_nCS_High(); //Pull CS high
@@ -60,9 +60,9 @@ void LTC_Wakeup_Idle(void) {
 }
 
 //wake up sleep
-void LTC_Wakeup_Sleep(void) {
+void wakeup_sleep(void) {
 
-	for (int i = 0; i < LTC_Get_Num_Devices(); i++) {
+	for (int i = 0; i < get_num_devices(); i++) {
 		LTC_nCS_Low();
 		HAL_Delay(300);
 		LTC_nCS_High();
@@ -71,25 +71,25 @@ void LTC_Wakeup_Sleep(void) {
 }
 
 /* Read and store raw cell voltages at uint8_t 2d pointer */
-LTC_SPI_StatusTypeDef LTC_ReadRawCellVoltages(uint16_t *read_voltages) {
+LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
 	LTC_SPI_StatusTypeDef ret = LTC_SPI_OK;
 	LTC_SPI_StatusTypeDef hal_ret;
-	const uint8_t ARR_SIZE_REG = LTC_Get_Num_Devices() * REG_LEN;
+	const uint8_t ARR_SIZE_REG = get_num_devices() * REG_LEN;
 	uint8_t read_voltages_reg[ARR_SIZE_REG]; // Increased in size to handle multiple devices
 
 	for (uint8_t i = 0;
-			i < (LTC_Get_Num_Series_Groups() / LTC_SERIES_GROUPS_PER_RDCV);
+			i < (get_series_groups() / LTC_SERIES_GROUPS_PER_RDCV);
 			i++) {
 		uint8_t cmd[4];
 		uint16_t cmd_pec;
 
 		cmd[0] = (0xFF & (LTC_CMD_RDCV[i] >> 8)); //RDCV Register
 		cmd[1] = (0xFF & (LTC_CMD_RDCV[i])); //RDCV Register
-		cmd_pec = LTC_PEC15_Calc(2, cmd);
+		cmd_pec = ltc_pec15_calc(2, cmd);
 		cmd[2] = (uint8_t) (cmd_pec >> 8);
 		cmd[3] = (uint8_t) (cmd_pec);
 
-		LTC_Wakeup_Idle(); //Wake LTC up
+		wakeup_idle(); //Wake LTC up
 
 		LTC_nCS_Low(); //Pull CS low
 
@@ -105,13 +105,13 @@ LTC_SPI_StatusTypeDef LTC_ReadRawCellVoltages(uint16_t *read_voltages) {
 		}
 
 		// Process the received data
-		for (uint8_t dev_idx = 0; dev_idx < LTC_Get_Num_Devices(); dev_idx++) {
+		for (uint8_t dev_idx = 0; dev_idx < get_num_devices(); dev_idx++) {
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint8_t *data_ptr = &read_voltages_reg[dev_idx * REG_LEN];
 			// If PEC matches, copy the voltage data, omitting the PEC bytes
 			memcpy(
-					&read_voltages[dev_idx * LTC_Get_Num_Series_Groups()
+					&read_voltages[dev_idx * get_series_groups()
 							+ i * LTC_SERIES_GROUPS_PER_RDCV], data_ptr,
 					REG_LEN - 2);
 
@@ -123,7 +123,7 @@ LTC_SPI_StatusTypeDef LTC_ReadRawCellVoltages(uint16_t *read_voltages) {
 	return ret;
 }
 
-void ltc6811_wrcomm(uint8_t total_ic, //The number of ICs being written to
+void ltc_wrcomm(uint8_t total_ic, //The number of ICs being written to
 		uint8_t comm[6] //A two dimensional array of the comm data that will be written
 		) {
 	const uint8_t BYTES_IN_REG = 6;
@@ -137,7 +137,7 @@ void ltc6811_wrcomm(uint8_t total_ic, //The number of ICs being written to
 
 	cmd[0] = 0x07;
 	cmd[1] = 0x21;
-	cmd_pec = LTC_PEC15_Calc(2, cmd);
+	cmd_pec = ltc_pec15_calc(2, cmd);
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
 	cmd[3] = (uint8_t) (cmd_pec);
 
@@ -154,14 +154,14 @@ void ltc6811_wrcomm(uint8_t total_ic, //The number of ICs being written to
 			cmd[cmd_index] = comm[current_byte]; //adding the config data to the array to be sent
 			cmd_index = cmd_index + 1;
 		}
-		comm_pec = (uint16_t) LTC_PEC15_Calc(BYTES_IN_REG,
+		comm_pec = (uint16_t) ltc_pec15_calc(BYTES_IN_REG,
 				&comm[0]); // calculating the PEC for each ICs configuration register data
 		cmd[cmd_index] = (uint8_t) (comm_pec >> 8);
 		cmd[cmd_index + 1] = (uint8_t) comm_pec;
 		cmd_index = cmd_index + 2;
 	}
 
-	LTC_Wakeup_Idle(); //This will guarantee that the ltc6811 isoSPI port is awake.This command can be removed.
+	wakeup_idle(); //This will guarantee that the ltc6811 isoSPI port is awake.This command can be removed.
 	LTC_nCS_Low();
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, CMD_LEN, 100);
 	LTC_nCS_High();
@@ -171,18 +171,18 @@ void ltc6811_wrcomm(uint8_t total_ic, //The number of ICs being written to
 /*
  Shifts data in COMM register out over ltc6811 SPI/I2C port
  */
-void ltc6811_stcomm(uint8_t len) {
+void ltc_stcomm(uint8_t len) {
 
 	uint8_t cmd[4];
 	uint16_t cmd_pec;
 
 	cmd[0] = 0x07;
 	cmd[1] = 0x23;
-	cmd_pec = LTC_PEC15_Calc(2, cmd);
+	cmd_pec = ltc_pec15_calc(2, cmd);
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
 	cmd[3] = (uint8_t) (cmd_pec);
 
-	LTC_Wakeup_Idle(); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+	wakeup_idle(); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
 	LTC_nCS_Low();
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
 	for (int i = 0; i < len*3; i++) {
@@ -191,10 +191,10 @@ void ltc6811_stcomm(uint8_t len) {
 	LTC_nCS_High();
 }
 
-LTC_SPI_StatusTypeDef LTC_ReadRawCellTemps(uint16_t *read_auxiliary) {
+LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
 	LTC_SPI_StatusTypeDef ret = LTC_SPI_OK;
 	LTC_SPI_StatusTypeDef hal_ret;
-	const uint8_t ARR_SIZE_REG = LTC_Get_Num_Devices() * REG_LEN;
+	const uint8_t ARR_SIZE_REG = get_num_devices() * REG_LEN;
 	uint8_t read_auxiliary_reg[ARR_SIZE_REG]; // Increased in size to handle multiple devices
 
 	for (uint8_t i = 0;
@@ -204,11 +204,11 @@ LTC_SPI_StatusTypeDef LTC_ReadRawCellTemps(uint16_t *read_auxiliary) {
 
 		cmd[0] = (0xFF & (LTC_CMD_AUXREG[i] >> 8)); //RDCV Register
 		cmd[1] = (0xFF & (LTC_CMD_AUXREG[i])); //RDCV Register
-		cmd_pec = LTC_PEC15_Calc(2, cmd);
+		cmd_pec = ltc_pec15_calc(2, cmd);
 		cmd[2] = (uint8_t) (cmd_pec >> 8);
 		cmd[3] = (uint8_t) (cmd_pec);
 
-		LTC_Wakeup_Idle(); //Wake LTC up
+		wakeup_idle(); //Wake LTC up
 
 		LTC_nCS_Low(); //Pull CS low
 
@@ -224,7 +224,7 @@ LTC_SPI_StatusTypeDef LTC_ReadRawCellTemps(uint16_t *read_auxiliary) {
 		}
 
 		// Process the received data
-		for (uint8_t dev_idx = 0; dev_idx < LTC_Get_Num_Devices(); dev_idx++) {
+		for (uint8_t dev_idx = 0; dev_idx < get_num_devices(); dev_idx++) {
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint8_t *data_ptr = &read_auxiliary_reg[dev_idx * REG_LEN];
@@ -244,7 +244,7 @@ LTC_SPI_StatusTypeDef LTC_ReadRawCellTemps(uint16_t *read_auxiliary) {
 /*
  Starts cell voltage conversion
  */
-void LTC_ADCV(uint8_t MD, //ADC Mode
+void ltc_adcv(uint8_t MD, //ADC Mode
 		uint8_t DCP, //Discharge Permit
 		uint8_t CH //Cell Channels to be measured
 		) {
@@ -256,17 +256,17 @@ void LTC_ADCV(uint8_t MD, //ADC Mode
 	cmd[0] = md_bits + 0x02;
 	md_bits = (MD & 0x01) << 7;
 	cmd[1] = md_bits + 0x60 + (DCP << 4) + CH;
-	cmd_pec = LTC_PEC15_Calc(2, cmd);
+	cmd_pec = ltc_pec15_calc(2, cmd);
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
 	cmd[3] = (uint8_t) (cmd_pec);
 
-	LTC_Wakeup_Idle(); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+	wakeup_idle(); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
 	LTC_nCS_Low();
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
 	LTC_nCS_High();
 }
 
-void LTC_ADAX(uint8_t MD, //ADC Mode
+void ltc_adax(uint8_t MD, //ADC Mode
 		uint8_t CHG //GPIO Channels to be measured)
 		) {
 	uint8_t cmd[4];
@@ -277,7 +277,7 @@ void LTC_ADAX(uint8_t MD, //ADC Mode
 	cmd[0] = md_bits + 0x04;
 	md_bits = (MD & 0x01) << 7;
 	cmd[1] = md_bits + 0x60 + CHG;
-	cmd_pec = LTC_PEC15_Calc(2, cmd);
+	cmd_pec = ltc_pec15_calc(2, cmd);
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
 	cmd[3] = (uint8_t) (cmd_pec);
 
@@ -287,13 +287,13 @@ void LTC_ADAX(uint8_t MD, //ADC Mode
 	 spi_write_array(4,cmd);
 	 output_high(LTC6811_CS);
 	 */
-	LTC_Wakeup_Idle(); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+	wakeup_idle(); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
 	LTC_nCS_Low();
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
 	LTC_nCS_High();
 }
 
-int32_t LTC_PollAdc() {
+int32_t ltc_polladc() {
 	uint32_t counter = 0;
 	uint8_t finished = 0;
 	uint8_t current_time = 0;
@@ -302,11 +302,11 @@ int32_t LTC_PollAdc() {
 
 	cmd[0] = 0x07;
 	cmd[1] = 0x14;
-	cmd_pec = LTC_PEC15_Calc(2, cmd);
+	cmd_pec = ltc_pec15_calc(2, cmd);
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
 	cmd[3] = (uint8_t) (cmd_pec);
 
-	LTC_Wakeup_Idle(); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+	wakeup_idle(); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
 
 	LTC_nCS_Low();
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
@@ -324,9 +324,9 @@ int32_t LTC_PollAdc() {
 }
 
 /* Read and store raw cell voltages at uint8_t 2d pointer */
-int LTC_CalcPackVoltage(uint16_t *read_voltages) {
+int calc_pack_voltage(uint16_t *read_voltages) {
 	int packvoltage = 0;
-	for (int i = 0; i < LTC_Get_Num_Devices() * LTC_Get_Num_Series_Groups();
+	for (int i = 0; i < get_num_devices() * get_series_groups();
 			i++) {
 		packvoltage += read_voltages[i];
 	}
@@ -366,7 +366,7 @@ static const unsigned int crc15Table[256] = { 0x0, 0xc599, 0xceab, 0xb32,
 		0xba39, 0xb10b, 0x7492, 0x5368, 0x96f1, 0x9dc3, 0x585a, 0x8ba7, 0x4e3e,
 		0x450c, 0x8095 };
 
-uint16_t LTC_PEC15_Calc(uint8_t len, //Number of bytes that will be used to calculate a PEC
+uint16_t ltc_pec15_calc(uint8_t len, //Number of bytes that will be used to calculate a PEC
 		uint8_t *data //Array of data that will be used to calculate a PEC
 		) {
 	uint16_t remainder, addr;

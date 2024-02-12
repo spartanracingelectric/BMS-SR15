@@ -140,8 +140,8 @@ int main(void)
 	TimerPacket_Init(&timerpacket_safety, SAFETY_DELAY);
 	//Pull SPI1 nCS HIGH (deselect)
 	LTC_nCS_High();
-	LTC_Set_Num_Devices(NUM_DEVICES);
-	LTC_Set_Num_Series_Groups(NUM_CELL_SERIES_GROUP);
+	set_num_devices(NUM_DEVICES);
+	set_series_groups(NUM_CELL_SERIES_GROUP);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -155,14 +155,14 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc_volt)) {
-			LTC_Wakeup_Sleep();
+			wakeup_sleep();
 			readVolt(modVoltage.cell_volt);
 			//print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
 		}
 
 		if (TimerPacket_FixedPulse(&timerpacket_ltc_temp)) {
 			//start sending to mux to read temperatures
-			LTC_Wakeup_Sleep();
+			wakeup_sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
 				readTemp(i, modVoltage.cell_temp, modVoltage.read_auxreg);
 				HAL_Delay(100);
