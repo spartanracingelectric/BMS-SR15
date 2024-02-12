@@ -41,16 +41,16 @@ extern CAN_HandleTypeDef hcan2;
 void MX_CAN2_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-HAL_StatusTypeDef CAN1_Start();
-HAL_StatusTypeDef CAN1_Activate();
-HAL_StatusTypeDef CAN1_Send(struct CANMessage *ptr);
-void CAN1_SettingsInit(struct CANMessage *ptr);
+HAL_StatusTypeDef CAN_Start();
+HAL_StatusTypeDef CAN_Activate();
+HAL_StatusTypeDef CAN_Send(struct CANMessage *ptr);
+void CAN_SettingsInit(struct CANMessage *ptr);
 void setCANId(struct CANMessage *ptr, uint32_t id);
 
-void CAN1_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt);
-void CAN1_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp);
-void CAN1_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModuleVoltage *batt);
-void CAN1_Send_Safety_Checker(struct CANMessage *ptr, uint16_t *checker);
+void CAN_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt);
+void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp);
+void CAN_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModuleVoltage *batt);
+void CAN_Send_Safety_Checker(struct CANMessage *ptr, uint16_t *checker);
 
 /* USER CODE END Prototypes */
 

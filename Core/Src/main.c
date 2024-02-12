@@ -89,9 +89,9 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	GpioTimePacket tp_led_heartbeat;
-	TimerPacket timerpacket_ltc1;
-	TimerPacket timerpacket_ltc2;
-	TimerPacket timerpacket_can1;
+	TimerPacket timerpacket_ltc_volt;
+	TimerPacket timerpacket_ltc_temp;
+	TimerPacket timerpacket_can;
 	TimerPacket timerpacket_safety;
 
 	struct batteryModuleVoltage modVoltage = { .cell_volt = (uint16_t*) malloc(
@@ -130,13 +130,13 @@ int main(void)
   MX_USB_DEVICE_Init();
   MX_CAN2_Init();
   /* USER CODE BEGIN 2 */
-	CAN1_SettingsInit(&msg); // Start CAN at 0x00
+	CAN_SettingsInit(&msg); // Start CAN at 0x00
 	//Start timer
 	GpioTimePacket_Init(&tp_led_heartbeat, MCU_HEARTBEAT_LED_GPIO_Port,
 	MCU_HEARTBEAT_LED_Pin);
-	TimerPacket_Init(&timerpacket_ltc1, LTC_DELAY1);
-	TimerPacket_Init(&timerpacket_ltc2, LTC_DELAY2);
-	TimerPacket_Init(&timerpacket_can1, CAN1_DELAY);
+	TimerPacket_Init(&timerpacket_ltc_volt, LTC_VOlT_DELAY);
+	TimerPacket_Init(&timerpacket_ltc_temp, LTC_TEMP_DELAY);
+	TimerPacket_Init(&timerpacket_can, CAN1_DELAY);
 	TimerPacket_Init(&timerpacket_safety, SAFETY_DELAY);
 	//Pull SPI1 nCS HIGH (deselect)
 	LTC_nCS_High();
@@ -154,13 +154,13 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
-		if (TimerPacket_FixedPulse(&timerpacket_ltc1)) {
+		if (TimerPacket_FixedPulse(&timerpacket_ltc_volt)) {
 			LTC_Wakeup_Sleep();
 			readVolt(modVoltage.cell_volt);
 			//print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
 		}
 
-		if (TimerPacket_FixedPulse(&timerpacket_ltc2)) {
+		if (TimerPacket_FixedPulse(&timerpacket_ltc_temp)) {
 			//start sending to mux to read temperatures
 			LTC_Wakeup_Sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
@@ -175,7 +175,7 @@ int main(void)
 				tempindex = 0;
 			}
 			HAL_Delay(2300);
-			print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
+			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
 		}
 
 		if(loop_count == 0){
@@ -193,11 +193,11 @@ int main(void)
 		}
 
 
-		if (TimerPacket_FixedPulse(&timerpacket_can1)) {
-//			CAN1_Send_Safety_Checker(&msg,&safetyChecker);
-			CAN1_Send_Cell_Summary(&msg, &modVoltage);
-			CAN1_Send_Voltage(&msg, modVoltage.cell_volt);
-			CAN1_Send_Temperature(&msg, modVoltage.cell_temp);
+		if (TimerPacket_FixedPulse(&timerpacket_can)) {
+//			CAN_Send_Safety_Checker(&msg,&safetyChecker);
+			CAN_Send_Cell_Summary(&msg, &modVoltage);
+			CAN_Send_Voltage(&msg, modVoltage.cell_volt);
+			CAN_Send_Temperature(&msg, modVoltage.cell_temp);
 
 		}
 

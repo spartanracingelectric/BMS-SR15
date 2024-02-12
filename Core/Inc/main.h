@@ -95,8 +95,8 @@ void Error_Handler(void);
 #define NUM_THERM_TOTAL			NUM_DEVICES*NUM_THERM_PER_MOD
 #define NUM_AUX_GROUP			6
 #define NUM_AUXES				NUM_DEVICES*NUM_AUX_GROUP
-#define LTC_DELAY1				1000 //500ms update delay
-#define LTC_DELAY2				0 //500ms update delay
+#define LTC_VOlT_DELAY				1000 //500ms update delay
+#define LTC_TEMP_DELAY				0 //500ms update delay
 #define CAN1_DELAY				100
 #define SAFETY_DELAY			50
 #define LED_HEARTBEAT_DELAY_MS	500  //500ms update delay

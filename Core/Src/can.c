@@ -118,22 +118,22 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* canHandle)
 
 /* USER CODE BEGIN 1 */
 
-HAL_StatusTypeDef CAN1_Start() {
+HAL_StatusTypeDef CAN_Start() {
 	return HAL_CAN_Start(&hcan2);
 }
 
-HAL_StatusTypeDef CAN1_Activate(){
+HAL_StatusTypeDef CAN_Activate(){
 	return HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING);
 }
 
 
-HAL_StatusTypeDef CAN1_Send(struct CANMessage *ptr){
+HAL_StatusTypeDef CAN_Send(struct CANMessage *ptr){
 	return HAL_CAN_AddTxMessage(&hcan2, &ptr->TxHeader, (uint8_t*) ptr->data, &ptr->TxMailbox);
 }
 
-void CAN1_SettingsInit(struct CANMessage *ptr){
-	CAN1_Start();
-	CAN1_Activate();
+void CAN_SettingsInit(struct CANMessage *ptr){
+	CAN_Start();
+	CAN_Activate();
 	ptr->TxHeader.IDE= CAN_ID_STD;
 	ptr->TxHeader.StdId = 0x00;
 	ptr->TxHeader.RTR = CAN_RTR_DATA;
@@ -144,7 +144,7 @@ void setCANId(struct CANMessage *ptr,uint32_t id){
 	ptr->TxHeader.StdId = id;
 }
 
-void CAN1_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt){
+void CAN_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt){
 	uint16_t CAN_ID = 0x630;
 	setCANId(ptr, CAN_ID);
 	for (int i = 0; i < NUM_CELLS; i++) {
@@ -167,12 +167,12 @@ void CAN1_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt){
 			setCANId(ptr, CAN_ID);
 		}
 		HAL_Delay(10);
-		CAN1_Send(ptr);
+		CAN_Send(ptr);
 	}
 
 }
 
-void CAN1_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp){
+void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp){
 	uint16_t CAN_ID = 0x680;
 	setCANId(ptr, CAN_ID);
 	for (uint8_t i = 0; i < NUM_THERM_TOTAL; i++) {
@@ -195,12 +195,12 @@ void CAN1_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp){
 			setCANId(ptr, CAN_ID);
 		}
 		HAL_Delay(10);
-		CAN1_Send(ptr);
+		CAN_Send(ptr);
 	}
 
 }
 
-void CAN1_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModuleVoltage *batt){
+void CAN_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModuleVoltage *batt){
 	uint16_t CAN_ID = 0x622;
 	setCANId(ptr, CAN_ID);
 
@@ -214,15 +214,15 @@ void CAN1_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModuleVoltage 
 	ptr->data[7] = (batt->cell_temp_lowest) >> 8;
 
 	HAL_Delay(10);
-	CAN1_Send(ptr);
+	CAN_Send(ptr);
 }
 
-void CAN1_Send_Safety_Checker(struct CANMessage *ptr, uint16_t *checker){
+void CAN_Send_Safety_Checker(struct CANMessage *ptr, uint16_t *checker){
 	uint16_t CAN_ID = 0x600;
 	setCANId(ptr, CAN_ID);
 	ptr->data[0] = *checker & 0xFF;
 	ptr->data[1] = (*(checker) >> 8) & 0xFF;
 	HAL_Delay(10);
-	CAN1_Send(ptr);
+	CAN_Send(ptr);
 }
 /* USER CODE END 1 */

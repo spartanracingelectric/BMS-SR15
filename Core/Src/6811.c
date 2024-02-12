@@ -16,7 +16,7 @@ static const uint16_t LTC_CMD_RDAUXB = 0x000E;
 static const uint16_t LTC_CMD_RDCV[4] = { LTC_CMD_RDCVA, LTC_CMD_RDCVB,
 		LTC_CMD_RDCVC, LTC_CMD_RDCVD };
 
-static const uint16_t LTC_CMD_AUXREG[2] = { LTC_CMD_RDAUXA, LTC_CMD_RDAUXB, };
+static const uint16_t LTC_CMD_AUXREG[2] = { LTC_CMD_RDAUXA, LTC_CMD_RDAUXB };
 
 static const uint8_t LTC_SPI_TX_BIT_OFFSET = 0; //Num bits to shift RX status code
 static const uint8_t LTC_SPI_RX_BIT_OFFSET = 4; //Num bits to shift RX status code
