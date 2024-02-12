@@ -104,7 +104,7 @@ void MX_ADC2_Init(void)
   sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
   if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
   {
-    Error_Handler();
+		Error_Handler();
   }
   /* USER CODE BEGIN ADC2_Init 2 */
 

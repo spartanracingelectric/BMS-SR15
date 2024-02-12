@@ -51,7 +51,7 @@ void MX_SPI1_Init(void)
   hspi1.Init.CRCPolynomial = 10;
   if (HAL_SPI_Init(&hspi1) != HAL_OK)
   {
-    Error_Handler();
+		Error_Handler();
   }
   /* USER CODE BEGIN SPI1_Init 2 */
 

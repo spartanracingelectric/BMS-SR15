@@ -1,0 +1,39 @@
+VERSION "HIPBNYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY/4/%%%/4/'%**4YYY///"
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+
+BS_:
+
+BU_: BMS1000M VCU
+
+
+BO_ 1536 BMS_Safety_Checker: 1 [CUSTOM_BMS]
+ SG_ Pack_High_Volt_Fault : 8|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Pack_Low_Volt_Fault : 7|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_High_Volt_Fault : 6|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_Low_Volt_Fault : 5|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_High_Temp_Fault : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+
+
+
+

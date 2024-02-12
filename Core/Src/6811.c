@@ -77,8 +77,7 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
 	const uint8_t ARR_SIZE_REG = get_num_devices() * REG_LEN;
 	uint8_t read_voltages_reg[ARR_SIZE_REG]; // Increased in size to handle multiple devices
 
-	for (uint8_t i = 0;
-			i < (get_series_groups() / LTC_SERIES_GROUPS_PER_RDCV);
+	for (uint8_t i = 0; i < (get_series_groups() / LTC_SERIES_GROUPS_PER_RDCV);
 			i++) {
 		uint8_t cmd[4];
 		uint16_t cmd_pec;
@@ -154,8 +153,7 @@ void ltc_wrcomm(uint8_t total_ic, //The number of ICs being written to
 			cmd[cmd_index] = comm[current_byte]; //adding the config data to the array to be sent
 			cmd_index = cmd_index + 1;
 		}
-		comm_pec = (uint16_t) ltc_pec15_calc(BYTES_IN_REG,
-				&comm[0]); // calculating the PEC for each ICs configuration register data
+		comm_pec = (uint16_t) ltc_pec15_calc(BYTES_IN_REG, &comm[0]); // calculating the PEC for each ICs configuration register data
 		cmd[cmd_index] = (uint8_t) (comm_pec >> 8);
 		cmd[cmd_index + 1] = (uint8_t) comm_pec;
 		cmd_index = cmd_index + 2;
@@ -185,7 +183,7 @@ void ltc_stcomm(uint8_t len) {
 	wakeup_idle(); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
 	LTC_nCS_Low();
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
-	for (int i = 0; i < len*3; i++) {
+	for (int i = 0; i < len * 3; i++) {
 		HAL_SPI_Transmit(&hspi1, (uint8_t*) 0xFF, 1, 100);
 	}
 	LTC_nCS_High();
@@ -326,13 +324,11 @@ int32_t ltc_polladc() {
 /* Read and store raw cell voltages at uint8_t 2d pointer */
 int calc_pack_voltage(uint16_t *read_voltages) {
 	int packvoltage = 0;
-	for (int i = 0; i < get_num_devices() * get_series_groups();
-			i++) {
+	for (int i = 0; i < get_num_devices() * get_series_groups(); i++) {
 		packvoltage += read_voltages[i];
 	}
 	return packvoltage;
 }
-
 
 static const unsigned int crc15Table[256] = { 0x0, 0xc599, 0xceab, 0xb32,
 		0xd8cf, 0x1d56, 0x1664, 0xd3fd, 0xf407, 0x319e,
