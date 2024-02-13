@@ -1,11 +1,11 @@
 #include "safety.h"
-#include "usbd_cdc_if.h"
 
 void cellSummary(struct batteryModuleVoltage *batt){
 	batt->cell_volt_highest = batt->cell_volt[0];
 	batt->cell_volt_lowest = batt->cell_volt[0];
 	batt->cell_temp_highest = batt->cell_temp[0];
 	batt->cell_temp_lowest = batt->cell_temp[0];
+	batt->pack_voltage = 0;
 
 	for(int i = 1; i < NUM_CELLS; i++){
 
@@ -47,7 +47,7 @@ void fault_and_warning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_
 		*fault |= 0b00100000;
 	}
 
-	if(batt->cell_volt_highest>= CELL_HIGH_VOLT_FAULT){
+		if(batt->cell_volt_highest>= CELL_HIGH_VOLT_FAULT){
 		*fault |= 0b00010000;
 	}
 

@@ -7,18 +7,24 @@
 [BUSMASTER_VERSION] [3.2.2]
 [NUMBER_OF_MESSAGES] 1
 
-[START_MSG] BMS_Safety_Checker,1536,1,5,1,S,[CUSTOM_BMS]
-[START_SIGNALS] Pack_High_Volt_Fault,1,2,0,B,1,0,1,0,1,,,
-[START_SIGNALS] Pack_Low_Volt_Fault,1,1,7,B,1,0,1,0,1,,,
-[START_SIGNALS] Cell_High_Volt_Fault,1,1,6,B,1,0,1,0,1,,,
+[START_MSG] BMS_Safety_Checker,1536,2,11,1,S,[CUSTOM_BMS]
+[START_SIGNALS] Pack_High_Volt_Warning,1,2,7,B,1,0,1,0,1,,,
+[START_SIGNALS] Pack_Low_Volt_Warning,1,2,6,B,1,0,1,0,1,,,
+[START_SIGNALS] Cell_Low_Volt_Warning,1,2,5,B,1,0,1,0,1,,,
+[START_SIGNALS] Cell_High_Volt_Warning,1,2,4,B,1,0,1,0,1,,,
+[START_SIGNALS] Cell_High_Temp_Warning,1,2,3,B,1,0,1,0,1,,,
+[START_SIGNALS] Cell_Low_Temp_Warning,1,2,2,B,1,0,1,0,1,,,
+[START_SIGNALS] Pack_High_Volt_Fault,1,1,7,B,1,0,1,0,1,,,
+[START_SIGNALS] Pack_Low_Volt_Fault,1,1,6,B,1,0,1,0,1,,,
 [START_SIGNALS] Cell_Low_Volt_Fault,1,1,5,B,1,0,1,0,1,,,
-[START_SIGNALS] Cell_High_Temp_Fault,1,1,4,B,1,0,1,0,1,,,
+[START_SIGNALS] Cell_High_Volt_Fault,1,1,4,B,1,0,1,0,1,,,
+[START_SIGNALS] Cell_High_Temp_Fault,1,1,3,B,1,0,1,0,1,,,
 [END_MSG]
 
 [START_VALUE_TABLE]
 [END_VALUE_TABLE]
 
-[NODE] BMS1000M,VCU
+[NODE] CUSTOM_BMS
 
 [START_DESC]
 [START_DESC_NET]

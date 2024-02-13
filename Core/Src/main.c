@@ -32,6 +32,7 @@
 #include "print.h"
 #include "module.h"
 #include "safety.h"
+#include "usbd_cdc_if.h"
 
 /* USER CODE END Includes */
 

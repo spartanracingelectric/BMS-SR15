@@ -215,8 +215,8 @@ void CAN_Send_Cell_Summary(struct CANMessage *ptr,
 void CAN_Send_Safety_Checker(struct CANMessage *ptr, uint8_t* faults, uint8_t* warnings){
 	uint16_t CAN_ID = 0x600;
 	setCANId(ptr, CAN_ID);
-	ptr->data[0] = *faults & 0xFF;
-	ptr->data[1] = *warnings & 0xFF;
+	ptr->data[0] = *faults;
+	ptr->data[1] = *warnings;
 	HAL_Delay(10);
 	CAN_Send(ptr);
 }
