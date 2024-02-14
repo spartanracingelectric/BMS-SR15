@@ -199,7 +199,7 @@ void CAN_Send_Cell_Summary(struct CANMessage *ptr,
 	uint16_t CAN_ID = 0x622;
 	setCANId(ptr, CAN_ID);
 
-	ptr->data[0] = batt->cell_temp_highest;
+	ptr->data[0] = batt->cell_volt_highest;
 	ptr->data[1] = (batt->cell_volt_highest) >> 8;
 	ptr->data[2] = batt->cell_volt_lowest;
 	ptr->data[3] = (batt->cell_volt_lowest) >> 8;

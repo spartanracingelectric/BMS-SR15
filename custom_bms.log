@@ -1,0 +1,7 @@
+Conversion Warnings Log
+
+
+MSG_ID: 1675 	MSG_TYPE: S 	MSG_NAME: BMS_M5_Cell_Temperature_Data_2
+	SIG_NAME: BMS_Cell_8_Temperature, STATUS: Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: BMS_Cell_7_Temperature, STATUS: Invalid Max or Min value., ACTION: Value Set to default
+	SIG_NAME: BMS_Cell_6_Temperature, STATUS: Invalid Max or Min value., ACTION: Value Set to default

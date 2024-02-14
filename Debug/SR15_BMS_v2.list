@@ -3319,9 +3319,9 @@ void CAN_Send_Cell_Summary(struct CANMessage *ptr,
  8002116:	6878      	ldr	r0, [r7, #4]
  8002118:	f7ff feca 	bl	8001eb0 <setCANId>
 
-	ptr->data[0] = batt->cell_temp_highest;
+	ptr->data[0] = batt->cell_volt_highest;
  800211c:	683b      	ldr	r3, [r7, #0]
- 800211e:	89db      	ldrh	r3, [r3, #14]
+ 800211e:	895b      	ldrh	r3, [r3, #10]
  8002120:	b2da      	uxtb	r2, r3
  8002122:	687b      	ldr	r3, [r7, #4]
  8002124:	771a      	strb	r2, [r3, #28]
