@@ -44,6 +44,9 @@ void wakeup_sleep(void);
 
 LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages);
 
+/* write to PWM register to control balancing functionality */
+void ltc6811_wrpwm(uint8_t total_ic, uint8_t pwm);
+
 void ltc_wrcomm(uint8_t total_ic, //The number of ICs being written to
 		uint8_t comm[6] //A two dimensional array of the comm data that will be written
 		);

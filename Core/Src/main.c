@@ -149,6 +149,13 @@ int main(void) {
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
 	uint8_t loop_count = 3;
+
+	// Config Balancing controls: 
+	// 4'b1111 for no balance 
+	// 4'b0000 for balance 
+
+	ltc6811_wrpwm(NUM_DEVICES, 0x00); 
+
 	while (1) {
 		/* USER CODE END WHILE */
 
