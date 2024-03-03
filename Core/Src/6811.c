@@ -182,9 +182,12 @@ void ltc6811_wrpwm(uint8_t total_ic, uint8_t pwm)
 	free(cmd);
 }
 
-void ltc_wrcomm(uint8_t total_ic, // The number of ICs being written to
-				uint8_t comm[6]	  // A two dimensional array of the comm data that will be written
-)
+/**
+ * 
+ * @param total_ic	The number of ICs being written to
+ * @param comm[6]	A two dimensional array of the comm data that will be written
+*/
+void ltc_wrcomm(uint8_t total_ic, uint8_t comm[6])
 {
 	const uint8_t BYTES_IN_REG = 6;
 	const uint8_t CMD_LEN = 4 + (8 * total_ic);
