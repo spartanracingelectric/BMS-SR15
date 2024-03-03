@@ -79,7 +79,7 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint8_t config[][6] = {{ 0xF8, 0x00, 0x00, 0x00, 0x01, 0x00 }};
 /* USER CODE END 0 */
 
 /**
@@ -155,7 +155,7 @@ int main(void) {
 	// 4'b0000 for balance 
 
 	ltc6811_wrpwm(NUM_DEVICES, 0x00);			// Sets up for balance.  
-
+	ltc6811_wrcfg(NUM_DEVICES, config);
 	// TODO test discharge by turning on DCC bits. 
 
 

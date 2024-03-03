@@ -182,6 +182,51 @@ void ltc6811_wrpwm(uint8_t total_ic, uint8_t pwm)
 	free(cmd);
 }
 
+void ltc6811_wrcfg(uint8_t total_ic, //The number of ICs being written to
+		uint8_t config[][6] //A two dimensional array of the configuration data that will be written
+		) {
+	const uint8_t BYTES_IN_REG = 6;
+	const uint8_t CMD_LEN = 4 + (8 * total_ic);
+	uint8_t *cmd;
+	uint16_t cfg_pec;
+	uint8_t cmd_index; //command counter
+
+	cmd = (uint8_t*) malloc(CMD_LEN * sizeof(uint8_t));
+
+	cmd[0] = 0x00;
+	cmd[1] = 0x01;
+	cmd[2] = 0x3d;
+	cmd[3] = 0x6e;
+
+	cmd_index = 4;
+	for (uint8_t current_ic = total_ic; current_ic > 0; current_ic--) // executes for each ltc6811 in daisy chain, this loops starts with
+			{
+		// the last IC on the stack. The first configuration written is
+		// received by the last IC in the daisy chain
+
+		for (uint8_t current_byte = 0; current_byte < BYTES_IN_REG;
+				current_byte++) // executes for each of the 6 bytes in the CFGR register
+				{
+			// current_byte is the byte counter
+
+			cmd[cmd_index] = config[current_ic - 1][current_byte]; //adding the config data to the array to be sent
+			cmd_index = cmd_index + 1;
+		}
+
+		cfg_pec = (uint16_t) ltc_pec15_calc(BYTES_IN_REG,
+				&config[current_ic - 1][0]); // calculating the PEC for each ICs configuration register data
+		cmd[cmd_index] = (uint8_t) (cfg_pec >> 8);
+		cmd[cmd_index + 1] = (uint8_t) cfg_pec;
+		cmd_index = cmd_index + 2;
+	}
+
+	wakeup_idle(); // This will guarantee that the ltc6811 isoSPI port is awake.This command can be removed.
+	LTC_nCS_Low();
+	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, CMD_LEN, 100);
+	LTC_nCS_High();
+	free(cmd);
+}
+
 /**
  * 
  * @param total_ic	The number of ICs being written to
