@@ -154,8 +154,8 @@ int main(void) {
 	// 4'b1111 for no balance 
 	// 4'b0000 for balance 
 
-	ltc6811_wrpwm(NUM_DEVICES, 0x00);			// Sets up for balance.  
-	ltc6811_wrcfg(NUM_DEVICES, config);
+	wakeup_sleep();
+	ltc6811_wrpwm(NUM_DEVICES, 0x00);
 	// TODO test discharge by turning on DCC bits. 
 
 
@@ -167,7 +167,9 @@ int main(void) {
 		if (TimerPacket_FixedPulse(&timerpacket_ltc_volt)) {
 			wakeup_sleep();
 			readVolt(modVoltage.cell_volt);
-			//print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
+			wakeup_idle(); // Sets up for balance.
+			ltc6811_wrcfg(NUM_DEVICES, config);
+			print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
 		}
 
 		if (TimerPacket_FixedPulse(&timerpacket_ltc_temp)) {
