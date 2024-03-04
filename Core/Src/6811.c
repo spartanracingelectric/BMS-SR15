@@ -140,6 +140,10 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages)
  */
 void ltc6811_wrpwm(uint8_t total_ic, uint8_t pwm)
 {
+	// NOTE currently chaging this method to only assign a specific PWM to all registers
+
+	// TODO change it back to relying on @param pwm for duty cycle assignment. 
+
 	const uint8_t BYTES_IN_REG = 6;
 	const uint8_t CMD_LEN = 4 + (8 * total_ic);
 	uint8_t *cmd;
@@ -165,8 +169,21 @@ void ltc6811_wrpwm(uint8_t total_ic, uint8_t pwm)
 		{
 			// current_byte is the byte counter
 
-			cmd[cmd_index] = pwm; // adding the pwm data to the array to be sent
-			cmd_index = cmd_index + 1;
+			// NOTE this is real code: 
+			// cmd[cmd_index] = pwm; // adding the pwm data to the array to be sent
+			// cmd_index = cmd_index + 1;
+
+			// NOTE use this code to change individual PWM bits that control 4 bits. 
+			if (cmd_index % 4 == 0) {
+				cmd[cmd_index] = 1; 
+			} else if (cmd_index % 4 == 1) {
+				cmd[cmd_index] = 1; 
+			} else if (cmd_index % 4 == 2) {
+				cmd[cmd_index] = 1; 
+			} else { 
+				cmd[cmd_index] = 0; 
+			}
+
 		}
 
 		pwm_pec = (uint16_t)ltc_pec15_calc(BYTES_IN_REG, &pwm); // calculating the PEC for each ICs configuration register data
@@ -199,22 +216,21 @@ void ltc6811_wrcfg(uint8_t total_ic, //The number of ICs being written to
 	cmd[3] = 0x6e;
 
 	cmd_index = 4;
-	for (uint8_t current_ic = total_ic; current_ic > 0; current_ic--) // executes for each ltc6811 in daisy chain, this loops starts with
-			{
+	// executes for each ltc6811 in daisy chain, this loops starts with
+	for (uint8_t current_ic = total_ic; current_ic > 0; current_ic--) 
+	{
 		// the last IC on the stack. The first configuration written is
 		// received by the last IC in the daisy chain
 
-		for (uint8_t current_byte = 0; current_byte < BYTES_IN_REG;
-				current_byte++) // executes for each of the 6 bytes in the CFGR register
-				{
+		// executes for each of the 6 bytes in the CFGR register
+		for (uint8_t current_byte = 0; current_byte < BYTES_IN_REG; current_byte++)	{
 			// current_byte is the byte counter
 
 			cmd[cmd_index] = config[current_ic - 1][current_byte]; //adding the config data to the array to be sent
 			cmd_index = cmd_index + 1;
 		}
 
-		cfg_pec = (uint16_t) ltc_pec15_calc(BYTES_IN_REG,
-				&config[current_ic - 1][0]); // calculating the PEC for each ICs configuration register data
+		cfg_pec = (uint16_t) ltc_pec15_calc(BYTES_IN_REG, &config[current_ic - 1][0]); // calculating the PEC for each ICs configuration register data
 		cmd[cmd_index] = (uint8_t) (cfg_pec >> 8);
 		cmd[cmd_index + 1] = (uint8_t) cfg_pec;
 		cmd_index = cmd_index + 2;
