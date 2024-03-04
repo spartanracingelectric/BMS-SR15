@@ -153,13 +153,14 @@ void ltc6811_wrpwm(uint8_t total_ic, uint8_t pwm)
 
 	cmd = (uint8_t *)malloc(CMD_LEN * sizeof(uint8_t));
 
+	// init bits
 	cmd[0] = 0x00;
 	cmd[1] = 0x20;
 	cmd_pec = ltc_pec15_calc(2, cmd);
 	cmd[2] = (uint8_t)(cmd_pec >> 8);
 	cmd[3] = (uint8_t)(cmd_pec);
 
-	cmd_index = 4;
+	cmd_index = 4;				// Command bits
 	for (uint8_t current_ic = total_ic; current_ic > 0; current_ic--) // executes for each ltc6811 in daisy chain, this loops starts with
 	{
 		// the last IC on the stack. The first configuration written is
@@ -291,8 +292,8 @@ void ltc_wrcomm(uint8_t total_ic, uint8_t comm[6])
 	free(cmd);
 }
 
-/*
- Shifts data in COMM register out over ltc6811 SPI/I2C port
+/**
+ * Shifts data in COMM register out over ltc6811 SPI/I2C port
  */
 void ltc_stcomm(uint8_t len)
 {
