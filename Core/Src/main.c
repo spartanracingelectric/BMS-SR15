@@ -79,7 +79,7 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t config[][6] = {{ 0xF8, 0x00, 0x00, 0x00, 0x01, 0x00 }};
+uint8_t config[][6] = { { 0xF8, 0x00, 0x00, 0x00, 0x01, 0x00 } };
 /* USER CODE END 0 */
 
 /**
@@ -154,10 +154,7 @@ int main(void) {
 	// 4'b1111 for no balance 
 	// 4'b0000 for balance 
 
-	wakeup_sleep();
-	ltc6811_wrpwm(NUM_DEVICES, 0x00);
 	// TODO test discharge by turning on DCC bits. 
-
 
 	while (1) {
 		/* USER CODE END WHILE */
@@ -167,7 +164,9 @@ int main(void) {
 		if (TimerPacket_FixedPulse(&timerpacket_ltc_volt)) {
 			wakeup_sleep();
 			readVolt(modVoltage.cell_volt);
-			wakeup_idle(); // Sets up for balance.
+			wakeup_idle();
+			ltc6811_wrpwm(NUM_DEVICES, 0x00);
+			wakeup_idle();
 			ltc6811_wrcfg(NUM_DEVICES, config);
 			print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
 		}
@@ -179,14 +178,14 @@ int main(void) {
 				readTemp(i, modVoltage.cell_temp, modVoltage.read_auxreg);
 				HAL_Delay(100);
 			}
-			if (indexpause == 8) {
-				tempindex = 8;
-				indexpause = 12;
-			} else if (indexpause == 12) {
-				indexpause = 8;
-				tempindex = 0;
-			}
-			HAL_Delay(2300);
+//			if (indexpause == 8) {
+//				tempindex = 8;
+//				indexpause = 12;
+//			} else if (indexpause == 12) {
+//				indexpause = 8;
+//				tempindex = 0;
+//			}
+//			HAL_Delay(2300);
 			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
 		}
 
@@ -204,7 +203,7 @@ int main(void) {
 		}
 
 		if (TimerPacket_FixedPulse(&timerpacket_can)) {
-			CAN_Send_Safety_Checker(&msg,&safetyFaults, &safetyWarnings);
+			CAN_Send_Safety_Checker(&msg, &safetyFaults, &safetyWarnings);
 			CAN_Send_Cell_Summary(&msg, &modVoltage);
 			CAN_Send_Voltage(&msg, modVoltage.cell_volt);
 			CAN_Send_Temperature(&msg, modVoltage.cell_temp);
