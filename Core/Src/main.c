@@ -195,7 +195,6 @@ int main(void) {
 				indexpause = 8;
 				tempindex = 0;
 			}
-//			HAL_Delay(2300);
 			print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
 		}
 

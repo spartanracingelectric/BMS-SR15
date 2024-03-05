@@ -3980,7 +3980,6 @@ int main(void) {
  80024ec:	2300      	movs	r3, #0
  80024ee:	f887 3087 	strb.w	r3, [r7, #135]	; 0x87
 			}
-//			HAL_Delay(2300);
 			print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
  80024f2:	6b3b      	ldr	r3, [r7, #48]	; 0x30
  80024f4:	4619      	mov	r1, r3
