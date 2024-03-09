@@ -79,8 +79,8 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t config[][6] = { { 0xF8, 0x00, 0x00, 0x00, 0xFF, 0x00 } };
-uint8_t BMS_SWT[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, { 0x69, 0x08,
+static uint8_t config[][6] = { { 0xF8, 0x00, 0x00, 0x00, 0xFF, 0x0F } };
+static uint8_t BMS_SWT[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, { 0x69, 0x08,
 		0x0F, 0x09, 0x7F, 0xF9 } };
 /* USER CODE END 0 */
 
@@ -157,7 +157,10 @@ int main(void) {
 	// 4'b0000 for balance 
 
 	// TODO test discharge by turning on DCC bits. 
-
+	wakeup_sleep();
+	ltc6811_wrpwm(NUM_DEVICES, 0xAA);
+	wakeup_idle();
+	ltc6811_wrcfg(NUM_DEVICES, config);
 	while (1) {
 		/* USER CODE END WHILE */
 
@@ -166,11 +169,7 @@ int main(void) {
 		if (TimerPacket_FixedPulse(&timerpacket_ltc_volt)) {
 			wakeup_sleep();
 			readVolt(modVoltage.cell_volt);
-//			wakeup_idle();
-//			ltc6811_wrpwm(NUM_DEVICES, 0xAA);
-//			wakeup_idle();
-//			ltc6811_wrcfg(NUM_DEVICES, config);
-			//print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
+			print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
 		}
 
 		if (TimerPacket_FixedPulse(&timerpacket_ltc_temp)) {
@@ -195,7 +194,7 @@ int main(void) {
 				indexpause = 8;
 				tempindex = 0;
 			}
-			print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
+			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
 		}
 
 		if (loop_count == 0) {
