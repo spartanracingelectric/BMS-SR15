@@ -33,6 +33,7 @@
 #include "module.h"
 #include "safety.h"
 #include "usbd_cdc_if.h"
+#include "balance.h"
 
 /* USER CODE END Includes */
 
@@ -79,9 +80,8 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static uint8_t config[][6] = { { 0xF8, 0x00, 0x00, 0x00, 0xFF, 0x0F } };
-static uint8_t BMS_SWT[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, { 0x69, 0x08,
-		0x0F, 0x09, 0x7F, 0xF9 } };
+static uint8_t BMS_SWT[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, { 0x69,
+		0x08, 0x0F, 0x09, 0x7F, 0xF9 } };
 /* USER CODE END 0 */
 
 /**
@@ -157,10 +157,6 @@ int main(void) {
 	// 4'b0000 for balance 
 
 	// TODO test discharge by turning on DCC bits. 
-	wakeup_sleep();
-	ltc6811_wrpwm(NUM_DEVICES, 0xAA);
-	wakeup_idle();
-	ltc6811_wrcfg(NUM_DEVICES, config);
 	while (1) {
 		/* USER CODE END WHILE */
 
@@ -204,11 +200,12 @@ int main(void) {
 				if (safetyFaults != 0) {
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 				}
-
 			}
 		} else {
 			loop_count--;
 		}
+
+		startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES, modVoltage.cell_volt_lowest);
 
 		if (TimerPacket_FixedPulse(&timerpacket_can)) {
 			CAN_Send_Safety_Checker(&msg, &safetyFaults, &safetyWarnings);
