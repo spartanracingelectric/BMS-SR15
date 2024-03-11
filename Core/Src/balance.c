@@ -6,8 +6,6 @@
  */
 
 #include "balance.h"
-#include <math.h>
-#include "print.h"
 #include "6811.h"
 
 //DEFAULT VALUES THAT ARE SET IN CONFIG REGISTERS
