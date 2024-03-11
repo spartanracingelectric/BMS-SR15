@@ -202,6 +202,10 @@ int main(void) {
 			startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
 					modVoltage.cell_volt_lowest);
 
+			// Current sense: 
+			GPIO_PinState curr_sense_val = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4);
+
+
 			//calling all CAN realated methods
 			CAN_Send_Safety_Checker(&msg, &safetyFaults, &safetyWarnings);
 			CAN_Send_Cell_Summary(&msg, &modVoltage);

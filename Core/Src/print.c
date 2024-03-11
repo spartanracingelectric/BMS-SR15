@@ -7,6 +7,21 @@
 
 #include "print.h"
 
+/**
+ * @brief method used to PRINT CURRENT VALUE ONLY. 
+ * @param current_value value output from HAL_read input. 
+*/
+void print_curr(uint16_t current_value) {
+    char out_buf[20];
+    sprintf(out_buf, "Current: %u/10000\n", current_value);
+    USB_Transmit(out_buf, strlen(out_buf));
+}
+
+/**
+ * @brief method used to print out adc information. 
+ * @param len length of array 
+ * @param read_temp pointer to array containing info. 
+*/
 void print(uint8_t len, uint16_t *read_temp) {
 	char buf[20];
 	char out_buf[2048] = "";
