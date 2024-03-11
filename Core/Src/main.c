@@ -193,9 +193,9 @@ int main(void) {
 			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
 		}
 
+		cellSummary(&modVoltage);
 		if (loop_count == 0) {
 			if (TimerPacket_FixedPulse(&timerpacket_safety)) {
-				cellSummary(&modVoltage);
 				fault_and_warning(&modVoltage, &safetyFaults, &safetyWarnings);
 				if (safetyFaults != 0) {
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);

@@ -14,7 +14,7 @@ void cellSummary(struct batteryModuleVoltage *batt){
 		}
 
 		if(batt->cell_volt[i] < batt->cell_volt_lowest){
-			batt->cell_temp_lowest = batt->cell_volt[i];
+			batt->cell_volt_lowest = batt->cell_volt[i];
 		}
 
 		batt->pack_voltage += batt->cell_volt[i];
