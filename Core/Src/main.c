@@ -136,8 +136,7 @@ int main(void) {
 	TimerPacket_Init(&timerpacket_ltc, LTC_DELAY);
 	//Pull SPI1 nCS HIGH (deselect)
 	LTC_nCS_High();
-	set_num_devices(NUM_DEVICES);
-	set_series_groups(NUM_CELL_SERIES_GROUP);
+
 	/* USER CODE END 2 */
 
 	/* Infinite loop */

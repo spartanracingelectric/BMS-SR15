@@ -10,12 +10,7 @@
 #include "print.h"
 #include "6811.h"
 
-static uint8_t config[8][6] =
-		{ { 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00 }, { 0xF8, 0x00, 0x00, 0x00,
-				0x00, 0x00 }, { 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00 }, { 0xF8,
-				0x00, 0x00, 0x00, 0x00, 0x00 }, { 0xF8, 0x00, 0x00, 0x00, 0x00,
-				0x00 }, { 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00 }, { 0xF8, 0x00,
-				0x00, 0x00, 0x00, 0x00 }, { 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00 } };
+//DEFAULT VALUES THAT ARE SET IN CONFIG REGISTERS
 //static int GPIO[5] = { 1, 1, 1, 1, 1 };
 //static int REFON = 0;
 //static int DTEN = 0;
@@ -24,6 +19,13 @@ static uint8_t config[8][6] =
 //static uint8_t VOV_and_VUV = 0x00;
 //static uint8_t VOV = 0x00;
 //static int DCTO[4] = { 0, 0, 0, 0 };
+static uint8_t config[8][6] =
+		{ { 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00 }, { 0xF8, 0x00, 0x00, 0x00,
+				0x00, 0x00 }, { 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00 }, { 0xF8,
+				0x00, 0x00, 0x00, 0x00, 0x00 }, { 0xF8, 0x00, 0x00, 0x00, 0x00,
+				0x00 }, { 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00 }, { 0xF8, 0x00,
+				0x00, 0x00, 0x00, 0x00 }, { 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00 } };
+
 
 void startBalance(uint16_t *read_volt, uint8_t length, uint16_t lowest) {
 	wakeup_sleep();
@@ -41,10 +43,10 @@ void startBalance(uint16_t *read_volt, uint8_t length, uint16_t lowest) {
  */
 void dischargeAlgo(uint16_t *read_volt, uint8_t total_ic, uint16_t lowest) {
 
-	for (uint8_t dev_idx = 0; dev_idx < get_num_devices(); dev_idx++) {
+	for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
 		// check if each cell is close within 50 mV of the lowest cell.
 		uint8_t DCC[12];
-		for (uint8_t cell_idx = 0; cell_idx < get_series_groups(); cell_idx++) {
+		for (uint8_t cell_idx = 0; cell_idx < NUM_CELL_SERIES_GROUP; cell_idx++) {
 			if (read_volt[dev_idx * NUM_CELL_SERIES_GROUP + cell_idx] - lowest
 					> 50) {
 				DCC[cell_idx] = 1;
@@ -56,8 +58,14 @@ void dischargeAlgo(uint16_t *read_volt, uint8_t total_ic, uint16_t lowest) {
 	}
 }
 
+/**
+ * setting configuration registers
+ *
+ * @param device index
+ * @param array of DCC bits
+ */
 void setCfg(uint8_t dev_idx, uint8_t *DCC) {
-	for (uint8_t cell_idx = 0; cell_idx < get_series_groups(); cell_idx++) {
+	for (uint8_t cell_idx = 0; cell_idx < NUM_CELL_SERIES_GROUP; cell_idx++) {
 		if (DCC[cell_idx]) {
 			if (cell_idx < 8) {
 				config[dev_idx][4] |= (1 << cell_idx);

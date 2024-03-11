@@ -48,7 +48,7 @@ void readTemp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
 	ltc_polladc();
 	if (!read_cell_temps((uint16_t*) read_auxreg)) // Set to read back all aux registers
 			{
-		for (uint8_t dev_idx = 0; dev_idx < get_num_devices(); dev_idx++) {
+		for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint16_t data = read_auxreg[dev_idx * NUM_AUX_GROUP];

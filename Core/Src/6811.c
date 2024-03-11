@@ -6,53 +6,29 @@
  */
 #include "6811.h"
 
-static const uint16_t LTC_CMD_RDCVA = 0x0004;
-static const uint16_t LTC_CMD_RDCVB = 0x0006;
-static const uint16_t LTC_CMD_RDCVC = 0x0008;
-static const uint16_t LTC_CMD_RDCVD = 0x000A;
-static const uint16_t LTC_CMD_RDAUXA = 0x000C;
-static const uint16_t LTC_CMD_RDAUXB = 0x000E;
+#define LTC_CMD_RDCVA 0x0004
+#define LTC_CMD_RDCVB 0x0006
+#define LTC_CMD_RDCVC 0x0008
+#define LTC_CMD_RDCVD 0x000A
+#define LTC_CMD_RDAUXA 0x000C
+#define LTC_CMD_RDAUXB 0x000E
 
 static const uint16_t LTC_CMD_RDCV[4] = { LTC_CMD_RDCVA, LTC_CMD_RDCVB,
-		LTC_CMD_RDCVC, LTC_CMD_RDCVD };
+LTC_CMD_RDCVC, LTC_CMD_RDCVD };
 
 static const uint16_t LTC_CMD_AUXREG[2] = { LTC_CMD_RDAUXA, LTC_CMD_RDAUXB };
 
-static const uint8_t LTC_SPI_TX_BIT_OFFSET = 0;	// Num bits to shift RX status code
-static const uint8_t LTC_SPI_RX_BIT_OFFSET = 4;	// Num bits to shift RX status code
-static const uint8_t REG_LEN = 8;// number of bytes in the register + 2 bytes for the PEC
-static const uint8_t LTC_SERIES_GROUPS_PER_RDCV = 3; // Number of cell voltage groups per 8 byte register
-static const uint8_t LTC_SERIES_GROUPS_PER_RDAUX = 3;
-static const uint8_t num_aux_series_groups = 6; // Number of series groups
-static uint8_t num_devices;					// Keep visibility within this file
-static uint8_t series_groups;					// Number of series groups
-
-/* Set number of LTC6813/slave devices */
-void set_num_devices(uint8_t num) {
-	if (num)
-		num_devices = num; // Non-zero
-}
-
-/* Get number of LTC6813/slave devices */
-uint8_t get_num_devices(void) {
-	return num_devices;
-}
-
-/* Set number of series groups per LTC6813/slave */
-void set_series_groups(uint8_t num) {
-	if (num && (num <= 18))
-		series_groups = num; // Non-zero and 18 or less
-}
-
-/* Get number of series groups per LTC6813/slave */
-uint8_t get_series_groups(void) {
-	return series_groups;
-}
+#define LTC_SPI_TX_BIT_OFFSET 0	// Num bits to shift RX status code
+#define LTC_SPI_RX_BIT_OFFSET 4	// Num bits to shift RX status code
+#define REG_LEN 8// number of bytes in the register + 2 bytes for the PEC
+#define LTC_SERIES_GROUPS_PER_RDCV 3 // Number of cell voltage groups per 8 byte register
+#define LTC_SERIES_GROUPS_PER_RDAUX 3
+#define NUM_AUX_SERIES_GROUPS 6 // Number of series groups
 
 /* Wake LTC up from IDLE state into READY state */
 void wakeup_idle(void) {
 	uint8_t hex_ff = 0xFF;
-	for (int i = 0; i < get_num_devices(); i++) {
+	for (int i = 0; i < NUM_DEVICES; i++) {
 		LTC_nCS_Low();							   // Pull CS low
 		HAL_SPI_Transmit(&hspi1, &hex_ff, 1, 100); // Send byte 0xFF to wake LTC up
 		LTC_nCS_High();							   // Pull CS high
@@ -62,7 +38,7 @@ void wakeup_idle(void) {
 // wake up sleep
 void wakeup_sleep(void) {
 
-	for (int i = 0; i < get_num_devices(); i++) {
+	for (int i = 0; i < NUM_DEVICES; i++) {
 		LTC_nCS_Low();
 		HAL_Delay(300);
 		LTC_nCS_High();
@@ -74,10 +50,10 @@ void wakeup_sleep(void) {
 LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
 	LTC_SPI_StatusTypeDef ret = LTC_SPI_OK;
 	LTC_SPI_StatusTypeDef hal_ret;
-	const uint8_t ARR_SIZE_REG = get_num_devices() * REG_LEN;
+	const uint8_t ARR_SIZE_REG = NUM_DEVICES * REG_LEN;
 	uint8_t read_voltages_reg[ARR_SIZE_REG]; // Increased in size to handle multiple devices
 
-	for (uint8_t i = 0; i < (get_series_groups() / LTC_SERIES_GROUPS_PER_RDCV);
+	for (uint8_t i = 0; i < (NUM_CELL_SERIES_GROUP / LTC_SERIES_GROUPS_PER_RDCV);
 			i++) {
 		uint8_t cmd[4];
 		uint16_t cmd_pec;
@@ -104,13 +80,13 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
 		}
 
 		// Process the received data
-		for (uint8_t dev_idx = 0; dev_idx < get_num_devices(); dev_idx++) {
+		for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint8_t *data_ptr = &read_voltages_reg[dev_idx * REG_LEN];
 			// If PEC matches, copy the voltage data, omitting the PEC bytes
 			memcpy(
-					&read_voltages[dev_idx * get_series_groups()
+					&read_voltages[dev_idx * NUM_CELL_SERIES_GROUP
 							+ i * LTC_SERIES_GROUPS_PER_RDCV], data_ptr,
 					REG_LEN - 2);
 		}
@@ -293,11 +269,11 @@ void ltc_stcomm(uint8_t len) {
 LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
 	LTC_SPI_StatusTypeDef ret = LTC_SPI_OK;
 	LTC_SPI_StatusTypeDef hal_ret;
-	const uint8_t ARR_SIZE_REG = get_num_devices() * REG_LEN;
+	const uint8_t ARR_SIZE_REG = NUM_DEVICES * REG_LEN;
 	uint8_t read_auxiliary_reg[ARR_SIZE_REG]; // Increased in size to handle multiple devices
 
 	for (uint8_t i = 0;
-			i < (num_aux_series_groups / LTC_SERIES_GROUPS_PER_RDAUX); i++) {
+			i < (NUM_AUX_SERIES_GROUPS / LTC_SERIES_GROUPS_PER_RDAUX); i++) {
 		uint8_t cmd[4];
 		uint16_t cmd_pec;
 
@@ -323,13 +299,13 @@ LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
 		}
 
 		// Process the received data
-		for (uint8_t dev_idx = 0; dev_idx < get_num_devices(); dev_idx++) {
+		for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint8_t *data_ptr = &read_auxiliary_reg[dev_idx * REG_LEN];
 
 			memcpy(
-					&read_auxiliary[dev_idx * num_aux_series_groups
+					&read_auxiliary[dev_idx * NUM_AUX_SERIES_GROUPS
 							+ i * LTC_SERIES_GROUPS_PER_RDAUX], data_ptr,
 					REG_LEN - 2);
 		}
@@ -425,7 +401,7 @@ int32_t ltc_polladc() {
 /* Read and store raw cell voltages at uint8_t 2d pointer */
 int calc_pack_voltage(uint16_t *read_voltages) {
 	int packvoltage = 0;
-	for (int i = 0; i < get_num_devices() * get_series_groups(); i++) {
+	for (int i = 0; i < NUM_DEVICES * NUM_CELL_SERIES_GROUP; i++) {
 		packvoltage += read_voltages[i];
 	}
 	return packvoltage;

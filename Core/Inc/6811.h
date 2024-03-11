@@ -26,18 +26,6 @@ typedef enum {
 	LTC_SPI_RX_TIMEOUT = 0x80U	 //0b10000000
 } LTC_SPI_StatusTypeDef;
 
-/* Set number of LTC6813/slave devices */
-void set_num_devices(uint8_t num);
-
-/* Get number of LTC6813/slave devices */
-uint8_t get_num_devices(void);
-
-/* Set number of series groups per LTC6813/slave */
-void set_series_groups(uint8_t num);
-
-/* Get number of series groups per LTC6813/slave */
-uint8_t get_series_groups(void);
-
 void wakeup_idle(void);
 
 void wakeup_sleep(void);
