@@ -97,11 +97,6 @@ void Error_Handler(void);
 #define LTC_DELAY			1000 //500ms update delay
 #define LED_HEARTBEAT_DELAY_MS	500  //500ms update delay
 
-#define ntcNominal 50000.0f
-#define ntcSeriesResistance 50000.0f
-#define ntcBetaFactor 3380.0f
-#define ntcNominalTemp 25.0f
-
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

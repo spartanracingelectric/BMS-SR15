@@ -188,7 +188,7 @@ int main(void) {
 
 			//waiting for 3 loops of the while look to occur before checking for faults
 			if (loop_count == 0) {
-				fault_and_warning(&modVoltage, &safetyFaults, &safetyWarnings);
+				faultAndWarning(&modVoltage, &safetyFaults, &safetyWarnings);
 				if (safetyFaults != 0) {
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 				}

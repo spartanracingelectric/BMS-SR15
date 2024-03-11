@@ -1,10 +1,3 @@
-/*
- * balance.c
- *
- *  Created on: Mar 8, 2024
- *      Author: hari
- */
-
 #include "balance.h"
 #include "6811.h"
 
