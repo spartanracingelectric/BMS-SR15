@@ -39,9 +39,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_macro  0002429e  00000000  00000000  0003e6fc  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0001f1ea  00000000  00000000  0006299a  2**0
+ 18 .debug_line   0001f1e8  00000000  00000000  0006299a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000bf1f3  00000000  00000000  00081b84  2**0
+ 19 .debug_str    000bf1f3  00000000  00000000  00081b82  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  20 .debug_frame  000066d0  00000000  00000000  00140d78  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -5331,9 +5331,6 @@ void readTemp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
  8002b04:	2000003c 	.word	0x2000003c
 
 08002b08 <print>:
- *      Author: karth
- */
-
 #include "print.h"
 
 void print(uint8_t len, uint16_t *read_temp) {

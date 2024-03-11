@@ -1,9 +1,3 @@
-/*
- * 6811.c
- *
- *  Created on: Nov 3, 2023
- *      Author: karth
- */
 #include "6811.h"
 
 #define LTC_CMD_RDCVA 0x0004

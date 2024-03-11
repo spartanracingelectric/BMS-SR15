@@ -1,10 +1,3 @@
-/*
- * 6811.h
- *
- *  Created on: Nov 3, 2023
- *      Author: karth
- */
-
 #include <stdint.h>
 #include <stdlib.h>
 #include "main.h"
