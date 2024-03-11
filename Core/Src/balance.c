@@ -23,8 +23,6 @@ static uint8_t config[8][6] =
 //static uint8_t VUV = 0x00;
 //static uint8_t VOV_and_VUV = 0x00;
 //static uint8_t VOV = 0x00;
-static uint8_t DCC[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-;
 //static int DCTO[4] = { 0, 0, 0, 0 };
 
 void startBalance(uint16_t *read_volt, uint8_t length, uint16_t lowest) {
@@ -45,6 +43,7 @@ void dischargeAlgo(uint16_t *read_volt, uint8_t total_ic, uint16_t lowest) {
 
 	for (uint8_t dev_idx = 0; dev_idx < get_num_devices(); dev_idx++) {
 		// check if each cell is close within 50 mV of the lowest cell.
+		uint8_t DCC[12];
 		for (uint8_t cell_idx = 0; cell_idx < get_series_groups(); cell_idx++) {
 			if (read_volt[dev_idx * NUM_CELL_SERIES_GROUP + cell_idx] - lowest
 					> 50) {
@@ -53,11 +52,11 @@ void dischargeAlgo(uint16_t *read_volt, uint8_t total_ic, uint16_t lowest) {
 				DCC[cell_idx] = 0;
 			}
 		}
-		setCfg(dev_idx);
+		setCfg(dev_idx, (uint8_t*) DCC);
 	}
 }
 
-void setCfg(uint8_t dev_idx) {
+void setCfg(uint8_t dev_idx, uint8_t *DCC) {
 	for (uint8_t cell_idx = 0; cell_idx < get_series_groups(); cell_idx++) {
 		if (DCC[cell_idx]) {
 			if (cell_idx < 8) {
@@ -65,9 +64,6 @@ void setCfg(uint8_t dev_idx) {
 			} else if (cell_idx >= 8) {
 				config[dev_idx][5] |= (1 << (cell_idx - 8));
 			}
-
-			//resets the bit to 0
-			DCC[cell_idx] = 0;
 		} else {
 			if (cell_idx < 8) {
 				config[dev_idx][4] &= (~(1 << cell_idx));
