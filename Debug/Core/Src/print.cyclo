@@ -1,1 +1,2 @@
-../Core/Src/print.c:10:6:print	2
+../Core/Src/print.c:14:6:print_curr	1
+../Core/Src/print.c:25:6:print	2

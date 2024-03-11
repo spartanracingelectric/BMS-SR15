@@ -150,7 +150,6 @@ int main(void) {
 	// 4'b1111 for no balance 
 	// 4'b0000 for balance 
 
-	// TODO test discharge by turning on DCC bits. 
 	while (1) {
 		/* USER CODE END WHILE */
 
@@ -204,6 +203,7 @@ int main(void) {
 
 			// Current sense: 
 			GPIO_PinState curr_sense_val = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4);
+			print_curr(curr_sense_val); 
 
 
 			//calling all CAN realated methods
