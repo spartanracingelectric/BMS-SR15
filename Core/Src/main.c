@@ -91,10 +91,7 @@ static uint8_t BMS_SWT[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, { 0x69,
 int main(void) {
 	/* USER CODE BEGIN 1 */
 	GpioTimePacket tp_led_heartbeat;
-	TimerPacket timerpacket_ltc_volt;
-	TimerPacket timerpacket_ltc_temp;
-	TimerPacket timerpacket_can;
-	TimerPacket timerpacket_safety;
+	TimerPacket timerpacket_ltc;
 
 	struct batteryModuleVoltage modVoltage = { .cell_volt = (uint16_t*) malloc(
 	NUM_CELLS * sizeof(uint16_t)), .cell_temp = (uint16_t*) malloc(
@@ -136,10 +133,7 @@ int main(void) {
 	//Start timer
 	GpioTimePacket_Init(&tp_led_heartbeat, MCU_HEARTBEAT_LED_GPIO_Port,
 	MCU_HEARTBEAT_LED_Pin);
-	TimerPacket_Init(&timerpacket_ltc_volt, LTC_VOlT_DELAY);
-	TimerPacket_Init(&timerpacket_ltc_temp, LTC_TEMP_DELAY);
-	TimerPacket_Init(&timerpacket_can, CAN_DELAY);
-	TimerPacket_Init(&timerpacket_safety, SAFETY_DELAY);
+	TimerPacket_Init(&timerpacket_ltc, LTC_DELAY);
 	//Pull SPI1 nCS HIGH (deselect)
 	LTC_nCS_High();
 	set_num_devices(NUM_DEVICES);
@@ -162,14 +156,12 @@ int main(void) {
 
 		/* USER CODE BEGIN 3 */
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
-		if (TimerPacket_FixedPulse(&timerpacket_ltc_volt)) {
+		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
 			wakeup_sleep();
 			readVolt(modVoltage.cell_volt);
 			print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
-		}
 
-		if (TimerPacket_FixedPulse(&timerpacket_ltc_temp)) {
-			//start sending to mux to read temperatures
+			//related to reading temperatures
 			wakeup_sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
 				readTemp(i, modVoltage.cell_temp, modVoltage.read_auxreg);
@@ -191,28 +183,30 @@ int main(void) {
 				tempindex = 0;
 			}
 			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
-		}
 
-		cellSummary(&modVoltage);
-		if (loop_count == 0) {
-			if (TimerPacket_FixedPulse(&timerpacket_safety)) {
+			//getting the summary of all cells in the pack
+			cellSummary(&modVoltage);
+
+			//waiting for 3 loops of the while look to occur before checking for faults
+			if (loop_count == 0) {
 				fault_and_warning(&modVoltage, &safetyFaults, &safetyWarnings);
 				if (safetyFaults != 0) {
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 				}
+
+			} else {
+				loop_count--;
 			}
-		} else {
-			loop_count--;
-		}
 
-		startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES, modVoltage.cell_volt_lowest);
+			//Passive balancing
+			startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
+					modVoltage.cell_volt_lowest);
 
-		if (TimerPacket_FixedPulse(&timerpacket_can)) {
+			//calling all CAN realated methods
 			CAN_Send_Safety_Checker(&msg, &safetyFaults, &safetyWarnings);
 			CAN_Send_Cell_Summary(&msg, &modVoltage);
 			CAN_Send_Voltage(&msg, modVoltage.cell_volt);
 			CAN_Send_Temperature(&msg, modVoltage.cell_temp);
-
 		}
 
 	}
