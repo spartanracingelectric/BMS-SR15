@@ -3,9 +3,9 @@
 #include "print.h"
 #include "6811.h"
 
-#define ntcNominal 50000.0f
-#define ntcSeriesResistance 50000.0f
-#define ntcBetaFactor 3380.0f
+#define ntcNominal 10000.0f
+#define ntcSeriesResistance 10000.0f
+#define ntcBetaFactor 3435.0f
 #define ntcNominalTemp 25.0f
 
 static uint8_t BMS_IC[12][6] = { { 0x69, 0x28, 0x0F, 0xF9, 0x7F, 0xF9 }, { 0x69, 0x28,
