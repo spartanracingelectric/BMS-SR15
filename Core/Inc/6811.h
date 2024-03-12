@@ -1,10 +1,3 @@
-/*
- * 6811.h
- *
- *  Created on: Nov 3, 2023
- *      Author: karth
- */
-
 #include <stdint.h>
 #include <stdlib.h>
 #include "main.h"
@@ -26,23 +19,18 @@ typedef enum {
 	LTC_SPI_RX_TIMEOUT = 0x80U	 //0b10000000
 } LTC_SPI_StatusTypeDef;
 
-/* Set number of LTC6813/slave devices */
-void set_num_devices(uint8_t num);
-
-/* Get number of LTC6813/slave devices */
-uint8_t get_num_devices(void);
-
-/* Set number of series groups per LTC6813/slave */
-void set_series_groups(uint8_t num);
-
-/* Get number of series groups per LTC6813/slave */
-uint8_t get_series_groups(void);
-
 void wakeup_idle(void);
 
 void wakeup_sleep(void);
 
 LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages);
+
+/* write to PWM register to control balancing functionality */
+void ltc6811_wrpwm(uint8_t total_ic, uint8_t pwm);
+
+void ltc6811_wrcfg(uint8_t total_ic, //The number of ICs being written to
+		uint8_t config[][6] //A two dimensional array of the configuration data that will be written
+		);
 
 void ltc_wrcomm(uint8_t total_ic, //The number of ICs being written to
 		uint8_t comm[6] //A two dimensional array of the comm data that will be written

@@ -1,0 +1,3 @@
+../Core/Src/balance.c:21:6:startBalance	1
+../Core/Src/balance.c:35:6:dischargeAlgo	4
+../Core/Src/balance.c:58:6:setCfg	6

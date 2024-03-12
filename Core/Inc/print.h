@@ -1,10 +1,3 @@
-/*
- * print.h
- *
- *  Created on: Jan 26, 2024
- *      Author: karth
- */
-
 #ifndef INC_PRINT_H_
 #define INC_PRINT_H_
 

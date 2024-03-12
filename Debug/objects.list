@@ -1,5 +1,6 @@
 "./Core/Src/6811.o"
 "./Core/Src/adc.o"
+"./Core/Src/balance.o"
 "./Core/Src/can.o"
 "./Core/Src/gpio.o"
 "./Core/Src/main.o"

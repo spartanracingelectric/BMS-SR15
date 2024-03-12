@@ -1,10 +1,3 @@
-/*
- * print.c
- *
- *  Created on: Jan 26, 2024
- *      Author: karth
- */
-
 #include "print.h"
 
 void print(uint8_t len, uint16_t *read_temp) {

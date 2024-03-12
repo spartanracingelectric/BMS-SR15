@@ -1,2 +1,2 @@
-../Core/Src/safety.c:3:6:cellSummary	24	static
-../Core/Src/safety.c:36:6:fault_and_warning	24	static
+../Core/Src/safety.c:24:6:cellSummary	24	static
+../Core/Src/safety.c:57:6:faultAndWarning	24	static

@@ -94,17 +94,8 @@ void Error_Handler(void);
 #define NUM_THERM_TOTAL			NUM_DEVICES*NUM_THERM_PER_MOD
 #define NUM_AUX_GROUP			6
 #define NUM_AUXES				NUM_DEVICES*NUM_AUX_GROUP
-#define LTC_VOlT_DELAY			1000 //500ms update delay
-#define LTC_TEMP_DELAY			0 //500ms update delay
-#define CAN_DELAY				100
-#define SAFETY_DELAY			50
+#define LTC_DELAY			1000 //500ms update delay
 #define LED_HEARTBEAT_DELAY_MS	500  //500ms update delay
-#define LTC_CMD_RDSTATA			0x0010 //Read status register group A
-
-#define ntcNominal 50000.0f
-#define ntcSeriesResistance 50000.0f
-#define ntcBetaFactor 3380.0f
-#define ntcNominalTemp 25.0f
 
 /* USER CODE END Private defines */
 
