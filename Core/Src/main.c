@@ -191,9 +191,11 @@ int main(void) {
 				loop_count--;
 			}
 
-			//Passive balancing
-			startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
-					modVoltage.cell_volt_lowest);
+			//Passive balancing is called unless a fault has occurred
+			if (safetyFaults == 0) {
+				startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
+									modVoltage.cell_volt_lowest);
+			}
 
 			//calling all CAN realated methods
 			CAN_Send_Safety_Checker(&msg, &safetyFaults, &safetyWarnings);
