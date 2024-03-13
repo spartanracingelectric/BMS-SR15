@@ -39,13 +39,13 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_macro  0002429e  00000000  00000000  0003e6fc  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0001f1e8  00000000  00000000  0006299a  2**0
+ 18 .debug_line   0001f1e6  00000000  00000000  0006299a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000bf1f3  00000000  00000000  00081b82  2**0
+ 19 .debug_str    000bf1f3  00000000  00000000  00081b80  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  000066d0  00000000  00000000  00140d78  2**2
+ 20 .debug_frame  000066d0  00000000  00000000  00140d74  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000006c  00000000  00000000  00147448  2**0
+ 21 .debug_line_str 0000006c  00000000  00000000  00147444  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -4576,7 +4576,6 @@ int main(void) {
 	uint8_t loop_count = 3;
  8002612:	2303      	movs	r3, #3
  8002614:	f887 305d 	strb.w	r3, [r7, #93]	; 0x5d
-	// TODO test discharge by turning on DCC bits. 
 	while (1) {
 		/* USER CODE END WHILE */
 
