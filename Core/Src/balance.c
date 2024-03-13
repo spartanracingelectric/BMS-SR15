@@ -35,7 +35,7 @@ void startBalance(uint16_t *read_volt, uint8_t length, uint16_t lowest) {
 void dischargeAlgo(uint16_t *read_volt, uint8_t total_ic, uint16_t lowest) {
 
 	for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
-		// check if each cell is close within 50 mV of the lowest cell.
+		// check if each cell is close within 5 mV of the lowest cell.
 		uint8_t DCC[12];
 		for (uint8_t cell_idx = 0; cell_idx < NUM_CELL_SERIES_GROUP; cell_idx++) {
 			if (read_volt[dev_idx * NUM_CELL_SERIES_GROUP + cell_idx] - lowest
