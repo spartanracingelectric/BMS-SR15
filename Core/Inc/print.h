@@ -17,6 +17,7 @@ extern "C" {
 #include "string.h"
 
 void print(uint8_t num, uint16_t *read_temp);
+void print_curr(uint16_t current_value);
 
 #ifdef __cplusplus
 }
