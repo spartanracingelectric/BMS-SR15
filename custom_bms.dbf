@@ -5,7 +5,7 @@
 [PROTOCOL] CAN
 
 [BUSMASTER_VERSION] [3.2.2]
-[NUMBER_OF_MESSAGES] 48
+[NUMBER_OF_MESSAGES] 50
 
 [START_MSG] BMS_Safety_Checker,1536,2,11,1,S,[CUSTOM_BMS]
 [START_SIGNALS] Pack_High_Volt_Warning,1,2,7,B,1,0,1,0,1,,,
@@ -196,154 +196,168 @@
 [START_SIGNALS] BMS_Cell_9_Voltage,16,1,0,U,50000,0,1,0,0.0001,V,,
 [END_MSG]
 
-[START_MSG] BMS_M1_Cell_Temperature_Data_3,1664,8,4,1,S,[CUSTOM_BMS]
-[START_SIGNALS] BMS_Cell_12_Temperature,16,7,0,U,100,0,1,0,1,C,,
-[START_SIGNALS] BMS_Cell_11_Temperature,16,5,0,U,100,0,1,0,1,C,,
-[START_SIGNALS] BMS_Cell_10_Temperature,16,3,0,U,100,0,1,0,1,C,,
-[START_SIGNALS] BMS_Cell_9_Temperature,16,1,0,U,100,0,1,0,1,C,,
-[END_MSG]
-
-[START_MSG] BMS_M2_Cell_Temperature_Data_1,1665,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M1_Cell_Temperature_Data_1,1664,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_4_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_3_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_2_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_1_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M2_Cell_Temperature_Data_2,1666,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M1_Cell_Temperature_Data_2,1665,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_8_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_7_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_6_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_5_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M2_Cell_Temperature_Data_3,1667,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M1_Cell_Temperature_Data_3,1666,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_12_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_11_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_10_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_9_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M3_Cell_Temperature_Data_1,1668,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M2_Cell_Temperature_Data_1,1667,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_4_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_3_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_2_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_1_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M3_Cell_Temperature_Data_2,1669,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M2_Cell_Temperature_Data_2,1668,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_8_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_7_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_6_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_5_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M3_Cell_Temperature_Data_3,1670,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M2_Cell_Temperature_Data_3,1669,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_12_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_11_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_10_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_9_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M4_Cell_Temperature_Data_1,1671,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M3_Cell_Temperature_Data_1,1670,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_4_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_3_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_2_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_1_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M4_Cell_Temperature_Data_2,1672,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M3_Cell_Temperature_Data_2,1671,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_8_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_7_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_6_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_5_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M4_Cell_Temperature_Data_3,1673,8,4,1,S,[CUSTOM_BMS]
-[START_SIGNALS] BMS_Cell_12_Temperature,16,7,0,U,100,0,1,0,1,C,,
-[START_SIGNALS] BMS_Cell_11_Temperature,16,5,0,U,100,0,1,0,1,C,,
-[START_SIGNALS] BMS_Cell_11_Temperature,16,3,0,U,100,0,1,0,1,C,,
-[START_SIGNALS] BMS_Cell_9_Temperature,16,1,0,U,100,0,1,0,1,C,,
-[END_MSG]
-
-[START_MSG] BMS_M5_Cell_Temperature_Data_1,1674,8,4,1,S,[CUSTOM_BMS]
-[START_SIGNALS] BMS_Cell_4_Temperature,16,7,0,U,100,0,1,0,1,C,,
-[START_SIGNALS] BMS_Cell_3_Temperature,16,5,0,U,100,0,1,0,1,C,,
-[START_SIGNALS] BMS_Cell_2_Temperature,16,3,0,U,100,0,1,0,1,C,,
-[START_SIGNALS] BMS_Cell_1_Temperature,16,1,0,U,100,0,1,0,1,C,,
-[END_MSG]
-
-[START_MSG] BMS_M5_Cell_Temperature_Data_2,1675,8,4,1,S,[CUSTOM_BMS]
-[START_SIGNALS] BMS_Cell_8_Temperature,16,7,0,U,65535,0,1,0,1,¯w¨ç»wð¸w,,
-[START_SIGNALS] BMS_Cell_7_Temperature,16,5,0,U,65535,0,1,0,1,¯w¨ç»wð¸w,,
-[START_SIGNALS] BMS_Cell_6_Temperature,16,3,0,U,65535,0,1,0,1,¯w¨ç»wð¸w,,
-[START_SIGNALS] BMS_Cell_5_Temperature,16,1,0,U,100,0,1,0,1,C,,
-[END_MSG]
-
-[START_MSG] BMS_M5_Cell_Temperature_Data_3,1676,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M3_Cell_Temperature_Data_3,1672,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_12_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_11_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_10_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_9_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M6_Cell_Temperature_Data_1,1676,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M4_Cell_Temperature_Data_1,1673,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_4_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_3_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_2_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_1_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M6_Cell_Temperature_Data_2,1677,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M4_Cell_Temperature_Data_2,1674,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_8_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_7_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_6_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_5_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M6_Cell_Temperature_Data_3,1678,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M4_Cell_Temperature_Data_3,1675,8,4,1,S,[CUSTOM_BMS]
+[START_SIGNALS] BMS_Cell_12_Temperature,16,7,0,U,65535,0,1,0,1,,,
+[START_SIGNALS] BMS_Cell_11_Temperature,16,5,0,U,65535,0,1,0,1,,,
+[START_SIGNALS] BMS_Cell_10_Temperature,16,3,0,U,65535,0,1,0,1,,,
+[START_SIGNALS] BMS_Cell_9_Temperature,16,1,0,U,100,0,1,0,1,C,,
+[END_MSG]
+
+[START_MSG] BMS_M5_Cell_Temperature_Data_1,1676,8,4,1,S,[CUSTOM_BMS]
+[START_SIGNALS] BMS_Cell_4_Temperature,16,7,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_3_Temperature,16,5,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_2_Temperature,16,3,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_1_Temperature,16,1,0,U,100,0,1,0,1,C,,
+[END_MSG]
+
+[START_MSG] BMS_M5_Cell_Temperature_Data_2,1677,8,4,1,S,[CUSTOM_BMS]
+[START_SIGNALS] BMS_Cell_8_Temperature,16,7,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_7_Temperature,16,5,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_6_Temperature,16,3,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_5_Temperature,16,1,0,U,100,0,1,0,1,C,,
+[END_MSG]
+
+[START_MSG] BMS_M5_Cell_Temperature_Data_3,1678,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_12_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_11_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_10_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_9_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M7_Cell_Temperature_Data_1,1679,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M6_Cell_Temperature_Data_1,1679,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_4_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_3_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_2_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_1_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M7_Cell_Temperature_Data_2,1680,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M6_Cell_Temperature_Data_2,1680,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_8_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_7_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_6_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_5_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M7_Cell_Temperature_Data_3,1681,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M6_Cell_Temperature_Data_3,1681,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_12_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_11_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_10_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_9_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M8_Cell_Temperature_Data_1,1682,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M7_Cell_Temperature_Data_1,1682,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_4_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_3_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_2_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_1_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M8_Cell_Temperature_Data_2,1683,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M7_Cell_Temperature_Data_2,1683,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_8_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_7_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_6_Temperature,16,3,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_5_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
-[START_MSG] BMS_M8_Cell_Temperature_Data_3,1684,8,4,1,S,[CUSTOM_BMS]
+[START_MSG] BMS_M7_Cell_Temperature_Data_3,1684,8,4,1,S,[CUSTOM_BMS]
+[START_SIGNALS] BMS_Cell_12_Temperature,16,7,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_11_Temperature,16,5,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_10_Temperature,16,3,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_9_Temperature,16,1,0,U,100,0,1,0,1,C,,
+[END_MSG]
+
+[START_MSG] BMS_M8_Cell_Temperature_Data_1,1685,8,4,1,S,[CUSTOM_BMS]
+[START_SIGNALS] BMS_Cell_4_Temperature,16,7,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_3_Temperature,16,5,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_2_Temperature,16,3,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_1_Temperature,16,1,0,U,100,0,1,0,1,C,,
+[END_MSG]
+
+[START_MSG] BMS_M8_Cell_Temperature_Data_2,1686,8,4,1,S,[CUSTOM_BMS]
+[START_SIGNALS] BMS_Cell_8_Temperature,16,7,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_7_Temperature,16,5,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_6_Temperature,16,3,0,U,100,0,1,0,1,C,,
+[START_SIGNALS] BMS_Cell_5_Temperature,16,1,0,U,100,0,1,0,1,C,,
+[END_MSG]
+
+[START_MSG] BMS_M8_Cell_Temperature_Data_3,1687,8,4,1,S,[CUSTOM_BMS]
 [START_SIGNALS] BMS_Cell_12_Temperature,16,7,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_11_Temperature,16,5,0,U,100,0,1,0,1,C,,
 [START_SIGNALS] BMS_Cell_10_Temperature,16,3,0,U,100,0,1,0,1,C,,
