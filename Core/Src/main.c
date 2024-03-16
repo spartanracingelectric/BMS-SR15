@@ -198,11 +198,12 @@ int main(void) {
 			}
 
 			//Passive balancing
-			startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
-					modVoltage.cell_volt_lowest);
+			// startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
+			// 		modVoltage.cell_volt_lowest);
 
 			// Current sense: 
 			GPIO_PinState curr_sense_val = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4);
+			// TODO VV      WRONG PARAMETER TYPES. 
 			print_curr(curr_sense_val); 
 
 

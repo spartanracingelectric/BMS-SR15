@@ -12,6 +12,7 @@
  * @param current_value value output from HAL_read input. 
 */
 void print_curr(uint16_t current_value) {
+	// TODO change the type of @param current_value, it does not match method call. 
     char out_buf[20];
     sprintf(out_buf, "Current: %u/10000\n", current_value);
     USB_Transmit(out_buf, strlen(out_buf));
