@@ -90,7 +90,7 @@ void Error_Handler(void);
 #define NUM_DEVICES				1	//1 slave board
 #define NUM_CELL_SERIES_GROUP	12	//1 slave board
 #define NUM_CELLS				NUM_DEVICES*NUM_CELL_SERIES_GROUP	//multiple slave board
-#define NUM_THERM_PER_MOD		12
+#define NUM_THERM_PER_MOD		16
 #define NUM_THERM_TOTAL			NUM_DEVICES*NUM_THERM_PER_MOD
 #define NUM_AUX_GROUP			6
 #define NUM_AUXES				NUM_DEVICES*NUM_AUX_GROUP
