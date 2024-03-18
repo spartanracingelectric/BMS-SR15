@@ -64,8 +64,8 @@ void readTemp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint16_t data = read_auxreg[dev_idx * NUM_AUX_GROUP];
-			//read_temp[dev_idx * NUM_THERM_PER_MOD + tempindex] = data;
-			getActualTemps(dev_idx, tempindex, (uint16_t*) read_temp, data); //+5 because vref is the last reg
+			read_temp[dev_idx * NUM_THERM_PER_MOD + tempindex] = data;
+			//getActualTemps(dev_idx, tempindex, (uint16_t*) read_temp, data); //+5 because vref is the last reg
 
 		}
 	}

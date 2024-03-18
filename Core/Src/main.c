@@ -152,7 +152,7 @@ int main(void) {
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
 			wakeup_sleep();
 			readVolt(modVoltage.cell_volt);
-			print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
+			//print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
 
 			//related to reading temperatures
 			wakeup_sleep();
@@ -162,12 +162,12 @@ int main(void) {
 			}
 			if (indexpause == 8) {
 				tempindex = 8;
-				indexpause = 12;
+				indexpause = NUM_THERM_PER_MOD;
 				wakeup_idle();
 				ltc_wrcomm(NUM_DEVICES, BMS_SWT[0]);
 				wakeup_idle();
 				ltc_stcomm(2);
-			} else if (indexpause == 12) {
+			} else if (indexpause == NUM_THERM_PER_MOD) {
 				wakeup_idle();
 				ltc_wrcomm(NUM_DEVICES, BMS_SWT[1]);
 				wakeup_idle();

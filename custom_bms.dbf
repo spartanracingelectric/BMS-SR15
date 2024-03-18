@@ -274,9 +274,9 @@
 [END_MSG]
 
 [START_MSG] BMS_M4_Cell_Temperature_Data_3,1675,8,4,1,S,[CUSTOM_BMS]
-[START_SIGNALS] BMS_Cell_12_Temperature,16,7,0,U,65535,0,1,0,1,,,
-[START_SIGNALS] BMS_Cell_11_Temperature,16,5,0,U,65535,0,1,0,1,,,
-[START_SIGNALS] BMS_Cell_10_Temperature,16,3,0,U,65535,0,1,0,1,,,
+[START_SIGNALS] BMS_Cell_12_Temperature,16,7,0,U,65535,0,1,0,1,,,m
+[START_SIGNALS] BMS_Cell_11_Temperature,16,5,0,U,65535,0,1,0,1,,,m
+[START_SIGNALS] BMS_Cell_10_Temperature,16,3,0,U,65535,0,1,0,1,,,m
 [START_SIGNALS] BMS_Cell_9_Temperature,16,1,0,U,100,0,1,0,1,C,,
 [END_MSG]
 
