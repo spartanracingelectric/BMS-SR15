@@ -4,6 +4,7 @@
 #define LTC_CMD_RDCVB 0x0006
 #define LTC_CMD_RDCVC 0x0008
 #define LTC_CMD_RDCVD 0x000A
+
 #define LTC_CMD_RDAUXA 0x000C
 #define LTC_CMD_RDAUXB 0x000E
 

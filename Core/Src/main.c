@@ -175,7 +175,7 @@ int main(void) {
 				indexpause = 8;
 				tempindex = 0;
 			}
-			print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
+			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
 
 			//getting the summary of all cells in the pack
 			cellSummary(&modVoltage);
@@ -192,10 +192,10 @@ int main(void) {
 			}
 
 			//Passive balancing is called unless a fault has occurred
-//			if (safetyFaults == 0) {
-//				startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
-//									modVoltage.cell_volt_lowest);
-//			}
+			if (safetyFaults == 0) {
+				startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
+									modVoltage.cell_volt_lowest);
+			}
 
 			//calling all CAN realated methods
 			CAN_Send_Safety_Checker(&msg, &safetyFaults, &safetyWarnings);
