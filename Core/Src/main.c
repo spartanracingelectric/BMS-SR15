@@ -80,7 +80,7 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static uint8_t BMS_SWT[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, { 0x69,
+static uint8_t BMS_MUX_PAUSE[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, { 0x69,
 		0x08, 0x0F, 0x09, 0x7F, 0xF9 } };
 /* USER CODE END 0 */
 
@@ -155,7 +155,6 @@ int main(void) {
 			//print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
 
 			//related to reading temperatures
-			wakeup_sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
 				readTemp(i, modVoltage.cell_temp, modVoltage.read_auxreg);
 				HAL_Delay(100);
@@ -164,12 +163,12 @@ int main(void) {
 				tempindex = 8;
 				indexpause = NUM_THERM_PER_MOD;
 				wakeup_idle();
-				ltc_wrcomm(NUM_DEVICES, BMS_SWT[0]);
+				ltc_wrcomm(NUM_DEVICES, BMS_MUX_PAUSE[0]);
 				wakeup_idle();
 				ltc_stcomm(2);
 			} else if (indexpause == NUM_THERM_PER_MOD) {
 				wakeup_idle();
-				ltc_wrcomm(NUM_DEVICES, BMS_SWT[1]);
+				ltc_wrcomm(NUM_DEVICES, BMS_MUX_PAUSE[1]);
 				wakeup_idle();
 				ltc_stcomm(2);
 				indexpause = 8;

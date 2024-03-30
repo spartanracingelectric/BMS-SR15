@@ -1,3 +1,3 @@
 ../Core/Src/balance.c:21:6:startBalance	16	static
-../Core/Src/balance.c:35:6:dischargeAlgo	32	static
-../Core/Src/balance.c:58:6:setCfg	24	static
+../Core/Src/balance.c:34:6:dischargeAlgo	32	static
+../Core/Src/balance.c:57:6:setCfg	24	static

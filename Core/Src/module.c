@@ -8,7 +8,7 @@
 #define ntcBetaFactor 3435.0f
 #define ntcNominalTemp 25.0f
 
-static uint8_t BMS_IC[][6] =
+static uint8_t BMS_THERM[][6] =
 		{ { 0x69, 0x28, 0x0F, 0xF9, 0x7F, 0xF9 }, { 0x69, 0x28, 0x0F, 0xE9,
 				0x7F, 0xF9 }, { 0x69, 0x28, 0x0F, 0xD9, 0x7F, 0xF9 }, { 0x69,
 				0x28, 0x0F, 0xC9, 0x7F, 0xF9 }, { 0x69, 0x28, 0x0F, 0xB9, 0x7F,
@@ -50,7 +50,7 @@ void readVolt(uint16_t *read_volt) {
 
 void readTemp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
 	wakeup_idle();
-	ltc_wrcomm(NUM_DEVICES, BMS_IC[tempindex]);
+	ltc_wrcomm(NUM_DEVICES, BMS_THERM[tempindex]);
 	wakeup_idle();
 	ltc_stcomm(2);
 	//end sending to mux to read temperatures

@@ -1,7 +1,7 @@
 ../Core/Src/main.c:91:5:main	104	static
-../Core/Src/main.c:215:6:SystemClock_Config	120	static
-../Core/Src/main.c:265:6:GpioTimePacket_Init	24	static
-../Core/Src/main.c:273:6:GpioFixedToggle	16	static
-../Core/Src/main.c:282:6:TimerPacket_Init	16	static
-../Core/Src/main.c:288:9:TimerPacket_FixedPulse	16	static
-../Core/Src/main.c:302:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:214:6:SystemClock_Config	120	static
+../Core/Src/main.c:264:6:GpioTimePacket_Init	24	static
+../Core/Src/main.c:272:6:GpioFixedToggle	16	static
+../Core/Src/main.c:281:6:TimerPacket_Init	16	static
+../Core/Src/main.c:287:9:TimerPacket_FixedPulse	16	static
+../Core/Src/main.c:301:6:Error_Handler	4	static,ignoring_inline_asm

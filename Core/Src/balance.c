@@ -19,7 +19,6 @@ static uint8_t config[8][6] =
 
 
 void startBalance(uint16_t *read_volt, uint8_t length, uint16_t lowest) {
-	wakeup_sleep();
 	dischargeAlgo(read_volt, NUM_DEVICES, lowest);
 	wakeup_idle();
 	ltc6811_wrcfg(NUM_DEVICES, config);
