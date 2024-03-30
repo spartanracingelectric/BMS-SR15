@@ -24,7 +24,7 @@ static uint8_t BMS_THERM[][6] =
 						0x99, 0x7F, 0xF9 },
 				{ 0x69, 0x08, 0x0F, 0x89, 0x7F, 0xF9 } };
 
-void getActualTemps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
+void Get_Actual_Temps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
 		uint16_t data) {
 	static float scalar;
 	static float steinhart;
@@ -41,31 +41,31 @@ void getActualTemps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
 
 }
 
-void readVolt(uint16_t *read_volt) {
-	wakeup_idle();
-	ltc_adcv(MD_7KHZ_3KHZ, DCP_DISABLED, CELL_CH_ALL);
-	ltc_polladc();
-	read_cell_volt((uint16_t*) read_volt);
+void Read_Volt(uint16_t *read_volt) {
+	Wakeup_Idle();
+	LTC_ADCV(MD_7KHZ_3KHZ, DCP_DISABLED, CELL_CH_ALL);
+	LTC_POLLADC();
+	Read_Cell_Volt((uint16_t*) read_volt);
 }
 
-void readTemp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
-	wakeup_idle();
-	ltc_wrcomm(NUM_DEVICES, BMS_THERM[tempindex]);
-	wakeup_idle();
-	ltc_stcomm(2);
+void Read_Temp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
+	Wakeup_Idle();
+	LTC_WRCOMM(NUM_DEVICES, BMS_THERM[tempindex]);
+	Wakeup_Idle();
+	LTC_STCOMM(2);
 	//end sending to mux to read temperatures
 
-	wakeup_idle();
-	ltc_adax(MD_7KHZ_3KHZ, 1); //doing GPIO all conversion
-	ltc_polladc();
-	if (!read_cell_temps((uint16_t*) read_auxreg)) // Set to read back all aux registers
+	Wakeup_Idle();
+	LTC_ADAX(MD_7KHZ_3KHZ, 1); //doing GPIO all conversion
+	LTC_POLLADC();
+	if (!Read_Cell_Temps((uint16_t*) read_auxreg)) // Set to read back all aux registers
 			{
 		for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint16_t data = read_auxreg[dev_idx * NUM_AUX_GROUP];
 			//read_temp[dev_idx * NUM_THERM_PER_MOD + tempindex] = data;
-			getActualTemps(dev_idx, tempindex, (uint16_t*) read_temp, data); //+5 because vref is the last reg
+			Get_Actual_Temps(dev_idx, tempindex, (uint16_t*) read_temp, data); //+5 because vref is the last reg
 
 		}
 	}

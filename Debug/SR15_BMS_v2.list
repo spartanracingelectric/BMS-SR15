@@ -41,11 +41,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  18 .debug_line   0001ddef  00000000  00000000  00061b99  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000bf180  00000000  00000000  0007f988  2**0
+ 19 .debug_str    000bf196  00000000  00000000  0007f988  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  000063e4  00000000  00000000  0013eb08  2**2
+ 20 .debug_frame  000063e4  00000000  00000000  0013eb20  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000006c  00000000  00000000  00144eec  2**0
+ 21 .debug_line_str 0000006c  00000000  00000000  00144f04  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1603,13 +1603,13 @@ Disassembly of section .text:
  8001398:	4770      	bx	lr
  800139a:	bf00      	nop
 
-0800139c <wakeup_idle>:
+0800139c <Wakeup_Idle>:
 #define LTC_SERIES_GROUPS_PER_RDCV 3 // Number of cell voltage groups per 8 byte register
 #define LTC_SERIES_GROUPS_PER_RDAUX 3
 #define NUM_AUX_SERIES_GROUPS 6 // Number of series groups
 
 /* Wake LTC up from IDLE state into READY state */
-void wakeup_idle(void) {
+void Wakeup_Idle(void) {
  800139c:	b580      	push	{r7, lr}
  800139e:	b082      	sub	sp, #8
  80013a0:	af00      	add	r7, sp, #0
@@ -1619,14 +1619,14 @@ void wakeup_idle(void) {
 	for (int i = 0; i < NUM_DEVICES; i++) {
  80013a6:	2300      	movs	r3, #0
  80013a8:	607b      	str	r3, [r7, #4]
- 80013aa:	e00c      	b.n	80013c6 <wakeup_idle+0x2a>
+ 80013aa:	e00c      	b.n	80013c6 <Wakeup_Idle+0x2a>
 		LTC_nCS_Low();							   // Pull CS low
  80013ac:	f001 fb96 	bl	8002adc <LTC_nCS_Low>
 		HAL_SPI_Transmit(&hspi1, &hex_ff, 1, 100); // Send byte 0xFF to wake LTC up
  80013b0:	1cf9      	adds	r1, r7, #3
  80013b2:	2364      	movs	r3, #100	; 0x64
  80013b4:	2201      	movs	r2, #1
- 80013b6:	4808      	ldr	r0, [pc, #32]	; (80013d8 <wakeup_idle+0x3c>)
+ 80013b6:	4808      	ldr	r0, [pc, #32]	; (80013d8 <Wakeup_Idle+0x3c>)
  80013b8:	f004 fc0e 	bl	8005bd8 <HAL_SPI_Transmit>
 		LTC_nCS_High();							   // Pull CS high
  80013bc:	f001 fb82 	bl	8002ac4 <LTC_nCS_High>
@@ -1636,7 +1636,7 @@ void wakeup_idle(void) {
  80013c4:	607b      	str	r3, [r7, #4]
  80013c6:	687b      	ldr	r3, [r7, #4]
  80013c8:	2b00      	cmp	r3, #0
- 80013ca:	ddef      	ble.n	80013ac <wakeup_idle+0x10>
+ 80013ca:	ddef      	ble.n	80013ac <Wakeup_Idle+0x10>
 	}
 }
  80013cc:	bf00      	nop
@@ -1647,10 +1647,10 @@ void wakeup_idle(void) {
  80013d6:	bf00      	nop
  80013d8:	200002e4 	.word	0x200002e4
 
-080013dc <wakeup_sleep>:
+080013dc <Wakeup_Sleep>:
 
 // wake up sleep
-void wakeup_sleep(void) {
+void Wakeup_Sleep(void) {
  80013dc:	b580      	push	{r7, lr}
  80013de:	b082      	sub	sp, #8
  80013e0:	af00      	add	r7, sp, #0
@@ -1658,7 +1658,7 @@ void wakeup_sleep(void) {
 	for (int i = 0; i < NUM_DEVICES; i++) {
  80013e2:	2300      	movs	r3, #0
  80013e4:	607b      	str	r3, [r7, #4]
- 80013e6:	e00e      	b.n	8001406 <wakeup_sleep+0x2a>
+ 80013e6:	e00e      	b.n	8001406 <Wakeup_Sleep+0x2a>
 		LTC_nCS_Low();
  80013e8:	f001 fb78 	bl	8002adc <LTC_nCS_Low>
 		HAL_Delay(300);
@@ -1675,7 +1675,7 @@ void wakeup_sleep(void) {
  8001404:	607b      	str	r3, [r7, #4]
  8001406:	687b      	ldr	r3, [r7, #4]
  8001408:	2b00      	cmp	r3, #0
- 800140a:	dded      	ble.n	80013e8 <wakeup_sleep+0xc>
+ 800140a:	dded      	ble.n	80013e8 <Wakeup_Sleep+0xc>
 	}
 }
  800140c:	bf00      	nop
@@ -1685,10 +1685,10 @@ void wakeup_sleep(void) {
  8001414:	bd80      	pop	{r7, pc}
 	...
 
-08001418 <read_cell_volt>:
+08001418 <Read_Cell_Volt>:
 
 /* Read and store raw cell voltages at uint8_t 2d pointer */
-LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
+LTC_SPI_StatusTypeDef Read_Cell_Volt(uint16_t *read_voltages) {
  8001418:	e92d 43f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, lr}
  800141c:	b089      	sub	sp, #36	; 0x24
  800141e:	af00      	add	r7, sp, #0
@@ -1736,14 +1736,14 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
 	for (uint8_t i = 0; i < (NUM_CELL_SERIES_GROUP / LTC_SERIES_GROUPS_PER_RDCV);
  800147a:	2300      	movs	r3, #0
  800147c:	77bb      	strb	r3, [r7, #30]
- 800147e:	e074      	b.n	800156a <read_cell_volt+0x152>
+ 800147e:	e074      	b.n	800156a <Read_Cell_Volt+0x152>
 			i++) {
 		uint8_t cmd[4];
 		uint16_t cmd_pec;
 
 		cmd[0] = (0xFF & (LTC_CMD_RDCV[i] >> 8)); // RDCV Register
  8001480:	7fbb      	ldrb	r3, [r7, #30]
- 8001482:	4a3f      	ldr	r2, [pc, #252]	; (8001580 <read_cell_volt+0x168>)
+ 8001482:	4a3f      	ldr	r2, [pc, #252]	; (8001580 <Read_Cell_Volt+0x168>)
  8001484:	f832 3013 	ldrh.w	r3, [r2, r3, lsl #1]
  8001488:	0a1b      	lsrs	r3, r3, #8
  800148a:	b29b      	uxth	r3, r3
@@ -1751,15 +1751,15 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
  800148e:	723b      	strb	r3, [r7, #8]
 		cmd[1] = (0xFF & (LTC_CMD_RDCV[i]));	  // RDCV Register
  8001490:	7fbb      	ldrb	r3, [r7, #30]
- 8001492:	4a3b      	ldr	r2, [pc, #236]	; (8001580 <read_cell_volt+0x168>)
+ 8001492:	4a3b      	ldr	r2, [pc, #236]	; (8001580 <Read_Cell_Volt+0x168>)
  8001494:	f832 3013 	ldrh.w	r3, [r2, r3, lsl #1]
  8001498:	b2db      	uxtb	r3, r3
  800149a:	727b      	strb	r3, [r7, #9]
-		cmd_pec = ltc_pec15_calc(2, cmd);
+		cmd_pec = LTC_Pec15_Calc(2, cmd);
  800149c:	f107 0308 	add.w	r3, r7, #8
  80014a0:	4619      	mov	r1, r3
  80014a2:	2002      	movs	r0, #2
- 80014a4:	f000 fab0 	bl	8001a08 <ltc_pec15_calc>
+ 80014a4:	f000 fab0 	bl	8001a08 <LTC_Pec15_Calc>
  80014a8:	4603      	mov	r3, r0
  80014aa:	827b      	strh	r3, [r7, #18]
 		cmd[2] = (uint8_t) (cmd_pec >> 8);
@@ -1773,8 +1773,8 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
  80014b8:	b2db      	uxtb	r3, r3
  80014ba:	72fb      	strb	r3, [r7, #11]
 
-		wakeup_idle(); // Wake LTC up
- 80014bc:	f7ff ff6e 	bl	800139c <wakeup_idle>
+		Wakeup_Idle(); // Wake LTC up
+ 80014bc:	f7ff ff6e 	bl	800139c <Wakeup_Idle>
 
 		LTC_nCS_Low(); // Pull CS low
  80014c0:	f001 fb0c 	bl	8002adc <LTC_nCS_Low>
@@ -1783,14 +1783,14 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
  80014c4:	f107 0108 	add.w	r1, r7, #8
  80014c8:	2364      	movs	r3, #100	; 0x64
  80014ca:	2204      	movs	r2, #4
- 80014cc:	482d      	ldr	r0, [pc, #180]	; (8001584 <read_cell_volt+0x16c>)
+ 80014cc:	482d      	ldr	r0, [pc, #180]	; (8001584 <Read_Cell_Volt+0x16c>)
  80014ce:	f004 fb83 	bl	8005bd8 <HAL_SPI_Transmit>
  80014d2:	4603      	mov	r3, r0
  80014d4:	747b      	strb	r3, [r7, #17]
 		if (hal_ret) {									// Non-zero means error
  80014d6:	7c7b      	ldrb	r3, [r7, #17]
  80014d8:	2b00      	cmp	r3, #0
- 80014da:	d009      	beq.n	80014f0 <read_cell_volt+0xd8>
+ 80014da:	d009      	beq.n	80014f0 <Read_Cell_Volt+0xd8>
 			ret |= (1 << (hal_ret + LTC_SPI_TX_BIT_OFFSET)); // TX error
  80014dc:	7c7b      	ldrb	r3, [r7, #17]
  80014de:	2201      	movs	r2, #1
@@ -1807,7 +1807,7 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
  80014f2:	b29a      	uxth	r2, r3
  80014f4:	2364      	movs	r3, #100	; 0x64
  80014f6:	6979      	ldr	r1, [r7, #20]
- 80014f8:	4822      	ldr	r0, [pc, #136]	; (8001584 <read_cell_volt+0x16c>)
+ 80014f8:	4822      	ldr	r0, [pc, #136]	; (8001584 <Read_Cell_Volt+0x16c>)
  80014fa:	f004 fcb0 	bl	8005e5e <HAL_SPI_Receive>
  80014fe:	4603      	mov	r3, r0
  8001500:	747b      	strb	r3, [r7, #17]
@@ -1815,7 +1815,7 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
 		if (hal_ret) {									// Non-zero means error
  8001502:	7c7b      	ldrb	r3, [r7, #17]
  8001504:	2b00      	cmp	r3, #0
- 8001506:	d00a      	beq.n	800151e <read_cell_volt+0x106>
+ 8001506:	d00a      	beq.n	800151e <Read_Cell_Volt+0x106>
 			ret |= (1 << (hal_ret + LTC_SPI_RX_BIT_OFFSET)); // RX error
  8001508:	7c7b      	ldrb	r3, [r7, #17]
  800150a:	3304      	adds	r3, #4
@@ -1832,7 +1832,7 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
 		for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
  800151e:	2300      	movs	r3, #0
  8001520:	777b      	strb	r3, [r7, #29]
- 8001522:	e01a      	b.n	800155a <read_cell_volt+0x142>
+ 8001522:	e01a      	b.n	800155a <Read_Cell_Volt+0x142>
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint8_t *data_ptr = &read_voltages_reg[dev_idx * REG_LEN];
@@ -1871,7 +1871,7 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
  8001558:	777b      	strb	r3, [r7, #29]
  800155a:	7f7b      	ldrb	r3, [r7, #29]
  800155c:	2b00      	cmp	r3, #0
- 800155e:	d0e1      	beq.n	8001524 <read_cell_volt+0x10c>
+ 800155e:	d0e1      	beq.n	8001524 <Read_Cell_Volt+0x10c>
 					REG_LEN - 2);
 		}
 
@@ -1884,7 +1884,7 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
 	for (uint8_t i = 0; i < (NUM_CELL_SERIES_GROUP / LTC_SERIES_GROUPS_PER_RDCV);
  800156a:	7fbb      	ldrb	r3, [r7, #30]
  800156c:	2b03      	cmp	r3, #3
- 800156e:	d987      	bls.n	8001480 <read_cell_volt+0x68>
+ 800156e:	d987      	bls.n	8001480 <Read_Cell_Volt+0x68>
 	}
 
 	return ret;
@@ -1899,13 +1899,13 @@ LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages) {
  8001580:	0800a3c4 	.word	0x0800a3c4
  8001584:	200002e4 	.word	0x200002e4
 
-08001588 <ltc_wrcomm>:
+08001588 <LTC_WRCOMM>:
 /**
  * 
  * @param total_ic	The number of ICs being written to
  * @param comm[6]	A two dimensional array of the comm data that will be written
  */
-void ltc_wrcomm(uint8_t total_ic, uint8_t comm[6]) {
+void LTC_WRCOMM(uint8_t total_ic, uint8_t comm[6]) {
  8001588:	b580      	push	{r7, lr}
  800158a:	b086      	sub	sp, #24
  800158c:	af00      	add	r7, sp, #0
@@ -1942,10 +1942,10 @@ void ltc_wrcomm(uint8_t total_ic, uint8_t comm[6]) {
  80015b6:	3301      	adds	r3, #1
  80015b8:	2221      	movs	r2, #33	; 0x21
  80015ba:	701a      	strb	r2, [r3, #0]
-	cmd_pec = ltc_pec15_calc(2, cmd);
+	cmd_pec = LTC_Pec15_Calc(2, cmd);
  80015bc:	68f9      	ldr	r1, [r7, #12]
  80015be:	2002      	movs	r0, #2
- 80015c0:	f000 fa22 	bl	8001a08 <ltc_pec15_calc>
+ 80015c0:	f000 fa22 	bl	8001a08 <LTC_Pec15_Calc>
  80015c4:	4603      	mov	r3, r0
  80015c6:	817b      	strh	r3, [r7, #10]
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
@@ -1969,7 +1969,7 @@ void ltc_wrcomm(uint8_t total_ic, uint8_t comm[6]) {
 	for (uint8_t current_ic = total_ic; current_ic > 0; current_ic--) // executes for each ltc6811 in daisy chain, this loops starts with
  80015e4:	79fb      	ldrb	r3, [r7, #7]
  80015e6:	75bb      	strb	r3, [r7, #22]
- 80015e8:	e030      	b.n	800164c <ltc_wrcomm+0xc4>
+ 80015e8:	e030      	b.n	800164c <LTC_WRCOMM+0xc4>
 			{
 		// the last IC on the stack. The first configuration written is
 		// received by the last IC in the daisy chain
@@ -1977,7 +1977,7 @@ void ltc_wrcomm(uint8_t total_ic, uint8_t comm[6]) {
 		for (uint8_t current_byte = 0; current_byte < BYTES_IN_REG;
  80015ea:	2300      	movs	r3, #0
  80015ec:	757b      	strb	r3, [r7, #21]
- 80015ee:	e00d      	b.n	800160c <ltc_wrcomm+0x84>
+ 80015ee:	e00d      	b.n	800160c <LTC_WRCOMM+0x84>
 				current_byte++) // executes for each of the 6 bytes in the CFGR register
 				{
 			// current_byte is the byte counter
@@ -2002,13 +2002,13 @@ void ltc_wrcomm(uint8_t total_ic, uint8_t comm[6]) {
  800160c:	7d7a      	ldrb	r2, [r7, #21]
  800160e:	7d3b      	ldrb	r3, [r7, #20]
  8001610:	429a      	cmp	r2, r3
- 8001612:	d3ed      	bcc.n	80015f0 <ltc_wrcomm+0x68>
+ 8001612:	d3ed      	bcc.n	80015f0 <LTC_WRCOMM+0x68>
 		}
-		comm_pec = (uint16_t) ltc_pec15_calc(BYTES_IN_REG, &comm[0]); // calculating the PEC for each ICs configuration register data
+		comm_pec = (uint16_t) LTC_Pec15_Calc(BYTES_IN_REG, &comm[0]); // calculating the PEC for each ICs configuration register data
  8001614:	7d3b      	ldrb	r3, [r7, #20]
  8001616:	6839      	ldr	r1, [r7, #0]
  8001618:	4618      	mov	r0, r3
- 800161a:	f000 f9f5 	bl	8001a08 <ltc_pec15_calc>
+ 800161a:	f000 f9f5 	bl	8001a08 <LTC_Pec15_Calc>
  800161e:	4603      	mov	r3, r0
  8001620:	813b      	strh	r3, [r7, #8]
 		cmd[cmd_index] = (uint8_t) (comm_pec >> 8);
@@ -2038,11 +2038,11 @@ void ltc_wrcomm(uint8_t total_ic, uint8_t comm[6]) {
  800164a:	75bb      	strb	r3, [r7, #22]
  800164c:	7dbb      	ldrb	r3, [r7, #22]
  800164e:	2b00      	cmp	r3, #0
- 8001650:	d1cb      	bne.n	80015ea <ltc_wrcomm+0x62>
+ 8001650:	d1cb      	bne.n	80015ea <LTC_WRCOMM+0x62>
 	}
 
-	wakeup_idle(); // This will guarantee that the ltc6811 isoSPI port is awake.This command can be removed.
- 8001652:	f7ff fea3 	bl	800139c <wakeup_idle>
+	Wakeup_Idle(); // This will guarantee that the ltc6811 isoSPI port is awake.This command can be removed.
+ 8001652:	f7ff fea3 	bl	800139c <Wakeup_Idle>
 	LTC_nCS_Low();
  8001656:	f001 fa41 	bl	8002adc <LTC_nCS_Low>
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, CMD_LEN, 100);
@@ -2050,7 +2050,7 @@ void ltc_wrcomm(uint8_t total_ic, uint8_t comm[6]) {
  800165c:	b29a      	uxth	r2, r3
  800165e:	2364      	movs	r3, #100	; 0x64
  8001660:	68f9      	ldr	r1, [r7, #12]
- 8001662:	4806      	ldr	r0, [pc, #24]	; (800167c <ltc_wrcomm+0xf4>)
+ 8001662:	4806      	ldr	r0, [pc, #24]	; (800167c <LTC_WRCOMM+0xf4>)
  8001664:	f004 fab8 	bl	8005bd8 <HAL_SPI_Transmit>
 	LTC_nCS_High();
  8001668:	f001 fa2c 	bl	8002ac4 <LTC_nCS_High>
@@ -2065,12 +2065,12 @@ void ltc_wrcomm(uint8_t total_ic, uint8_t comm[6]) {
  800167a:	bf00      	nop
  800167c:	200002e4 	.word	0x200002e4
 
-08001680 <ltc_stcomm>:
+08001680 <LTC_STCOMM>:
 
 /**
  * Shifts data in COMM register out over ltc6811 SPI/I2C port
  */
-void ltc_stcomm(uint8_t len) {
+void LTC_STCOMM(uint8_t len) {
  8001680:	b580      	push	{r7, lr}
  8001682:	b086      	sub	sp, #24
  8001684:	af00      	add	r7, sp, #0
@@ -2086,11 +2086,11 @@ void ltc_stcomm(uint8_t len) {
 	cmd[1] = 0x23;
  800168e:	2323      	movs	r3, #35	; 0x23
  8001690:	737b      	strb	r3, [r7, #13]
-	cmd_pec = ltc_pec15_calc(2, cmd);
+	cmd_pec = LTC_Pec15_Calc(2, cmd);
  8001692:	f107 030c 	add.w	r3, r7, #12
  8001696:	4619      	mov	r1, r3
  8001698:	2002      	movs	r0, #2
- 800169a:	f000 f9b5 	bl	8001a08 <ltc_pec15_calc>
+ 800169a:	f000 f9b5 	bl	8001a08 <LTC_Pec15_Calc>
  800169e:	4603      	mov	r3, r0
  80016a0:	827b      	strh	r3, [r7, #18]
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
@@ -2104,25 +2104,25 @@ void ltc_stcomm(uint8_t len) {
  80016ae:	b2db      	uxtb	r3, r3
  80016b0:	73fb      	strb	r3, [r7, #15]
 
-	wakeup_idle(); // This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
- 80016b2:	f7ff fe73 	bl	800139c <wakeup_idle>
+	Wakeup_Idle(); // This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+ 80016b2:	f7ff fe73 	bl	800139c <Wakeup_Idle>
 	LTC_nCS_Low();
  80016b6:	f001 fa11 	bl	8002adc <LTC_nCS_Low>
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
  80016ba:	f107 010c 	add.w	r1, r7, #12
  80016be:	2364      	movs	r3, #100	; 0x64
  80016c0:	2204      	movs	r2, #4
- 80016c2:	480e      	ldr	r0, [pc, #56]	; (80016fc <ltc_stcomm+0x7c>)
+ 80016c2:	480e      	ldr	r0, [pc, #56]	; (80016fc <LTC_STCOMM+0x7c>)
  80016c4:	f004 fa88 	bl	8005bd8 <HAL_SPI_Transmit>
 	for (int i = 0; i < len * 3; i++) {
  80016c8:	2300      	movs	r3, #0
  80016ca:	617b      	str	r3, [r7, #20]
- 80016cc:	e008      	b.n	80016e0 <ltc_stcomm+0x60>
+ 80016cc:	e008      	b.n	80016e0 <LTC_STCOMM+0x60>
 		HAL_SPI_Transmit(&hspi1, (uint8_t*) 0xFF, 1, 100);
  80016ce:	2364      	movs	r3, #100	; 0x64
  80016d0:	2201      	movs	r2, #1
  80016d2:	21ff      	movs	r1, #255	; 0xff
- 80016d4:	4809      	ldr	r0, [pc, #36]	; (80016fc <ltc_stcomm+0x7c>)
+ 80016d4:	4809      	ldr	r0, [pc, #36]	; (80016fc <LTC_STCOMM+0x7c>)
  80016d6:	f004 fa7f 	bl	8005bd8 <HAL_SPI_Transmit>
 	for (int i = 0; i < len * 3; i++) {
  80016da:	697b      	ldr	r3, [r7, #20]
@@ -2134,7 +2134,7 @@ void ltc_stcomm(uint8_t len) {
  80016e6:	4413      	add	r3, r2
  80016e8:	697a      	ldr	r2, [r7, #20]
  80016ea:	429a      	cmp	r2, r3
- 80016ec:	dbef      	blt.n	80016ce <ltc_stcomm+0x4e>
+ 80016ec:	dbef      	blt.n	80016ce <LTC_STCOMM+0x4e>
 	}
 	LTC_nCS_High();
  80016ee:	f001 f9e9 	bl	8002ac4 <LTC_nCS_High>
@@ -2146,9 +2146,9 @@ void ltc_stcomm(uint8_t len) {
  80016fa:	bf00      	nop
  80016fc:	200002e4 	.word	0x200002e4
 
-08001700 <read_cell_temps>:
+08001700 <Read_Cell_Temps>:
 
-LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
+LTC_SPI_StatusTypeDef Read_Cell_Temps(uint16_t *read_auxiliary) {
  8001700:	e92d 43f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, lr}
  8001704:	b089      	sub	sp, #36	; 0x24
  8001706:	af00      	add	r7, sp, #0
@@ -2196,14 +2196,14 @@ LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
 	for (uint8_t i = 0;
  8001762:	2300      	movs	r3, #0
  8001764:	77bb      	strb	r3, [r7, #30]
- 8001766:	e074      	b.n	8001852 <read_cell_temps+0x152>
+ 8001766:	e074      	b.n	8001852 <Read_Cell_Temps+0x152>
 			i < (NUM_AUX_SERIES_GROUPS / LTC_SERIES_GROUPS_PER_RDAUX); i++) {
 		uint8_t cmd[4];
 		uint16_t cmd_pec;
 
 		cmd[0] = (0xFF & (LTC_CMD_AUXREG[i] >> 8)); // RDCV Register
  8001768:	7fbb      	ldrb	r3, [r7, #30]
- 800176a:	4a3f      	ldr	r2, [pc, #252]	; (8001868 <read_cell_temps+0x168>)
+ 800176a:	4a3f      	ldr	r2, [pc, #252]	; (8001868 <Read_Cell_Temps+0x168>)
  800176c:	f832 3013 	ldrh.w	r3, [r2, r3, lsl #1]
  8001770:	0a1b      	lsrs	r3, r3, #8
  8001772:	b29b      	uxth	r3, r3
@@ -2211,15 +2211,15 @@ LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
  8001776:	723b      	strb	r3, [r7, #8]
 		cmd[1] = (0xFF & (LTC_CMD_AUXREG[i]));		// RDCV Register
  8001778:	7fbb      	ldrb	r3, [r7, #30]
- 800177a:	4a3b      	ldr	r2, [pc, #236]	; (8001868 <read_cell_temps+0x168>)
+ 800177a:	4a3b      	ldr	r2, [pc, #236]	; (8001868 <Read_Cell_Temps+0x168>)
  800177c:	f832 3013 	ldrh.w	r3, [r2, r3, lsl #1]
  8001780:	b2db      	uxtb	r3, r3
  8001782:	727b      	strb	r3, [r7, #9]
-		cmd_pec = ltc_pec15_calc(2, cmd);
+		cmd_pec = LTC_Pec15_Calc(2, cmd);
  8001784:	f107 0308 	add.w	r3, r7, #8
  8001788:	4619      	mov	r1, r3
  800178a:	2002      	movs	r0, #2
- 800178c:	f000 f93c 	bl	8001a08 <ltc_pec15_calc>
+ 800178c:	f000 f93c 	bl	8001a08 <LTC_Pec15_Calc>
  8001790:	4603      	mov	r3, r0
  8001792:	827b      	strh	r3, [r7, #18]
 		cmd[2] = (uint8_t) (cmd_pec >> 8);
@@ -2233,8 +2233,8 @@ LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
  80017a0:	b2db      	uxtb	r3, r3
  80017a2:	72fb      	strb	r3, [r7, #11]
 
-		wakeup_idle(); // Wake LTC up
- 80017a4:	f7ff fdfa 	bl	800139c <wakeup_idle>
+		Wakeup_Idle(); // Wake LTC up
+ 80017a4:	f7ff fdfa 	bl	800139c <Wakeup_Idle>
 
 		LTC_nCS_Low(); // Pull CS low
  80017a8:	f001 f998 	bl	8002adc <LTC_nCS_Low>
@@ -2243,14 +2243,14 @@ LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
  80017ac:	f107 0108 	add.w	r1, r7, #8
  80017b0:	2364      	movs	r3, #100	; 0x64
  80017b2:	2204      	movs	r2, #4
- 80017b4:	482d      	ldr	r0, [pc, #180]	; (800186c <read_cell_temps+0x16c>)
+ 80017b4:	482d      	ldr	r0, [pc, #180]	; (800186c <Read_Cell_Temps+0x16c>)
  80017b6:	f004 fa0f 	bl	8005bd8 <HAL_SPI_Transmit>
  80017ba:	4603      	mov	r3, r0
  80017bc:	747b      	strb	r3, [r7, #17]
 		if (hal_ret) {									// Non-zero means error
  80017be:	7c7b      	ldrb	r3, [r7, #17]
  80017c0:	2b00      	cmp	r3, #0
- 80017c2:	d009      	beq.n	80017d8 <read_cell_temps+0xd8>
+ 80017c2:	d009      	beq.n	80017d8 <Read_Cell_Temps+0xd8>
 			ret |= (1 << (hal_ret + LTC_SPI_TX_BIT_OFFSET)); // TX error
  80017c4:	7c7b      	ldrb	r3, [r7, #17]
  80017c6:	2201      	movs	r2, #1
@@ -2267,7 +2267,7 @@ LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
  80017da:	b29a      	uxth	r2, r3
  80017dc:	2364      	movs	r3, #100	; 0x64
  80017de:	6979      	ldr	r1, [r7, #20]
- 80017e0:	4822      	ldr	r0, [pc, #136]	; (800186c <read_cell_temps+0x16c>)
+ 80017e0:	4822      	ldr	r0, [pc, #136]	; (800186c <Read_Cell_Temps+0x16c>)
  80017e2:	f004 fb3c 	bl	8005e5e <HAL_SPI_Receive>
  80017e6:	4603      	mov	r3, r0
  80017e8:	747b      	strb	r3, [r7, #17]
@@ -2275,7 +2275,7 @@ LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
 		if (hal_ret) {									// Non-zero means error
  80017ea:	7c7b      	ldrb	r3, [r7, #17]
  80017ec:	2b00      	cmp	r3, #0
- 80017ee:	d00a      	beq.n	8001806 <read_cell_temps+0x106>
+ 80017ee:	d00a      	beq.n	8001806 <Read_Cell_Temps+0x106>
 			ret |= (1 << (hal_ret + LTC_SPI_RX_BIT_OFFSET)); // RX error
  80017f0:	7c7b      	ldrb	r3, [r7, #17]
  80017f2:	3304      	adds	r3, #4
@@ -2292,7 +2292,7 @@ LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
 		for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
  8001806:	2300      	movs	r3, #0
  8001808:	777b      	strb	r3, [r7, #29]
- 800180a:	e01a      	b.n	8001842 <read_cell_temps+0x142>
+ 800180a:	e01a      	b.n	8001842 <Read_Cell_Temps+0x142>
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint8_t *data_ptr = &read_auxiliary_reg[dev_idx * REG_LEN];
@@ -2331,7 +2331,7 @@ LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
  8001840:	777b      	strb	r3, [r7, #29]
  8001842:	7f7b      	ldrb	r3, [r7, #29]
  8001844:	2b00      	cmp	r3, #0
- 8001846:	d0e1      	beq.n	800180c <read_cell_temps+0x10c>
+ 8001846:	d0e1      	beq.n	800180c <Read_Cell_Temps+0x10c>
 					REG_LEN - 2);
 		}
 
@@ -2343,7 +2343,7 @@ LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
  8001850:	77bb      	strb	r3, [r7, #30]
  8001852:	7fbb      	ldrb	r3, [r7, #30]
  8001854:	2b01      	cmp	r3, #1
- 8001856:	d987      	bls.n	8001768 <read_cell_temps+0x68>
+ 8001856:	d987      	bls.n	8001768 <Read_Cell_Temps+0x68>
 	}
 
 	return ret;
@@ -2358,10 +2358,10 @@ LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary) {
  8001868:	0800a3cc 	.word	0x0800a3cc
  800186c:	200002e4 	.word	0x200002e4
 
-08001870 <ltc_adcv>:
+08001870 <LTC_ADCV>:
  Starts cell voltage conversion
  */
-void ltc_adcv(uint8_t MD,  // ADC Mode
+void LTC_ADCV(uint8_t MD,  // ADC Mode
 		uint8_t DCP, // Discharge Permit
 		uint8_t CH   // Cell Channels to be measured
 		) {
@@ -2406,11 +2406,11 @@ void ltc_adcv(uint8_t MD,  // ADC Mode
  80018ae:	3360      	adds	r3, #96	; 0x60
  80018b0:	b2db      	uxtb	r3, r3
  80018b2:	727b      	strb	r3, [r7, #9]
-	cmd_pec = ltc_pec15_calc(2, cmd);
+	cmd_pec = LTC_Pec15_Calc(2, cmd);
  80018b4:	f107 0308 	add.w	r3, r7, #8
  80018b8:	4619      	mov	r1, r3
  80018ba:	2002      	movs	r0, #2
- 80018bc:	f000 f8a4 	bl	8001a08 <ltc_pec15_calc>
+ 80018bc:	f000 f8a4 	bl	8001a08 <LTC_Pec15_Calc>
  80018c0:	4603      	mov	r3, r0
  80018c2:	81bb      	strh	r3, [r7, #12]
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
@@ -2424,15 +2424,15 @@ void ltc_adcv(uint8_t MD,  // ADC Mode
  80018d0:	b2db      	uxtb	r3, r3
  80018d2:	72fb      	strb	r3, [r7, #11]
 
-	wakeup_idle(); // This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
- 80018d4:	f7ff fd62 	bl	800139c <wakeup_idle>
+	Wakeup_Idle(); // This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+ 80018d4:	f7ff fd62 	bl	800139c <Wakeup_Idle>
 	LTC_nCS_Low();
  80018d8:	f001 f900 	bl	8002adc <LTC_nCS_Low>
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
  80018dc:	f107 0108 	add.w	r1, r7, #8
  80018e0:	2364      	movs	r3, #100	; 0x64
  80018e2:	2204      	movs	r2, #4
- 80018e4:	4804      	ldr	r0, [pc, #16]	; (80018f8 <ltc_adcv+0x88>)
+ 80018e4:	4804      	ldr	r0, [pc, #16]	; (80018f8 <LTC_ADCV+0x88>)
  80018e6:	f004 f977 	bl	8005bd8 <HAL_SPI_Transmit>
 	LTC_nCS_High();
  80018ea:	f001 f8eb 	bl	8002ac4 <LTC_nCS_High>
@@ -2444,9 +2444,9 @@ void ltc_adcv(uint8_t MD,  // ADC Mode
  80018f6:	bf00      	nop
  80018f8:	200002e4 	.word	0x200002e4
 
-080018fc <ltc_adax>:
+080018fc <LTC_ADAX>:
 
-void ltc_adax(uint8_t MD, // ADC Mode
+void LTC_ADAX(uint8_t MD, // ADC Mode
 		uint8_t CHG // GPIO Channels to be measured)
 		) {
  80018fc:	b580      	push	{r7, lr}
@@ -2484,11 +2484,11 @@ void ltc_adax(uint8_t MD, // ADC Mode
  800192e:	3360      	adds	r3, #96	; 0x60
  8001930:	b2db      	uxtb	r3, r3
  8001932:	727b      	strb	r3, [r7, #9]
-	cmd_pec = ltc_pec15_calc(2, cmd);
+	cmd_pec = LTC_Pec15_Calc(2, cmd);
  8001934:	f107 0308 	add.w	r3, r7, #8
  8001938:	4619      	mov	r1, r3
  800193a:	2002      	movs	r0, #2
- 800193c:	f000 f864 	bl	8001a08 <ltc_pec15_calc>
+ 800193c:	f000 f864 	bl	8001a08 <LTC_Pec15_Calc>
  8001940:	4603      	mov	r3, r0
  8001942:	81bb      	strh	r3, [r7, #12]
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
@@ -2501,20 +2501,20 @@ void ltc_adax(uint8_t MD, // ADC Mode
  800194e:	89bb      	ldrh	r3, [r7, #12]
  8001950:	b2db      	uxtb	r3, r3
  8001952:	72fb      	strb	r3, [r7, #11]
-	 wakeup_idle (); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+	 Wakeup_Idle (); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
 	 output_low(LTC6811_CS);
 	 spi_write_array(4,cmd);
 	 output_high(LTC6811_CS);
 	 */
-	wakeup_idle(); // This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
- 8001954:	f7ff fd22 	bl	800139c <wakeup_idle>
+	Wakeup_Idle(); // This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+ 8001954:	f7ff fd22 	bl	800139c <Wakeup_Idle>
 	LTC_nCS_Low();
  8001958:	f001 f8c0 	bl	8002adc <LTC_nCS_Low>
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
  800195c:	f107 0108 	add.w	r1, r7, #8
  8001960:	2364      	movs	r3, #100	; 0x64
  8001962:	2204      	movs	r2, #4
- 8001964:	4804      	ldr	r0, [pc, #16]	; (8001978 <ltc_adax+0x7c>)
+ 8001964:	4804      	ldr	r0, [pc, #16]	; (8001978 <LTC_ADAX+0x7c>)
  8001966:	f004 f937 	bl	8005bd8 <HAL_SPI_Transmit>
 	LTC_nCS_High();
  800196a:	f001 f8ab 	bl	8002ac4 <LTC_nCS_High>
@@ -2526,9 +2526,9 @@ void ltc_adax(uint8_t MD, // ADC Mode
  8001976:	bf00      	nop
  8001978:	200002e4 	.word	0x200002e4
 
-0800197c <ltc_polladc>:
+0800197c <LTC_POLLADC>:
 
-int32_t ltc_polladc() {
+int32_t LTC_POLLADC() {
  800197c:	b580      	push	{r7, lr}
  800197e:	b084      	sub	sp, #16
  8001980:	af00      	add	r7, sp, #0
@@ -2550,11 +2550,11 @@ int32_t ltc_polladc() {
 	cmd[1] = 0x14;
  8001992:	2314      	movs	r3, #20
  8001994:	717b      	strb	r3, [r7, #5]
-	cmd_pec = ltc_pec15_calc(2, cmd);
+	cmd_pec = LTC_Pec15_Calc(2, cmd);
  8001996:	1d3b      	adds	r3, r7, #4
  8001998:	4619      	mov	r1, r3
  800199a:	2002      	movs	r0, #2
- 800199c:	f000 f834 	bl	8001a08 <ltc_pec15_calc>
+ 800199c:	f000 f834 	bl	8001a08 <LTC_Pec15_Calc>
  80019a0:	4603      	mov	r3, r0
  80019a2:	813b      	strh	r3, [r7, #8]
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
@@ -2568,8 +2568,8 @@ int32_t ltc_polladc() {
  80019b0:	b2db      	uxtb	r3, r3
  80019b2:	71fb      	strb	r3, [r7, #7]
 
-	wakeup_idle(); // This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
- 80019b4:	f7ff fcf2 	bl	800139c <wakeup_idle>
+	Wakeup_Idle(); // This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+ 80019b4:	f7ff fcf2 	bl	800139c <Wakeup_Idle>
 
 	LTC_nCS_Low();
  80019b8:	f001 f890 	bl	8002adc <LTC_nCS_Low>
@@ -2577,11 +2577,11 @@ int32_t ltc_polladc() {
  80019bc:	1d39      	adds	r1, r7, #4
  80019be:	2364      	movs	r3, #100	; 0x64
  80019c0:	2204      	movs	r2, #4
- 80019c2:	480f      	ldr	r0, [pc, #60]	; (8001a00 <ltc_polladc+0x84>)
+ 80019c2:	480f      	ldr	r0, [pc, #60]	; (8001a00 <LTC_POLLADC+0x84>)
  80019c4:	f004 f908 	bl	8005bd8 <HAL_SPI_Transmit>
 
 	while ((counter < 200000) && (finished == 0)) {
- 80019c8:	e00c      	b.n	80019e4 <ltc_polladc+0x68>
+ 80019c8:	e00c      	b.n	80019e4 <LTC_POLLADC+0x68>
 		current_time = HAL_GetTick();
  80019ca:	f001 fa05 	bl	8002dd8 <HAL_GetTick>
  80019ce:	4603      	mov	r3, r0
@@ -2589,11 +2589,11 @@ int32_t ltc_polladc() {
 		if (current_time > 0) {
  80019d2:	7abb      	ldrb	r3, [r7, #10]
  80019d4:	2b00      	cmp	r3, #0
- 80019d6:	d002      	beq.n	80019de <ltc_polladc+0x62>
+ 80019d6:	d002      	beq.n	80019de <LTC_POLLADC+0x62>
 			finished = 1;
  80019d8:	2301      	movs	r3, #1
  80019da:	72fb      	strb	r3, [r7, #11]
- 80019dc:	e002      	b.n	80019e4 <ltc_polladc+0x68>
+ 80019dc:	e002      	b.n	80019e4 <LTC_POLLADC+0x68>
 		} else {
 			counter = counter + 10;
  80019de:	68fb      	ldr	r3, [r7, #12]
@@ -2601,12 +2601,12 @@ int32_t ltc_polladc() {
  80019e2:	60fb      	str	r3, [r7, #12]
 	while ((counter < 200000) && (finished == 0)) {
  80019e4:	68fb      	ldr	r3, [r7, #12]
- 80019e6:	4a07      	ldr	r2, [pc, #28]	; (8001a04 <ltc_polladc+0x88>)
+ 80019e6:	4a07      	ldr	r2, [pc, #28]	; (8001a04 <LTC_POLLADC+0x88>)
  80019e8:	4293      	cmp	r3, r2
- 80019ea:	d802      	bhi.n	80019f2 <ltc_polladc+0x76>
+ 80019ea:	d802      	bhi.n	80019f2 <LTC_POLLADC+0x76>
  80019ec:	7afb      	ldrb	r3, [r7, #11]
  80019ee:	2b00      	cmp	r3, #0
- 80019f0:	d0eb      	beq.n	80019ca <ltc_polladc+0x4e>
+ 80019f0:	d0eb      	beq.n	80019ca <LTC_POLLADC+0x4e>
 		}
 	}
 	LTC_nCS_High();
@@ -2621,13 +2621,13 @@ int32_t ltc_polladc() {
  8001a00:	200002e4 	.word	0x200002e4
  8001a04:	00030d3f 	.word	0x00030d3f
 
-08001a08 <ltc_pec15_calc>:
+08001a08 <LTC_Pec15_Calc>:
 /**
  * error calculation and handling for poor command use. 
  * @param 	len		Number of bytes that will be used to calculate a PEC
  * @param	data	Array of data that will be used to calculate a PEC
  */
-uint16_t ltc_pec15_calc(uint8_t len, uint8_t *data) {
+uint16_t LTC_Pec15_Calc(uint8_t len, uint8_t *data) {
  8001a08:	b480      	push	{r7}
  8001a0a:	b085      	sub	sp, #20
  8001a0c:	af00      	add	r7, sp, #0
@@ -2642,7 +2642,7 @@ uint16_t ltc_pec15_calc(uint8_t len, uint8_t *data) {
 	for (uint8_t i = 0; i < len; i++) // loops for each byte in data array
  8001a18:	2300      	movs	r3, #0
  8001a1a:	737b      	strb	r3, [r7, #13]
- 8001a1c:	e018      	b.n	8001a50 <ltc_pec15_calc+0x48>
+ 8001a1c:	e018      	b.n	8001a50 <LTC_Pec15_Calc+0x48>
 			{
 		addr = ((remainder >> 7) ^ data[i]) & 0xff; // calculate PEC table address
  8001a1e:	89fb      	ldrh	r3, [r7, #14]
@@ -2662,7 +2662,7 @@ uint16_t ltc_pec15_calc(uint8_t len, uint8_t *data) {
  8001a38:	021b      	lsls	r3, r3, #8
  8001a3a:	b29a      	uxth	r2, r3
  8001a3c:	897b      	ldrh	r3, [r7, #10]
- 8001a3e:	490a      	ldr	r1, [pc, #40]	; (8001a68 <ltc_pec15_calc+0x60>)
+ 8001a3e:	490a      	ldr	r1, [pc, #40]	; (8001a68 <LTC_Pec15_Calc+0x60>)
  8001a40:	f851 3023 	ldr.w	r3, [r1, r3, lsl #2]
  8001a44:	b29b      	uxth	r3, r3
  8001a46:	4053      	eors	r3, r2
@@ -2674,7 +2674,7 @@ uint16_t ltc_pec15_calc(uint8_t len, uint8_t *data) {
  8001a50:	7b7a      	ldrb	r2, [r7, #13]
  8001a52:	79fb      	ldrb	r3, [r7, #7]
  8001a54:	429a      	cmp	r2, r3
- 8001a56:	d3e2      	bcc.n	8001a1e <ltc_pec15_calc+0x16>
+ 8001a56:	d3e2      	bcc.n	8001a1e <LTC_Pec15_Calc+0x16>
 	}
 
 	return (remainder * 2); // The CRC15 has a 0 in the LSB so the remainder must be multiplied by 2
@@ -4106,12 +4106,12 @@ int main(void) {
  8002320:	4603      	mov	r3, r0
  8002322:	2b00      	cmp	r3, #0
  8002324:	d0f0      	beq.n	8002308 <main+0x9c>
-			wakeup_sleep();
- 8002326:	f7ff f859 	bl	80013dc <wakeup_sleep>
-			readVolt(modVoltage.cell_volt);
+			Wakeup_Sleep();
+ 8002326:	f7ff f859 	bl	80013dc <Wakeup_Sleep>
+			Read_Volt(modVoltage.cell_volt);
  800232a:	6abb      	ldr	r3, [r7, #40]	; 0x28
  800232c:	4618      	mov	r0, r3
- 800232e:	f000 f9fb 	bl	8002728 <readVolt>
+ 800232e:	f000 f9fb 	bl	8002728 <Read_Volt>
 			//print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
 
 			//related to reading temperatures
@@ -4119,12 +4119,12 @@ int main(void) {
  8002332:	f897 305f 	ldrb.w	r3, [r7, #95]	; 0x5f
  8002336:	f887 305c 	strb.w	r3, [r7, #92]	; 0x5c
  800233a:	e00e      	b.n	800235a <main+0xee>
-				readTemp(i, modVoltage.cell_temp, modVoltage.read_auxreg);
+				Read_Temp(i, modVoltage.cell_temp, modVoltage.read_auxreg);
  800233c:	6af9      	ldr	r1, [r7, #44]	; 0x2c
  800233e:	6bfa      	ldr	r2, [r7, #60]	; 0x3c
  8002340:	f897 305c 	ldrb.w	r3, [r7, #92]	; 0x5c
  8002344:	4618      	mov	r0, r3
- 8002346:	f000 fa03 	bl	8002750 <readTemp>
+ 8002346:	f000 fa03 	bl	8002750 <Read_Temp>
 				HAL_Delay(100);
  800234a:	2064      	movs	r0, #100	; 0x64
  800234c:	f000 fd4e 	bl	8002dec <HAL_Delay>
@@ -4147,33 +4147,33 @@ int main(void) {
 				indexpause = NUM_THERM_PER_MOD;
  8002374:	230c      	movs	r3, #12
  8002376:	f887 305e 	strb.w	r3, [r7, #94]	; 0x5e
-				wakeup_idle();
- 800237a:	f7ff f80f 	bl	800139c <wakeup_idle>
-				ltc_wrcomm(NUM_DEVICES, BMS_MUX_PAUSE[0]);
+				Wakeup_Idle();
+ 800237a:	f7ff f80f 	bl	800139c <Wakeup_Idle>
+				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
  800237e:	492c      	ldr	r1, [pc, #176]	; (8002430 <main+0x1c4>)
  8002380:	2001      	movs	r0, #1
- 8002382:	f7ff f901 	bl	8001588 <ltc_wrcomm>
-				wakeup_idle();
- 8002386:	f7ff f809 	bl	800139c <wakeup_idle>
-				ltc_stcomm(2);
+ 8002382:	f7ff f901 	bl	8001588 <LTC_WRCOMM>
+				Wakeup_Idle();
+ 8002386:	f7ff f809 	bl	800139c <Wakeup_Idle>
+				LTC_STCOMM(2);
  800238a:	2002      	movs	r0, #2
- 800238c:	f7ff f978 	bl	8001680 <ltc_stcomm>
+ 800238c:	f7ff f978 	bl	8001680 <LTC_STCOMM>
  8002390:	e014      	b.n	80023bc <main+0x150>
 			} else if (indexpause == NUM_THERM_PER_MOD) {
  8002392:	f897 305e 	ldrb.w	r3, [r7, #94]	; 0x5e
  8002396:	2b0c      	cmp	r3, #12
  8002398:	d110      	bne.n	80023bc <main+0x150>
-				wakeup_idle();
- 800239a:	f7fe ffff 	bl	800139c <wakeup_idle>
-				ltc_wrcomm(NUM_DEVICES, BMS_MUX_PAUSE[1]);
+				Wakeup_Idle();
+ 800239a:	f7fe ffff 	bl	800139c <Wakeup_Idle>
+				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
  800239e:	4925      	ldr	r1, [pc, #148]	; (8002434 <main+0x1c8>)
  80023a0:	2001      	movs	r0, #1
- 80023a2:	f7ff f8f1 	bl	8001588 <ltc_wrcomm>
-				wakeup_idle();
- 80023a6:	f7fe fff9 	bl	800139c <wakeup_idle>
-				ltc_stcomm(2);
+ 80023a2:	f7ff f8f1 	bl	8001588 <LTC_WRCOMM>
+				Wakeup_Idle();
+ 80023a6:	f7fe fff9 	bl	800139c <Wakeup_Idle>
+				LTC_STCOMM(2);
  80023aa:	2002      	movs	r0, #2
- 80023ac:	f7ff f968 	bl	8001680 <ltc_stcomm>
+ 80023ac:	f7ff f968 	bl	8001680 <LTC_STCOMM>
 				indexpause = 8;
  80023b0:	2308      	movs	r3, #8
  80023b2:	f887 305e 	strb.w	r3, [r7, #94]	; 0x5e
@@ -4184,22 +4184,22 @@ int main(void) {
 			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
 
 			//getting the summary of all cells in the pack
-			cellSummary(&modVoltage);
+			Cell_Summary(&modVoltage);
  80023bc:	f107 0328 	add.w	r3, r7, #40	; 0x28
  80023c0:	4618      	mov	r0, r3
- 80023c2:	f000 fa0b 	bl	80027dc <cellSummary>
+ 80023c2:	f000 fa0b 	bl	80027dc <Cell_Summary>
 
 			//waiting for 3 loops of the while look to occur before checking for faults
 			if (loop_count == 0) {
  80023c6:	f897 305d 	ldrb.w	r3, [r7, #93]	; 0x5d
  80023ca:	2b00      	cmp	r3, #0
  80023cc:	d10f      	bne.n	80023ee <main+0x182>
-				faultAndWarning(&modVoltage, &safetyFaults, &safetyWarnings);
+				Fault_And_Warning(&modVoltage, &safetyFaults, &safetyWarnings);
  80023ce:	1cba      	adds	r2, r7, #2
  80023d0:	1cf9      	adds	r1, r7, #3
  80023d2:	f107 0328 	add.w	r3, r7, #40	; 0x28
  80023d6:	4618      	mov	r0, r3
- 80023d8:	f000 fa87 	bl	80028ea <faultAndWarning>
+ 80023d8:	f000 fa87 	bl	80028ea <Fault_And_Warning>
 				if (safetyFaults != 0) {
  80023dc:	78fb      	ldrb	r3, [r7, #3]
  80023de:	2b00      	cmp	r3, #0
@@ -4217,7 +4217,7 @@ int main(void) {
  80023ee:	f897 305d 	ldrb.w	r3, [r7, #93]	; 0x5d
  80023f2:	3b01      	subs	r3, #1
  80023f4:	f887 305d 	strb.w	r3, [r7, #93]	; 0x5d
-				startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
+				Start_Balance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
 									modVoltage.cell_volt_lowest);
 			}
 
@@ -4570,12 +4570,12 @@ __STATIC_FORCEINLINE void __disable_irq(void)
  80025fc:	e7fe      	b.n	80025fc <Error_Handler+0x8>
 	...
 
-08002600 <getActualTemps>:
+08002600 <Get_Actual_Temps>:
 				{ 0x69, 0x08, 0x0F, 0xA9, 0x7F, 0xF9 }, { 0x69, 0x08, 0x0F,
 						0x99, 0x7F, 0xF9 },
 				{ 0x69, 0x08, 0x0F, 0x89, 0x7F, 0xF9 } };
 
-void getActualTemps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
+void Get_Actual_Temps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
 		uint16_t data) {
  8002600:	b590      	push	{r4, r7, lr}
  8002602:	b083      	sub	sp, #12
@@ -4596,7 +4596,7 @@ void getActualTemps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
  800261a:	f7fe fb77 	bl	8000d0c <__aeabi_ui2f>
  800261e:	4603      	mov	r3, r0
  8002620:	4619      	mov	r1, r3
- 8002622:	483a      	ldr	r0, [pc, #232]	; (800270c <getActualTemps+0x10c>)
+ 8002622:	483a      	ldr	r0, [pc, #232]	; (800270c <Get_Actual_Temps+0x10c>)
  8002624:	f7fe fc7e 	bl	8000f24 <__aeabi_fdiv>
  8002628:	4603      	mov	r3, r0
  800262a:	f04f 517e 	mov.w	r1, #1065353216	; 0x3f800000
@@ -4604,30 +4604,30 @@ void getActualTemps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
  8002630:	f7fe faba 	bl	8000ba8 <__aeabi_fsub>
  8002634:	4603      	mov	r3, r0
  8002636:	461a      	mov	r2, r3
- 8002638:	4b35      	ldr	r3, [pc, #212]	; (8002710 <getActualTemps+0x110>)
+ 8002638:	4b35      	ldr	r3, [pc, #212]	; (8002710 <Get_Actual_Temps+0x110>)
  800263a:	601a      	str	r2, [r3, #0]
 	scalar = (float) ntcSeriesResistance / scalar;
- 800263c:	4b34      	ldr	r3, [pc, #208]	; (8002710 <getActualTemps+0x110>)
+ 800263c:	4b34      	ldr	r3, [pc, #208]	; (8002710 <Get_Actual_Temps+0x110>)
  800263e:	681b      	ldr	r3, [r3, #0]
  8002640:	4619      	mov	r1, r3
- 8002642:	4834      	ldr	r0, [pc, #208]	; (8002714 <getActualTemps+0x114>)
+ 8002642:	4834      	ldr	r0, [pc, #208]	; (8002714 <Get_Actual_Temps+0x114>)
  8002644:	f7fe fc6e 	bl	8000f24 <__aeabi_fdiv>
  8002648:	4603      	mov	r3, r0
  800264a:	461a      	mov	r2, r3
- 800264c:	4b30      	ldr	r3, [pc, #192]	; (8002710 <getActualTemps+0x110>)
+ 800264c:	4b30      	ldr	r3, [pc, #192]	; (8002710 <Get_Actual_Temps+0x110>)
  800264e:	601a      	str	r2, [r3, #0]
 	steinhart = scalar / (float) ntcNominal;               // (R/Ro)
- 8002650:	4b2f      	ldr	r3, [pc, #188]	; (8002710 <getActualTemps+0x110>)
+ 8002650:	4b2f      	ldr	r3, [pc, #188]	; (8002710 <Get_Actual_Temps+0x110>)
  8002652:	681b      	ldr	r3, [r3, #0]
- 8002654:	492f      	ldr	r1, [pc, #188]	; (8002714 <getActualTemps+0x114>)
+ 8002654:	492f      	ldr	r1, [pc, #188]	; (8002714 <Get_Actual_Temps+0x114>)
  8002656:	4618      	mov	r0, r3
  8002658:	f7fe fc64 	bl	8000f24 <__aeabi_fdiv>
  800265c:	4603      	mov	r3, r0
  800265e:	461a      	mov	r2, r3
- 8002660:	4b2d      	ldr	r3, [pc, #180]	; (8002718 <getActualTemps+0x118>)
+ 8002660:	4b2d      	ldr	r3, [pc, #180]	; (8002718 <Get_Actual_Temps+0x118>)
  8002662:	601a      	str	r2, [r3, #0]
 	steinhart = log(steinhart);                           // ln(R/Ro)
- 8002664:	4b2c      	ldr	r3, [pc, #176]	; (8002718 <getActualTemps+0x118>)
+ 8002664:	4b2c      	ldr	r3, [pc, #176]	; (8002718 <Get_Actual_Temps+0x118>)
  8002666:	681b      	ldr	r3, [r3, #0]
  8002668:	4618      	mov	r0, r3
  800266a:	f7fd ff41 	bl	80004f0 <__aeabi_f2d>
@@ -4642,51 +4642,51 @@ void getActualTemps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
  8002680:	4619      	mov	r1, r3
  8002682:	f7fe fa3d 	bl	8000b00 <__aeabi_d2f>
  8002686:	4603      	mov	r3, r0
- 8002688:	4a23      	ldr	r2, [pc, #140]	; (8002718 <getActualTemps+0x118>)
+ 8002688:	4a23      	ldr	r2, [pc, #140]	; (8002718 <Get_Actual_Temps+0x118>)
  800268a:	6013      	str	r3, [r2, #0]
 	steinhart /= (float) ntcBetaFactor;                    // 1/B * ln(R/Ro)
- 800268c:	4b22      	ldr	r3, [pc, #136]	; (8002718 <getActualTemps+0x118>)
+ 800268c:	4b22      	ldr	r3, [pc, #136]	; (8002718 <Get_Actual_Temps+0x118>)
  800268e:	681b      	ldr	r3, [r3, #0]
- 8002690:	4922      	ldr	r1, [pc, #136]	; (800271c <getActualTemps+0x11c>)
+ 8002690:	4922      	ldr	r1, [pc, #136]	; (800271c <Get_Actual_Temps+0x11c>)
  8002692:	4618      	mov	r0, r3
  8002694:	f7fe fc46 	bl	8000f24 <__aeabi_fdiv>
  8002698:	4603      	mov	r3, r0
  800269a:	461a      	mov	r2, r3
- 800269c:	4b1e      	ldr	r3, [pc, #120]	; (8002718 <getActualTemps+0x118>)
+ 800269c:	4b1e      	ldr	r3, [pc, #120]	; (8002718 <Get_Actual_Temps+0x118>)
  800269e:	601a      	str	r2, [r3, #0]
 	steinhart += 1.0f / ((float) ntcNominalTemp + 273.15f);      // + (1/To)
- 80026a0:	4b1d      	ldr	r3, [pc, #116]	; (8002718 <getActualTemps+0x118>)
+ 80026a0:	4b1d      	ldr	r3, [pc, #116]	; (8002718 <Get_Actual_Temps+0x118>)
  80026a2:	681b      	ldr	r3, [r3, #0]
- 80026a4:	491e      	ldr	r1, [pc, #120]	; (8002720 <getActualTemps+0x120>)
+ 80026a4:	491e      	ldr	r1, [pc, #120]	; (8002720 <Get_Actual_Temps+0x120>)
  80026a6:	4618      	mov	r0, r3
  80026a8:	f7fe fa80 	bl	8000bac <__addsf3>
  80026ac:	4603      	mov	r3, r0
  80026ae:	461a      	mov	r2, r3
- 80026b0:	4b19      	ldr	r3, [pc, #100]	; (8002718 <getActualTemps+0x118>)
+ 80026b0:	4b19      	ldr	r3, [pc, #100]	; (8002718 <Get_Actual_Temps+0x118>)
  80026b2:	601a      	str	r2, [r3, #0]
 	steinhart = 1.0f / steinhart;                         // Invert
- 80026b4:	4b18      	ldr	r3, [pc, #96]	; (8002718 <getActualTemps+0x118>)
+ 80026b4:	4b18      	ldr	r3, [pc, #96]	; (8002718 <Get_Actual_Temps+0x118>)
  80026b6:	681b      	ldr	r3, [r3, #0]
  80026b8:	4619      	mov	r1, r3
  80026ba:	f04f 507e 	mov.w	r0, #1065353216	; 0x3f800000
  80026be:	f7fe fc31 	bl	8000f24 <__aeabi_fdiv>
  80026c2:	4603      	mov	r3, r0
  80026c4:	461a      	mov	r2, r3
- 80026c6:	4b14      	ldr	r3, [pc, #80]	; (8002718 <getActualTemps+0x118>)
+ 80026c6:	4b14      	ldr	r3, [pc, #80]	; (8002718 <Get_Actual_Temps+0x118>)
  80026c8:	601a      	str	r2, [r3, #0]
 	steinhart -= 273.15f;    // convert to degree
- 80026ca:	4b13      	ldr	r3, [pc, #76]	; (8002718 <getActualTemps+0x118>)
+ 80026ca:	4b13      	ldr	r3, [pc, #76]	; (8002718 <Get_Actual_Temps+0x118>)
  80026cc:	681b      	ldr	r3, [r3, #0]
- 80026ce:	4915      	ldr	r1, [pc, #84]	; (8002724 <getActualTemps+0x124>)
+ 80026ce:	4915      	ldr	r1, [pc, #84]	; (8002724 <Get_Actual_Temps+0x124>)
  80026d0:	4618      	mov	r0, r3
  80026d2:	f7fe fa69 	bl	8000ba8 <__aeabi_fsub>
  80026d6:	4603      	mov	r3, r0
  80026d8:	461a      	mov	r2, r3
- 80026da:	4b0f      	ldr	r3, [pc, #60]	; (8002718 <getActualTemps+0x118>)
+ 80026da:	4b0f      	ldr	r3, [pc, #60]	; (8002718 <Get_Actual_Temps+0x118>)
  80026dc:	601a      	str	r2, [r3, #0]
 
 	actual_temp[dev_idx * NUM_THERM_PER_MOD + tempindex] = steinhart;
- 80026de:	4b0e      	ldr	r3, [pc, #56]	; (8002718 <getActualTemps+0x118>)
+ 80026de:	4b0e      	ldr	r3, [pc, #56]	; (8002718 <Get_Actual_Temps+0x118>)
  80026e0:	6819      	ldr	r1, [r3, #0]
  80026e2:	79fa      	ldrb	r2, [r7, #7]
  80026e4:	4613      	mov	r3, r2
@@ -4718,34 +4718,34 @@ void getActualTemps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
  8002720:	3b5bcf0f 	.word	0x3b5bcf0f
  8002724:	43889333 	.word	0x43889333
 
-08002728 <readVolt>:
+08002728 <Read_Volt>:
 
-void readVolt(uint16_t *read_volt) {
+void Read_Volt(uint16_t *read_volt) {
  8002728:	b580      	push	{r7, lr}
  800272a:	b082      	sub	sp, #8
  800272c:	af00      	add	r7, sp, #0
  800272e:	6078      	str	r0, [r7, #4]
-	wakeup_idle();
- 8002730:	f7fe fe34 	bl	800139c <wakeup_idle>
-	ltc_adcv(MD_7KHZ_3KHZ, DCP_DISABLED, CELL_CH_ALL);
+	Wakeup_Idle();
+ 8002730:	f7fe fe34 	bl	800139c <Wakeup_Idle>
+	LTC_ADCV(MD_7KHZ_3KHZ, DCP_DISABLED, CELL_CH_ALL);
  8002734:	2200      	movs	r2, #0
  8002736:	2100      	movs	r1, #0
  8002738:	2002      	movs	r0, #2
- 800273a:	f7ff f899 	bl	8001870 <ltc_adcv>
-	ltc_polladc();
- 800273e:	f7ff f91d 	bl	800197c <ltc_polladc>
-	read_cell_volt((uint16_t*) read_volt);
+ 800273a:	f7ff f899 	bl	8001870 <LTC_ADCV>
+	LTC_POLLADC();
+ 800273e:	f7ff f91d 	bl	800197c <LTC_POLLADC>
+	Read_Cell_Volt((uint16_t*) read_volt);
  8002742:	6878      	ldr	r0, [r7, #4]
- 8002744:	f7fe fe68 	bl	8001418 <read_cell_volt>
+ 8002744:	f7fe fe68 	bl	8001418 <Read_Cell_Volt>
 }
  8002748:	bf00      	nop
  800274a:	3708      	adds	r7, #8
  800274c:	46bd      	mov	sp, r7
  800274e:	bd80      	pop	{r7, pc}
 
-08002750 <readTemp>:
+08002750 <Read_Temp>:
 
-void readTemp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
+void Read_Temp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
  8002750:	b580      	push	{r7, lr}
  8002752:	b086      	sub	sp, #24
  8002754:	af00      	add	r7, sp, #0
@@ -4753,45 +4753,45 @@ void readTemp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
  8002758:	60b9      	str	r1, [r7, #8]
  800275a:	607a      	str	r2, [r7, #4]
  800275c:	73fb      	strb	r3, [r7, #15]
-	wakeup_idle();
- 800275e:	f7fe fe1d 	bl	800139c <wakeup_idle>
-	ltc_wrcomm(NUM_DEVICES, BMS_THERM[tempindex]);
+	Wakeup_Idle();
+ 800275e:	f7fe fe1d 	bl	800139c <Wakeup_Idle>
+	LTC_WRCOMM(NUM_DEVICES, BMS_THERM[tempindex]);
  8002762:	7bfa      	ldrb	r2, [r7, #15]
  8002764:	4613      	mov	r3, r2
  8002766:	005b      	lsls	r3, r3, #1
  8002768:	4413      	add	r3, r2
  800276a:	005b      	lsls	r3, r3, #1
- 800276c:	4a1a      	ldr	r2, [pc, #104]	; (80027d8 <readTemp+0x88>)
+ 800276c:	4a1a      	ldr	r2, [pc, #104]	; (80027d8 <Read_Temp+0x88>)
  800276e:	4413      	add	r3, r2
  8002770:	4619      	mov	r1, r3
  8002772:	2001      	movs	r0, #1
- 8002774:	f7fe ff08 	bl	8001588 <ltc_wrcomm>
-	wakeup_idle();
- 8002778:	f7fe fe10 	bl	800139c <wakeup_idle>
-	ltc_stcomm(2);
+ 8002774:	f7fe ff08 	bl	8001588 <LTC_WRCOMM>
+	Wakeup_Idle();
+ 8002778:	f7fe fe10 	bl	800139c <Wakeup_Idle>
+	LTC_STCOMM(2);
  800277c:	2002      	movs	r0, #2
- 800277e:	f7fe ff7f 	bl	8001680 <ltc_stcomm>
+ 800277e:	f7fe ff7f 	bl	8001680 <LTC_STCOMM>
 	//end sending to mux to read temperatures
 
-	wakeup_idle();
- 8002782:	f7fe fe0b 	bl	800139c <wakeup_idle>
-	ltc_adax(MD_7KHZ_3KHZ, 1); //doing GPIO all conversion
+	Wakeup_Idle();
+ 8002782:	f7fe fe0b 	bl	800139c <Wakeup_Idle>
+	LTC_ADAX(MD_7KHZ_3KHZ, 1); //doing GPIO all conversion
  8002786:	2101      	movs	r1, #1
  8002788:	2002      	movs	r0, #2
- 800278a:	f7ff f8b7 	bl	80018fc <ltc_adax>
-	ltc_polladc();
- 800278e:	f7ff f8f5 	bl	800197c <ltc_polladc>
-	if (!read_cell_temps((uint16_t*) read_auxreg)) // Set to read back all aux registers
+ 800278a:	f7ff f8b7 	bl	80018fc <LTC_ADAX>
+	LTC_POLLADC();
+ 800278e:	f7ff f8f5 	bl	800197c <LTC_POLLADC>
+	if (!Read_Cell_Temps((uint16_t*) read_auxreg)) // Set to read back all aux registers
  8002792:	6878      	ldr	r0, [r7, #4]
- 8002794:	f7fe ffb4 	bl	8001700 <read_cell_temps>
+ 8002794:	f7fe ffb4 	bl	8001700 <Read_Cell_Temps>
  8002798:	4603      	mov	r3, r0
  800279a:	2b00      	cmp	r3, #0
- 800279c:	d118      	bne.n	80027d0 <readTemp+0x80>
+ 800279c:	d118      	bne.n	80027d0 <Read_Temp+0x80>
 			{
 		for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
  800279e:	2300      	movs	r3, #0
  80027a0:	75fb      	strb	r3, [r7, #23]
- 80027a2:	e012      	b.n	80027ca <readTemp+0x7a>
+ 80027a2:	e012      	b.n	80027ca <Read_Temp+0x7a>
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint16_t data = read_auxreg[dev_idx * NUM_AUX_GROUP];
@@ -4806,19 +4806,19 @@ void readTemp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
  80027b4:	881b      	ldrh	r3, [r3, #0]
  80027b6:	82bb      	strh	r3, [r7, #20]
 			//read_temp[dev_idx * NUM_THERM_PER_MOD + tempindex] = data;
-			getActualTemps(dev_idx, tempindex, (uint16_t*) read_temp, data); //+5 because vref is the last reg
+			Get_Actual_Temps(dev_idx, tempindex, (uint16_t*) read_temp, data); //+5 because vref is the last reg
  80027b8:	8abb      	ldrh	r3, [r7, #20]
  80027ba:	7bf9      	ldrb	r1, [r7, #15]
  80027bc:	7df8      	ldrb	r0, [r7, #23]
  80027be:	68ba      	ldr	r2, [r7, #8]
- 80027c0:	f7ff ff1e 	bl	8002600 <getActualTemps>
+ 80027c0:	f7ff ff1e 	bl	8002600 <Get_Actual_Temps>
 		for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
  80027c4:	7dfb      	ldrb	r3, [r7, #23]
  80027c6:	3301      	adds	r3, #1
  80027c8:	75fb      	strb	r3, [r7, #23]
  80027ca:	7dfb      	ldrb	r3, [r7, #23]
  80027cc:	2b00      	cmp	r3, #0
- 80027ce:	d0e9      	beq.n	80027a4 <readTemp+0x54>
+ 80027ce:	d0e9      	beq.n	80027a4 <Read_Temp+0x54>
 
 		}
 	}
@@ -4829,13 +4829,13 @@ void readTemp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
  80027d6:	bd80      	pop	{r7, pc}
  80027d8:	2000000c 	.word	0x2000000c
 
-080027dc <cellSummary>:
+080027dc <Cell_Summary>:
 #define CELL_HIGH_TEMP_WARNING		55
 #define CELL_LOW_TEMP_WARNING		0
 
 #define CELL_VOLT_IMBALANCE_WARNING	    500
 
-void cellSummary(struct batteryModuleVoltage *batt){
+void Cell_Summary(struct batteryModuleVoltage *batt){
  80027dc:	b480      	push	{r7}
  80027de:	b085      	sub	sp, #20
  80027e0:	af00      	add	r7, sp, #0
@@ -4872,7 +4872,7 @@ void cellSummary(struct batteryModuleVoltage *batt){
 	for(int i = 1; i < NUM_CELLS; i++){
  8002812:	2301      	movs	r3, #1
  8002814:	60fb      	str	r3, [r7, #12]
- 8002816:	e032      	b.n	800287e <cellSummary+0xa2>
+ 8002816:	e032      	b.n	800287e <Cell_Summary+0xa2>
 
 		if(batt->cell_volt[i] > batt->cell_volt_highest){
  8002818:	687b      	ldr	r3, [r7, #4]
@@ -4884,7 +4884,7 @@ void cellSummary(struct batteryModuleVoltage *batt){
  8002824:	687b      	ldr	r3, [r7, #4]
  8002826:	895b      	ldrh	r3, [r3, #10]
  8002828:	429a      	cmp	r2, r3
- 800282a:	d907      	bls.n	800283c <cellSummary+0x60>
+ 800282a:	d907      	bls.n	800283c <Cell_Summary+0x60>
 			batt->cell_volt_highest = batt->cell_volt[i];
  800282c:	687b      	ldr	r3, [r7, #4]
  800282e:	681a      	ldr	r2, [r3, #0]
@@ -4906,7 +4906,7 @@ void cellSummary(struct batteryModuleVoltage *batt){
  8002848:	687b      	ldr	r3, [r7, #4]
  800284a:	891b      	ldrh	r3, [r3, #8]
  800284c:	429a      	cmp	r2, r3
- 800284e:	d207      	bcs.n	8002860 <cellSummary+0x84>
+ 800284e:	d207      	bcs.n	8002860 <Cell_Summary+0x84>
 			batt->cell_volt_lowest = batt->cell_volt[i];
  8002850:	687b      	ldr	r3, [r7, #4]
  8002852:	681a      	ldr	r2, [r3, #0]
@@ -4937,13 +4937,13 @@ void cellSummary(struct batteryModuleVoltage *batt){
  800287c:	60fb      	str	r3, [r7, #12]
  800287e:	68fb      	ldr	r3, [r7, #12]
  8002880:	2b0b      	cmp	r3, #11
- 8002882:	ddc9      	ble.n	8002818 <cellSummary+0x3c>
+ 8002882:	ddc9      	ble.n	8002818 <Cell_Summary+0x3c>
 	}
 
 	for(int i = 0; i < NUM_THERM_TOTAL; i++){
  8002884:	2300      	movs	r3, #0
  8002886:	60bb      	str	r3, [r7, #8]
- 8002888:	e026      	b.n	80028d8 <cellSummary+0xfc>
+ 8002888:	e026      	b.n	80028d8 <Cell_Summary+0xfc>
 		if(batt->cell_temp_highest < batt->cell_temp[i]){
  800288a:	687b      	ldr	r3, [r7, #4]
  800288c:	89da      	ldrh	r2, [r3, #14]
@@ -4954,7 +4954,7 @@ void cellSummary(struct batteryModuleVoltage *batt){
  8002896:	440b      	add	r3, r1
  8002898:	881b      	ldrh	r3, [r3, #0]
  800289a:	429a      	cmp	r2, r3
- 800289c:	d207      	bcs.n	80028ae <cellSummary+0xd2>
+ 800289c:	d207      	bcs.n	80028ae <Cell_Summary+0xd2>
 			batt->cell_temp_highest = batt->cell_temp[i];
  800289e:	687b      	ldr	r3, [r7, #4]
  80028a0:	685a      	ldr	r2, [r3, #4]
@@ -4976,7 +4976,7 @@ void cellSummary(struct batteryModuleVoltage *batt){
  80028ba:	440b      	add	r3, r1
  80028bc:	881b      	ldrh	r3, [r3, #0]
  80028be:	429a      	cmp	r2, r3
- 80028c0:	d907      	bls.n	80028d2 <cellSummary+0xf6>
+ 80028c0:	d907      	bls.n	80028d2 <Cell_Summary+0xf6>
 			batt->cell_temp_lowest = batt->cell_temp[i];
  80028c2:	687b      	ldr	r3, [r7, #4]
  80028c4:	685a      	ldr	r2, [r3, #4]
@@ -4992,7 +4992,7 @@ void cellSummary(struct batteryModuleVoltage *batt){
  80028d6:	60bb      	str	r3, [r7, #8]
  80028d8:	68bb      	ldr	r3, [r7, #8]
  80028da:	2b0b      	cmp	r3, #11
- 80028dc:	ddd5      	ble.n	800288a <cellSummary+0xae>
+ 80028dc:	ddd5      	ble.n	800288a <Cell_Summary+0xae>
 		}
 	}
 
@@ -5004,10 +5004,10 @@ void cellSummary(struct batteryModuleVoltage *batt){
  80028e6:	bc80      	pop	{r7}
  80028e8:	4770      	bx	lr
 
-080028ea <faultAndWarning>:
+080028ea <Fault_And_Warning>:
 
 
-void faultAndWarning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_t *warnings){
+void Fault_And_Warning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_t *warnings){
  80028ea:	b480      	push	{r7}
  80028ec:	b085      	sub	sp, #20
  80028ee:	af00      	add	r7, sp, #0
@@ -5033,7 +5033,7 @@ void faultAndWarning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_t 
  8002906:	891b      	ldrh	r3, [r3, #8]
  8002908:	f247 5230 	movw	r2, #30000	; 0x7530
  800290c:	4293      	cmp	r3, r2
- 800290e:	d806      	bhi.n	800291e <faultAndWarning+0x34>
+ 800290e:	d806      	bhi.n	800291e <Fault_And_Warning+0x34>
 		*fault |= 0b00100000;
  8002910:	68bb      	ldr	r3, [r7, #8]
  8002912:	781b      	ldrb	r3, [r3, #0]
@@ -5048,7 +5048,7 @@ void faultAndWarning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_t 
  8002920:	895b      	ldrh	r3, [r3, #10]
  8002922:	f24a 72f7 	movw	r2, #42999	; 0xa7f7
  8002926:	4293      	cmp	r3, r2
- 8002928:	d906      	bls.n	8002938 <faultAndWarning+0x4e>
+ 8002928:	d906      	bls.n	8002938 <Fault_And_Warning+0x4e>
 		*fault |= 0b00010000;
  800292a:	68bb      	ldr	r3, [r7, #8]
  800292c:	781b      	ldrb	r3, [r3, #0]
@@ -5062,7 +5062,7 @@ void faultAndWarning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_t 
  8002938:	68fb      	ldr	r3, [r7, #12]
  800293a:	89db      	ldrh	r3, [r3, #14]
  800293c:	2b3b      	cmp	r3, #59	; 0x3b
- 800293e:	d906      	bls.n	800294e <faultAndWarning+0x64>
+ 800293e:	d906      	bls.n	800294e <Fault_And_Warning+0x64>
 		*fault |= 0b00001000;
  8002940:	68bb      	ldr	r3, [r7, #8]
  8002942:	781b      	ldrb	r3, [r3, #0]
@@ -5088,7 +5088,7 @@ void faultAndWarning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_t 
  800295c:	68fb      	ldr	r3, [r7, #12]
  800295e:	891b      	ldrh	r3, [r3, #8]
  8002960:	f5b3 4ffa 	cmp.w	r3, #32000	; 0x7d00
- 8002964:	d806      	bhi.n	8002974 <faultAndWarning+0x8a>
+ 8002964:	d806      	bhi.n	8002974 <Fault_And_Warning+0x8a>
 		*warnings |= 0b00100000;
  8002966:	687b      	ldr	r3, [r7, #4]
  8002968:	781b      	ldrb	r3, [r3, #0]
@@ -5103,7 +5103,7 @@ void faultAndWarning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_t 
  8002976:	895b      	ldrh	r3, [r3, #10]
  8002978:	f24a 6203 	movw	r2, #42499	; 0xa603
  800297c:	4293      	cmp	r3, r2
- 800297e:	d906      	bls.n	800298e <faultAndWarning+0xa4>
+ 800297e:	d906      	bls.n	800298e <Fault_And_Warning+0xa4>
 		*warnings |= 0b00010000;
  8002980:	687b      	ldr	r3, [r7, #4]
  8002982:	781b      	ldrb	r3, [r3, #0]
@@ -5117,7 +5117,7 @@ void faultAndWarning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_t 
  800298e:	68fb      	ldr	r3, [r7, #12]
  8002990:	89db      	ldrh	r3, [r3, #14]
  8002992:	2b36      	cmp	r3, #54	; 0x36
- 8002994:	d906      	bls.n	80029a4 <faultAndWarning+0xba>
+ 8002994:	d906      	bls.n	80029a4 <Fault_And_Warning+0xba>
 		*warnings |= 0b00001000;
  8002996:	687b      	ldr	r3, [r7, #4]
  8002998:	781b      	ldrb	r3, [r3, #0]
@@ -5131,7 +5131,7 @@ void faultAndWarning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_t 
  80029a4:	68fb      	ldr	r3, [r7, #12]
  80029a6:	899b      	ldrh	r3, [r3, #12]
  80029a8:	2b00      	cmp	r3, #0
- 80029aa:	d106      	bne.n	80029ba <faultAndWarning+0xd0>
+ 80029aa:	d106      	bne.n	80029ba <Fault_And_Warning+0xd0>
 		*warnings |= 0b00000100;
  80029ac:	687b      	ldr	r3, [r7, #4]
  80029ae:	781b      	ldrb	r3, [r3, #0]

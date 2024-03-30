@@ -178,11 +178,11 @@ Discarded input sections
  .text          0x0000000000000000        0x0 ./Core/Src/6811.o
  .data          0x0000000000000000        0x0 ./Core/Src/6811.o
  .bss           0x0000000000000000        0x0 ./Core/Src/6811.o
- .text.ltc6811_wrpwm
+ .text.LTC6811_WRPWM
                 0x0000000000000000       0xf8 ./Core/Src/6811.o
- .text.ltc6811_wrcfg
+ .text.LTC6811_WRCFG
                 0x0000000000000000      0x100 ./Core/Src/6811.o
- .text.calc_pack_voltage
+ .text.Calc_Pack_Voltage
                 0x0000000000000000       0x3c ./Core/Src/6811.o
  .group         0x0000000000000000        0xc ./Core/Src/adc.o
  .group         0x0000000000000000        0xc ./Core/Src/adc.o
@@ -336,11 +336,11 @@ Discarded input sections
  .data          0x0000000000000000        0x0 ./Core/Src/balance.o
  .bss           0x0000000000000000        0x0 ./Core/Src/balance.o
  .data.config   0x0000000000000000       0x30 ./Core/Src/balance.o
- .text.startBalance
+ .text.Start_Balance
                 0x0000000000000000       0x34 ./Core/Src/balance.o
- .text.dischargeAlgo
+ .text.Discharge_Algo
                 0x0000000000000000       0x88 ./Core/Src/balance.o
- .text.setCfg   0x0000000000000000      0x140 ./Core/Src/balance.o
+ .text.Set_Cfg  0x0000000000000000      0x140 ./Core/Src/balance.o
  .debug_info    0x0000000000000000      0x237 ./Core/Src/balance.o
  .debug_abbrev  0x0000000000000000      0x124 ./Core/Src/balance.o
  .debug_aranges
@@ -410,7 +410,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x16 ./Core/Src/balance.o
  .debug_macro   0x0000000000000000       0x20 ./Core/Src/balance.o
  .debug_line    0x0000000000000000      0x9f6 ./Core/Src/balance.o
- .debug_str     0x0000000000000000    0xb6b6f ./Core/Src/balance.o
+ .debug_str     0x0000000000000000    0xb6b72 ./Core/Src/balance.o
  .comment       0x0000000000000000       0x44 ./Core/Src/balance.o
  .debug_frame   0x0000000000000000       0x80 ./Core/Src/balance.o
  .ARM.attributes
@@ -6043,37 +6043,37 @@ LOAD C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                 0x0000000008001398                __aeabi_idiv0
                 0x0000000008001398                __aeabi_ldiv0
  *(.text*)
- .text.wakeup_idle
+ .text.Wakeup_Idle
                 0x000000000800139c       0x40 ./Core/Src/6811.o
-                0x000000000800139c                wakeup_idle
- .text.wakeup_sleep
+                0x000000000800139c                Wakeup_Idle
+ .text.Wakeup_Sleep
                 0x00000000080013dc       0x3a ./Core/Src/6811.o
-                0x00000000080013dc                wakeup_sleep
+                0x00000000080013dc                Wakeup_Sleep
  *fill*         0x0000000008001416        0x2 
- .text.read_cell_volt
+ .text.Read_Cell_Volt
                 0x0000000008001418      0x170 ./Core/Src/6811.o
-                0x0000000008001418                read_cell_volt
- .text.ltc_wrcomm
+                0x0000000008001418                Read_Cell_Volt
+ .text.LTC_WRCOMM
                 0x0000000008001588       0xf8 ./Core/Src/6811.o
-                0x0000000008001588                ltc_wrcomm
- .text.ltc_stcomm
+                0x0000000008001588                LTC_WRCOMM
+ .text.LTC_STCOMM
                 0x0000000008001680       0x80 ./Core/Src/6811.o
-                0x0000000008001680                ltc_stcomm
- .text.read_cell_temps
+                0x0000000008001680                LTC_STCOMM
+ .text.Read_Cell_Temps
                 0x0000000008001700      0x170 ./Core/Src/6811.o
-                0x0000000008001700                read_cell_temps
- .text.ltc_adcv
+                0x0000000008001700                Read_Cell_Temps
+ .text.LTC_ADCV
                 0x0000000008001870       0x8c ./Core/Src/6811.o
-                0x0000000008001870                ltc_adcv
- .text.ltc_adax
+                0x0000000008001870                LTC_ADCV
+ .text.LTC_ADAX
                 0x00000000080018fc       0x80 ./Core/Src/6811.o
-                0x00000000080018fc                ltc_adax
- .text.ltc_polladc
+                0x00000000080018fc                LTC_ADAX
+ .text.LTC_POLLADC
                 0x000000000800197c       0x8c ./Core/Src/6811.o
-                0x000000000800197c                ltc_polladc
- .text.ltc_pec15_calc
+                0x000000000800197c                LTC_POLLADC
+ .text.LTC_Pec15_Calc
                 0x0000000008001a08       0x64 ./Core/Src/6811.o
-                0x0000000008001a08                ltc_pec15_calc
+                0x0000000008001a08                LTC_Pec15_Calc
  .text.MX_ADC1_Init
                 0x0000000008001a6c       0x7c ./Core/Src/adc.o
                 0x0000000008001a6c                MX_ADC1_Init
@@ -6140,21 +6140,21 @@ LOAD C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                 0x00000000080025f4        0xa ./Core/Src/main.o
                 0x00000000080025f4                Error_Handler
  *fill*         0x00000000080025fe        0x2 
- .text.getActualTemps
+ .text.Get_Actual_Temps
                 0x0000000008002600      0x128 ./Core/Src/module.o
-                0x0000000008002600                getActualTemps
- .text.readVolt
+                0x0000000008002600                Get_Actual_Temps
+ .text.Read_Volt
                 0x0000000008002728       0x28 ./Core/Src/module.o
-                0x0000000008002728                readVolt
- .text.readTemp
+                0x0000000008002728                Read_Volt
+ .text.Read_Temp
                 0x0000000008002750       0x8c ./Core/Src/module.o
-                0x0000000008002750                readTemp
- .text.cellSummary
+                0x0000000008002750                Read_Temp
+ .text.Cell_Summary
                 0x00000000080027dc      0x10e ./Core/Src/safety.o
-                0x00000000080027dc                cellSummary
- .text.faultAndWarning
+                0x00000000080027dc                Cell_Summary
+ .text.Fault_And_Warning
                 0x00000000080028ea       0xda ./Core/Src/safety.o
-                0x00000000080028ea                faultAndWarning
+                0x00000000080028ea                Fault_And_Warning
  .text.MX_SPI1_Init
                 0x00000000080029c4       0x6c ./Core/Src/spi.o
                 0x00000000080029c4                MX_SPI1_Init
@@ -7624,75 +7624,75 @@ LOAD C:/ST/STM32CubeIDE_1.13.2/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_line    0x000000000001c488      0xb31 ./USB_DEVICE/App/usbd_desc.o
  .debug_line    0x000000000001cfb9      0xe36 ./USB_DEVICE/Target/usbd_conf.o
 
-.debug_str      0x0000000000000000    0xbf180
- .debug_str     0x0000000000000000    0xb6f0c ./Core/Src/6811.o
+.debug_str      0x0000000000000000    0xbf196
+ .debug_str     0x0000000000000000    0xb6f11 ./Core/Src/6811.o
                                       0xb72f0 (size before relaxing)
- .debug_str     0x00000000000b6f0c      0x269 ./Core/Src/adc.o
+ .debug_str     0x00000000000b6f11      0x269 ./Core/Src/adc.o
                                       0xb3d65 (size before relaxing)
- .debug_str     0x00000000000b7175      0x456 ./Core/Src/can.o
+ .debug_str     0x00000000000b717a      0x46d ./Core/Src/can.o
                                       0xb3e9b (size before relaxing)
- .debug_str     0x00000000000b75cb       0x8c ./Core/Src/gpio.o
+ .debug_str     0x00000000000b75e7       0x8c ./Core/Src/gpio.o
                                       0xb39db (size before relaxing)
- .debug_str     0x00000000000b7657     0x178e ./Core/Src/main.o
-                                      0xb859f (size before relaxing)
- .debug_str     0x00000000000b8de5      0x8a8 ./Core/Src/module.o
-                                      0xb850d (size before relaxing)
- .debug_str     0x00000000000b968d      0x165 ./Core/Src/safety.o
-                                      0xb3abf (size before relaxing)
- .debug_str     0x00000000000b97f2       0x4b ./Core/Src/spi.o
+ .debug_str     0x00000000000b7673     0x1786 ./Core/Src/main.o
+                                      0xb85a4 (size before relaxing)
+ .debug_str     0x00000000000b8df9      0x8aa ./Core/Src/module.o
+                                      0xb8511 (size before relaxing)
+ .debug_str     0x00000000000b96a3      0x165 ./Core/Src/safety.o
+                                      0xb3ac2 (size before relaxing)
+ .debug_str     0x00000000000b9808       0x4b ./Core/Src/spi.o
                                       0xb3e19 (size before relaxing)
- .debug_str     0x00000000000b983d       0x2c ./Core/Src/stm32f1xx_hal_msp.o
+ .debug_str     0x00000000000b9853       0x2c ./Core/Src/stm32f1xx_hal_msp.o
                                       0xb3935 (size before relaxing)
- .debug_str     0x00000000000b9869      0x43d ./Core/Src/stm32f1xx_it.o
+ .debug_str     0x00000000000b987f      0x43d ./Core/Src/stm32f1xx_it.o
                                       0xb3d4c (size before relaxing)
- .debug_str     0x00000000000b9ca6      0x4dc ./Core/Src/sysmem.o
+ .debug_str     0x00000000000b9cbc      0x4dc ./Core/Src/sysmem.o
                                        0x5ff6 (size before relaxing)
- .debug_str     0x00000000000ba182       0xb1 ./Core/Src/system_stm32f1xx.o
+ .debug_str     0x00000000000ba198       0xb1 ./Core/Src/system_stm32f1xx.o
                                       0xb378c (size before relaxing)
- .debug_str     0x00000000000ba233      0x33e ./Core/Src/tim.o
+ .debug_str     0x00000000000ba249      0x33e ./Core/Src/tim.o
                                       0xb3ec2 (size before relaxing)
- .debug_str     0x00000000000ba571       0x78 ./Core/Startup/startup_stm32f105rbtx.o
- .debug_str     0x00000000000ba5e9      0x6b4 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o
+ .debug_str     0x00000000000ba587       0x78 ./Core/Startup/startup_stm32f105rbtx.o
+ .debug_str     0x00000000000ba5ff      0x6b4 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.o
                                       0xb3f7e (size before relaxing)
- .debug_str     0x00000000000bac9d      0x397 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.o
+ .debug_str     0x00000000000bacb3      0x397 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.o
                                       0xb3e4d (size before relaxing)
- .debug_str     0x00000000000bb034      0x4f2 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_can.o
+ .debug_str     0x00000000000bb04a      0x4f2 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_can.o
                                       0xb3f69 (size before relaxing)
- .debug_str     0x00000000000bb526      0x289 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.o
+ .debug_str     0x00000000000bb53c      0x289 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.o
                                       0xb3ebc (size before relaxing)
- .debug_str     0x00000000000bb7af      0x2ce ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.o
+ .debug_str     0x00000000000bb7c5      0x2ce ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.o
                                       0xb3afd (size before relaxing)
- .debug_str     0x00000000000bba7d      0x7b2 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd.o
+ .debug_str     0x00000000000bba93      0x7b2 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd.o
                                       0xb42b9 (size before relaxing)
- .debug_str     0x00000000000bc22f      0x163 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd_ex.o
+ .debug_str     0x00000000000bc245      0x163 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd_ex.o
                                       0xb3c28 (size before relaxing)
- .debug_str     0x00000000000bc392      0x230 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
+ .debug_str     0x00000000000bc3a8      0x230 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.o
                                       0xb3c13 (size before relaxing)
- .debug_str     0x00000000000bc5c2      0x104 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.o
+ .debug_str     0x00000000000bc5d8      0x104 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.o
                                       0xb3a21 (size before relaxing)
- .debug_str     0x00000000000bc6c6      0x521 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.o
+ .debug_str     0x00000000000bc6dc      0x521 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.o
                                       0xb409b (size before relaxing)
- .debug_str     0x00000000000bcbe7      0xe53 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.o
+ .debug_str     0x00000000000bcbfd      0xe53 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.o
                                       0xb4b8a (size before relaxing)
- .debug_str     0x00000000000bda3a      0x493 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.o
+ .debug_str     0x00000000000bda50      0x493 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.o
                                       0xb43a6 (size before relaxing)
- .debug_str     0x00000000000bdecd      0x478 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.o
+ .debug_str     0x00000000000bdee3      0x478 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.o
                                       0xb41e3 (size before relaxing)
- .debug_str     0x00000000000be345      0x639 ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
+ .debug_str     0x00000000000be35b      0x639 ./Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o
                                       0xb889c (size before relaxing)
- .debug_str     0x00000000000be97e      0x281 ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.o
+ .debug_str     0x00000000000be994      0x281 ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.o
                                       0xb8181 (size before relaxing)
- .debug_str     0x00000000000bebff      0x117 ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.o
+ .debug_str     0x00000000000bec15      0x117 ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.o
                                       0xb809b (size before relaxing)
- .debug_str     0x00000000000bed16       0x51 ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.o
+ .debug_str     0x00000000000bed2c       0x51 ./Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.o
                                       0xb7fc8 (size before relaxing)
- .debug_str     0x00000000000bed67       0xe3 ./USB_DEVICE/App/usb_device.o
+ .debug_str     0x00000000000bed7d       0xe3 ./USB_DEVICE/App/usb_device.o
                                       0xb8370 (size before relaxing)
- .debug_str     0x00000000000bee4a       0x76 ./USB_DEVICE/App/usbd_cdc_if.o
+ .debug_str     0x00000000000bee60       0x76 ./USB_DEVICE/App/usbd_cdc_if.o
                                       0xb8379 (size before relaxing)
- .debug_str     0x00000000000beec0      0x258 ./USB_DEVICE/App/usbd_desc.o
+ .debug_str     0x00000000000beed6      0x258 ./USB_DEVICE/App/usbd_desc.o
                                       0xb7f04 (size before relaxing)
- .debug_str     0x00000000000bf118       0x68 ./USB_DEVICE/Target/usbd_conf.o
+ .debug_str     0x00000000000bf12e       0x68 ./USB_DEVICE/Target/usbd_conf.o
                                       0xb8f70 (size before relaxing)
 
 .debug_frame    0x0000000000000000     0x63e4

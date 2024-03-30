@@ -18,10 +18,10 @@ static uint8_t config[8][6] =
 				0x00, 0x00, 0x00, 0x00 }, { 0xF8, 0x00, 0x00, 0x00, 0x00, 0x00 } };
 
 
-void startBalance(uint16_t *read_volt, uint8_t length, uint16_t lowest) {
-	dischargeAlgo(read_volt, NUM_DEVICES, lowest);
-	wakeup_idle();
-	ltc6811_wrcfg(NUM_DEVICES, config);
+void Start_Balance(uint16_t *read_volt, uint8_t length, uint16_t lowest) {
+	Discharge_Algo(read_volt, NUM_DEVICES, lowest);
+	Wakeup_Idle();
+	LTC6811_WRCFG(NUM_DEVICES, config);
 }
 
 /**
@@ -31,7 +31,7 @@ void startBalance(uint16_t *read_volt, uint8_t length, uint16_t lowest) {
  * @param length count of readings. 
  * @param lowest read_volt's lowest cell reading
  */
-void dischargeAlgo(uint16_t *read_volt, uint8_t total_ic, uint16_t lowest) {
+void Discharge_Algo(uint16_t *read_volt, uint8_t total_ic, uint16_t lowest) {
 
 	for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
 		// check if each cell is close within 5 mV of the lowest cell.
@@ -44,7 +44,7 @@ void dischargeAlgo(uint16_t *read_volt, uint8_t total_ic, uint16_t lowest) {
 				DCC[cell_idx] = 0;
 			}
 		}
-		setCfg(dev_idx, (uint8_t*) DCC);
+		Set_Cfg(dev_idx, (uint8_t*) DCC);
 	}
 }
 
@@ -54,7 +54,7 @@ void dischargeAlgo(uint16_t *read_volt, uint8_t total_ic, uint16_t lowest) {
  * @param device index
  * @param array of DCC bits
  */
-void setCfg(uint8_t dev_idx, uint8_t *DCC) {
+void Set_Cfg(uint8_t dev_idx, uint8_t *DCC) {
 	for (uint8_t cell_idx = 0; cell_idx < NUM_CELL_SERIES_GROUP; cell_idx++) {
 		if (DCC[cell_idx]) {
 			if (cell_idx < 8) {

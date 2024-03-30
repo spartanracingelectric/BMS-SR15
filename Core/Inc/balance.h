@@ -3,8 +3,8 @@
 
 #include "main.h"
 
-void startBalance(uint16_t *read_volt, uint8_t length, uint16_t lowest);
-void dischargeAlgo(uint16_t *read_volt, uint8_t total_ic, uint16_t lowest);
-void setCfg(uint8_t dev_idx, uint8_t *DCC);
+void Start_Balance(uint16_t *read_volt, uint8_t length, uint16_t lowest);
+void Discharge_Algo(uint16_t *read_volt, uint8_t total_ic, uint16_t lowest);
+void Set_Cfg(uint8_t dev_idx, uint8_t *DCC);
 
 #endif /* INC_BALANCE_H_ */

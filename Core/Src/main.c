@@ -150,38 +150,38 @@ int main(void) {
 		/* USER CODE BEGIN 3 */
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
-			wakeup_sleep();
-			readVolt(modVoltage.cell_volt);
+			Wakeup_Sleep();
+			Read_Volt(modVoltage.cell_volt);
 			//print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
 
 			//related to reading temperatures
 			for (uint8_t i = tempindex; i < indexpause; i++) {
-				readTemp(i, modVoltage.cell_temp, modVoltage.read_auxreg);
+				Read_Temp(i, modVoltage.cell_temp, modVoltage.read_auxreg);
 				HAL_Delay(100);
 			}
 			if (indexpause == 8) {
 				tempindex = 8;
 				indexpause = NUM_THERM_PER_MOD;
-				wakeup_idle();
-				ltc_wrcomm(NUM_DEVICES, BMS_MUX_PAUSE[0]);
-				wakeup_idle();
-				ltc_stcomm(2);
+				Wakeup_Idle();
+				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
+				Wakeup_Idle();
+				LTC_STCOMM(2);
 			} else if (indexpause == NUM_THERM_PER_MOD) {
-				wakeup_idle();
-				ltc_wrcomm(NUM_DEVICES, BMS_MUX_PAUSE[1]);
-				wakeup_idle();
-				ltc_stcomm(2);
+				Wakeup_Idle();
+				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
+				Wakeup_Idle();
+				LTC_STCOMM(2);
 				indexpause = 8;
 				tempindex = 0;
 			}
 			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
 
 			//getting the summary of all cells in the pack
-			cellSummary(&modVoltage);
+			Cell_Summary(&modVoltage);
 
 			//waiting for 3 loops of the while look to occur before checking for faults
 			if (loop_count == 0) {
-				faultAndWarning(&modVoltage, &safetyFaults, &safetyWarnings);
+				Fault_And_Warning(&modVoltage, &safetyFaults, &safetyWarnings);
 				if (safetyFaults != 0) {
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 				}
@@ -192,7 +192,7 @@ int main(void) {
 
 			//Passive balancing is called unless a fault has occurred
 			if (safetyFaults == 0 && BALANCE) {
-				startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
+				Start_Balance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
 									modVoltage.cell_volt_lowest);
 			}
 

@@ -19,41 +19,41 @@ typedef enum {
 	LTC_SPI_RX_TIMEOUT = 0x80U	 //0b10000000
 } LTC_SPI_StatusTypeDef;
 
-void wakeup_idle(void);
+void Wakeup_Idle(void);
 
-void wakeup_sleep(void);
+void Wakeup_Sleep(void);
 
-LTC_SPI_StatusTypeDef read_cell_volt(uint16_t *read_voltages);
+LTC_SPI_StatusTypeDef Read_Cell_Volt(uint16_t *read_voltages);
 
 /* write to PWM register to control balancing functionality */
-void ltc6811_wrpwm(uint8_t total_ic, uint8_t pwm);
+void LTC6811_WRPWM(uint8_t total_ic, uint8_t pwm);
 
-void ltc6811_wrcfg(uint8_t total_ic, //The number of ICs being written to
+void LTC6811_WRCFG(uint8_t total_ic, //The number of ICs being written to
 		uint8_t config[][6] //A two dimensional array of the configuration data that will be written
 		);
 
-void ltc_wrcomm(uint8_t total_ic, //The number of ICs being written to
+void LTC_WRCOMM(uint8_t total_ic, //The number of ICs being written to
 		uint8_t comm[6] //A two dimensional array of the comm data that will be written
 		);
 
-void ltc_stcomm(uint8_t len);
+void LTC_STCOMM(uint8_t len);
 
-LTC_SPI_StatusTypeDef read_cell_temps(uint16_t *read_auxiliary);
+LTC_SPI_StatusTypeDef Read_Cell_Temps(uint16_t *read_auxiliary);
 
-void ltc_adcv(uint8_t MD, //ADC Mode
+void LTC_ADCV(uint8_t MD, //ADC Mode
 		uint8_t DCP, //Discharge Permit
 		uint8_t CH //Cell Channels to be measured
 		);
 
-void ltc_adax(uint8_t MD, //ADC Mode
+void LTC_ADAX(uint8_t MD, //ADC Mode
 		uint8_t CHG //GPIO Channels to be measured)
 		);
 
-int32_t ltc_polladc();
+int32_t LTC_POLLADC();
 
-int calc_pack_voltage(uint16_t *read_voltages);
+int Calc_Pack_Voltage(uint16_t *read_voltages);
 
-uint16_t ltc_pec15_calc(uint8_t len, //Number of bytes that will be used to calculate a PEC
+uint16_t LTC_Pec15_Calc(uint8_t len, //Number of bytes that will be used to calculate a PEC
 		uint8_t *data //Array of data that will be used to calculate a PEC
 		);
 
