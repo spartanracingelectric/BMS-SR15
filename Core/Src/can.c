@@ -134,13 +134,13 @@ void CAN_SettingsInit(struct CANMessage *ptr) {
 	ptr->TxHeader.DLC = 8;
 }
 
-void setCANId(struct CANMessage *ptr, uint32_t id) {
+void Set_CAN_Id(struct CANMessage *ptr, uint32_t id) {
 	ptr->TxHeader.StdId = id;
 }
 
 void CAN_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt) {
 	uint16_t CAN_ID = 0x630;
-	setCANId(ptr, CAN_ID);
+	Set_CAN_Id(ptr, CAN_ID);
 	for (int i = 0; i < NUM_CELLS; i++) {
 		if (i % 4 == 0) {
 			uint8_t temp_volt = i;
@@ -158,7 +158,7 @@ void CAN_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt) {
 		}
 		if (i > 0 && i % 4 == 0) {
 			CAN_ID = CAN_ID + 0x01;
-			setCANId(ptr, CAN_ID);
+			Set_CAN_Id(ptr, CAN_ID);
 		}
 		HAL_Delay(10);
 		CAN_Send(ptr);
@@ -168,7 +168,7 @@ void CAN_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt) {
 
 void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp) {
 	uint16_t CAN_ID = 0x680;
-	setCANId(ptr, CAN_ID);
+	Set_CAN_Id(ptr, CAN_ID);
 	for (uint8_t i = 0; i < NUM_THERM_TOTAL; i++) {
 		if (i % 4 == 0) {
 			uint8_t temp_volt = i;
@@ -186,7 +186,7 @@ void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp) {
 		}
 		if (i > 0 && i % 4 == 0) {
 			CAN_ID = CAN_ID + 0x01;
-			setCANId(ptr, CAN_ID);
+			Set_CAN_Id(ptr, CAN_ID);
 		}
 		HAL_Delay(10);
 		CAN_Send(ptr);
@@ -197,7 +197,7 @@ void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp) {
 void CAN_Send_Cell_Summary(struct CANMessage *ptr,
 		struct batteryModuleVoltage *batt) {
 	uint16_t CAN_ID = 0x622;
-	setCANId(ptr, CAN_ID);
+	Set_CAN_Id(ptr, CAN_ID);
 
 	ptr->data[0] = batt->cell_volt_highest;
 	ptr->data[1] = (batt->cell_volt_highest) >> 8;
@@ -214,7 +214,7 @@ void CAN_Send_Cell_Summary(struct CANMessage *ptr,
 
 void CAN_Send_Safety_Checker(struct CANMessage *ptr, uint8_t* faults, uint8_t* warnings){
 	uint16_t CAN_ID = 0x600;
-	setCANId(ptr, CAN_ID);
+	Set_CAN_Id(ptr, CAN_ID);
 	ptr->data[0] = *faults;
 	ptr->data[1] = *warnings;
 	HAL_Delay(10);

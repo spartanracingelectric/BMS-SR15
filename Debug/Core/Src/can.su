@@ -5,7 +5,7 @@
 ../Core/Src/can.c:119:19:CAN_Activate	8	static
 ../Core/Src/can.c:123:19:CAN_Send	16	static
 ../Core/Src/can.c:128:6:CAN_SettingsInit	16	static
-../Core/Src/can.c:137:6:setCANId	16	static
+../Core/Src/can.c:137:6:Set_CAN_Id	16	static
 ../Core/Src/can.c:141:6:CAN_Send_Voltage	32	static
 ../Core/Src/can.c:169:6:CAN_Send_Temperature	24	static
 ../Core/Src/can.c:197:6:CAN_Send_Cell_Summary	24	static

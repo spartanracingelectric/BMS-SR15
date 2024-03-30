@@ -41,7 +41,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  18 .debug_line   0001ddef  00000000  00000000  00061b99  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000bf196  00000000  00000000  0007f988  2**0
+ 19 .debug_str    000bf198  00000000  00000000  0007f988  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  20 .debug_frame  000063e4  00000000  00000000  0013eb20  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -3285,9 +3285,9 @@ void CAN_SettingsInit(struct CANMessage *ptr) {
  8001dcc:	46bd      	mov	sp, r7
  8001dce:	bd80      	pop	{r7, pc}
 
-08001dd0 <setCANId>:
+08001dd0 <Set_CAN_Id>:
 
-void setCANId(struct CANMessage *ptr, uint32_t id) {
+void Set_CAN_Id(struct CANMessage *ptr, uint32_t id) {
  8001dd0:	b480      	push	{r7}
  8001dd2:	b083      	sub	sp, #12
  8001dd4:	af00      	add	r7, sp, #0
@@ -3315,11 +3315,11 @@ void CAN_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt) {
 	uint16_t CAN_ID = 0x630;
  8001df4:	f44f 63c6 	mov.w	r3, #1584	; 0x630
  8001df8:	82fb      	strh	r3, [r7, #22]
-	setCANId(ptr, CAN_ID);
+	Set_CAN_Id(ptr, CAN_ID);
  8001dfa:	8afb      	ldrh	r3, [r7, #22]
  8001dfc:	4619      	mov	r1, r3
  8001dfe:	6878      	ldr	r0, [r7, #4]
- 8001e00:	f7ff ffe6 	bl	8001dd0 <setCANId>
+ 8001e00:	f7ff ffe6 	bl	8001dd0 <Set_CAN_Id>
 	for (int i = 0; i < NUM_CELLS; i++) {
  8001e04:	2300      	movs	r3, #0
  8001e06:	613b      	str	r3, [r7, #16]
@@ -3437,11 +3437,11 @@ void CAN_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt) {
  8001ed2:	8afb      	ldrh	r3, [r7, #22]
  8001ed4:	3301      	adds	r3, #1
  8001ed6:	82fb      	strh	r3, [r7, #22]
-			setCANId(ptr, CAN_ID);
+			Set_CAN_Id(ptr, CAN_ID);
  8001ed8:	8afb      	ldrh	r3, [r7, #22]
  8001eda:	4619      	mov	r1, r3
  8001edc:	6878      	ldr	r0, [r7, #4]
- 8001ede:	f7ff ff77 	bl	8001dd0 <setCANId>
+ 8001ede:	f7ff ff77 	bl	8001dd0 <Set_CAN_Id>
 		}
 		HAL_Delay(10);
  8001ee2:	200a      	movs	r0, #10
@@ -3476,11 +3476,11 @@ void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp) {
 	uint16_t CAN_ID = 0x680;
  8001f0e:	f44f 63d0 	mov.w	r3, #1664	; 0x680
  8001f12:	81fb      	strh	r3, [r7, #14]
-	setCANId(ptr, CAN_ID);
+	Set_CAN_Id(ptr, CAN_ID);
  8001f14:	89fb      	ldrh	r3, [r7, #14]
  8001f16:	4619      	mov	r1, r3
  8001f18:	6878      	ldr	r0, [r7, #4]
- 8001f1a:	f7ff ff59 	bl	8001dd0 <setCANId>
+ 8001f1a:	f7ff ff59 	bl	8001dd0 <Set_CAN_Id>
 	for (uint8_t i = 0; i < NUM_THERM_TOTAL; i++) {
  8001f1e:	2300      	movs	r3, #0
  8001f20:	737b      	strb	r3, [r7, #13]
@@ -3600,11 +3600,11 @@ void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp) {
  8001ff0:	89fb      	ldrh	r3, [r7, #14]
  8001ff2:	3301      	adds	r3, #1
  8001ff4:	81fb      	strh	r3, [r7, #14]
-			setCANId(ptr, CAN_ID);
+			Set_CAN_Id(ptr, CAN_ID);
  8001ff6:	89fb      	ldrh	r3, [r7, #14]
  8001ff8:	4619      	mov	r1, r3
  8001ffa:	6878      	ldr	r0, [r7, #4]
- 8001ffc:	f7ff fee8 	bl	8001dd0 <setCANId>
+ 8001ffc:	f7ff fee8 	bl	8001dd0 <Set_CAN_Id>
 		}
 		HAL_Delay(10);
  8002000:	200a      	movs	r0, #10
@@ -3640,11 +3640,11 @@ void CAN_Send_Cell_Summary(struct CANMessage *ptr,
 	uint16_t CAN_ID = 0x622;
  800202c:	f240 6322 	movw	r3, #1570	; 0x622
  8002030:	81fb      	strh	r3, [r7, #14]
-	setCANId(ptr, CAN_ID);
+	Set_CAN_Id(ptr, CAN_ID);
  8002032:	89fb      	ldrh	r3, [r7, #14]
  8002034:	4619      	mov	r1, r3
  8002036:	6878      	ldr	r0, [r7, #4]
- 8002038:	f7ff feca 	bl	8001dd0 <setCANId>
+ 8002038:	f7ff feca 	bl	8001dd0 <Set_CAN_Id>
 
 	ptr->data[0] = batt->cell_volt_highest;
  800203c:	683b      	ldr	r3, [r7, #0]
@@ -3727,11 +3727,11 @@ void CAN_Send_Safety_Checker(struct CANMessage *ptr, uint8_t* faults, uint8_t* w
 	uint16_t CAN_ID = 0x600;
  80020c4:	f44f 63c0 	mov.w	r3, #1536	; 0x600
  80020c8:	82fb      	strh	r3, [r7, #22]
-	setCANId(ptr, CAN_ID);
+	Set_CAN_Id(ptr, CAN_ID);
  80020ca:	8afb      	ldrh	r3, [r7, #22]
  80020cc:	4619      	mov	r1, r3
  80020ce:	68f8      	ldr	r0, [r7, #12]
- 80020d0:	f7ff fe7e 	bl	8001dd0 <setCANId>
+ 80020d0:	f7ff fe7e 	bl	8001dd0 <Set_CAN_Id>
 	ptr->data[0] = *faults;
  80020d4:	68bb      	ldr	r3, [r7, #8]
  80020d6:	781a      	ldrb	r2, [r3, #0]

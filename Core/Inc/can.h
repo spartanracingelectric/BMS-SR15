@@ -45,7 +45,7 @@ HAL_StatusTypeDef CAN_Start();
 HAL_StatusTypeDef CAN_Activate();
 HAL_StatusTypeDef CAN_Send(struct CANMessage *ptr);
 void CAN_SettingsInit(struct CANMessage *ptr);
-void setCANId(struct CANMessage *ptr, uint32_t id);
+void Set_CAN_Id(struct CANMessage *ptr, uint32_t id);
 
 void CAN_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt);
 void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp);
