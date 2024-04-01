@@ -20,18 +20,23 @@ Note: Lots of the code is prewritten after setting up the project
 The #defines are in the files listed below, and the picture show what can be modified
 
 main.h:
+
 ![image](https://github.com/spartanracingelectric/BMS-SR15/assets/95559518/2c7bda48-9fde-4fd8-8149-28e496742c8e)
 
 6811.c: 
+
 ![image](https://github.com/spartanracingelectric/BMS-SR15/assets/95559518/d18eaa4f-ec60-435e-8436-ded5282d4fb4)
 
 module.c:
+
 ![image](https://github.com/spartanracingelectric/BMS-SR15/assets/95559518/ff2355f2-a36c-4e8f-8915-326b2c3bf2f1)
 
 safety.c:
+
 ![image](https://github.com/spartanracingelectric/BMS-SR15/assets/95559518/32291510-9fff-4c82-ae84-1914c4afdcc3)
 
 can.c: 
+
 ![image](https://github.com/spartanracingelectric/BMS-SR15/assets/95559518/39d6e180-5b10-44e5-a95f-db393b4798fa)
 
 
