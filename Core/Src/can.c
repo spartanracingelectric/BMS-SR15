@@ -195,7 +195,7 @@ void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp) {
 }
 
 void CAN_Send_Cell_Summary(struct CANMessage *ptr,
-		struct batteryModuleVoltage *batt) {
+		struct batteryModule *batt) {
 	uint16_t CAN_ID = 0x622;
 	Set_CAN_Id(ptr, CAN_ID);
 
@@ -212,11 +212,12 @@ void CAN_Send_Cell_Summary(struct CANMessage *ptr,
 	CAN_Send(ptr);
 }
 
-void CAN_Send_Safety_Checker(struct CANMessage *ptr, uint8_t* faults, uint8_t* warnings){
+void CAN_Send_Safety_Checker(struct CANMessage *ptr, uint8_t* faults, uint8_t* warnings, uint8_t *states){
 	uint16_t CAN_ID = 0x600;
 	Set_CAN_Id(ptr, CAN_ID);
 	ptr->data[0] = *faults;
 	ptr->data[1] = *warnings;
+	ptr->data[2] = *states;
 	HAL_Delay(10);
 	CAN_Send(ptr);
 }

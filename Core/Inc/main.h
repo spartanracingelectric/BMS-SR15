@@ -37,7 +37,7 @@ extern "C" {
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
 
-struct batteryModuleVoltage {
+struct batteryModule {
 	uint16_t *cell_volt;
 	uint16_t *cell_temp;
 	uint16_t cell_volt_lowest;

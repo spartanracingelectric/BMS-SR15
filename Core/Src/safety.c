@@ -21,7 +21,7 @@
 
 #define CELL_VOLT_IMBALANCE_WARNING	    500
 
-void Cell_Summary(struct batteryModuleVoltage *batt){
+void Cell_Summary(struct batteryModule *batt){
 	batt->cell_volt_highest = batt->cell_volt[0];
 	batt->cell_volt_lowest = batt->cell_volt[0];
 	batt->cell_temp_highest = batt->cell_temp[0];
@@ -54,7 +54,7 @@ void Cell_Summary(struct batteryModuleVoltage *batt){
 }
 
 
-void Fault_And_Warning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_t *warnings){
+void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault, uint8_t *warnings, uint8_t *states){
 
 	if(batt->pack_voltage >= PACK_HIGH_VOLT_FAULT){
 		*fault |= 0b10000000;
@@ -68,7 +68,7 @@ void Fault_And_Warning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_
 		*fault |= 0b00100000;
 	}
 
-		if(batt->cell_volt_highest>= CELL_HIGH_VOLT_FAULT){
+	if(batt->cell_volt_highest>= CELL_HIGH_VOLT_FAULT){
 		*fault |= 0b00010000;
 	}
 
@@ -98,6 +98,10 @@ void Fault_And_Warning(struct batteryModuleVoltage *batt, uint8_t *fault, uint8_
 
 	if(batt->cell_temp_lowest <= CELL_LOW_TEMP_WARNING){
 		*warnings |= 0b00000100;
+	}
+
+	if(BALANCE){
+		*states |= 0b10000000;
 	}
 }
 
