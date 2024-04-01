@@ -37,15 +37,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_rnglists 00001137  00000000  00000000  0003cee0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  00023bba  00000000  00000000  0003e017  2**0
+ 17 .debug_macro  00023bd2  00000000  00000000  0003e017  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0001ddf8  00000000  00000000  00061bd1  2**0
+ 18 .debug_line   0001ddf8  00000000  00000000  00061be9  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000bf1a8  00000000  00000000  0007f9c9  2**0
+ 19 .debug_str    000bf202  00000000  00000000  0007f9e1  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  000063e4  00000000  00000000  0013eb74  2**2
+ 20 .debug_frame  000063e4  00000000  00000000  0013ebe4  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000006c  00000000  00000000  00144f58  2**0
+ 21 .debug_line_str 0000006c  00000000  00000000  00144fc8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -3312,7 +3312,7 @@ void CAN_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt) {
  8001dee:	af00      	add	r7, sp, #0
  8001df0:	6078      	str	r0, [r7, #4]
  8001df2:	6039      	str	r1, [r7, #0]
-	uint16_t CAN_ID = 0x630;
+	uint16_t CAN_ID = CAN_VOLT_ID;
  8001df4:	f44f 63c6 	mov.w	r3, #1584	; 0x630
  8001df8:	82fb      	strh	r3, [r7, #22]
 	Set_CAN_Id(ptr, CAN_ID);
@@ -3473,7 +3473,7 @@ void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp) {
  8001f08:	af00      	add	r7, sp, #0
  8001f0a:	6078      	str	r0, [r7, #4]
  8001f0c:	6039      	str	r1, [r7, #0]
-	uint16_t CAN_ID = 0x680;
+	uint16_t CAN_ID = CAN_TEMP_ID;
  8001f0e:	f44f 63d0 	mov.w	r3, #1664	; 0x680
  8001f12:	81fb      	strh	r3, [r7, #14]
 	Set_CAN_Id(ptr, CAN_ID);
@@ -3630,14 +3630,13 @@ void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp) {
 
 08002022 <CAN_Send_Cell_Summary>:
 
-void CAN_Send_Cell_Summary(struct CANMessage *ptr,
-		struct batteryModule *batt) {
+void CAN_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModule *batt) {
  8002022:	b580      	push	{r7, lr}
  8002024:	b084      	sub	sp, #16
  8002026:	af00      	add	r7, sp, #0
  8002028:	6078      	str	r0, [r7, #4]
  800202a:	6039      	str	r1, [r7, #0]
-	uint16_t CAN_ID = 0x622;
+	uint16_t CAN_ID = CAN_CELL_SUMMARY_ID;
  800202c:	f240 6322 	movw	r3, #1570	; 0x622
  8002030:	81fb      	strh	r3, [r7, #14]
 	Set_CAN_Id(ptr, CAN_ID);
@@ -3717,7 +3716,8 @@ void CAN_Send_Cell_Summary(struct CANMessage *ptr,
 
 080020b8 <CAN_Send_Safety_Checker>:
 
-void CAN_Send_Safety_Checker(struct CANMessage *ptr, uint8_t* faults, uint8_t* warnings, uint8_t *states){
+void CAN_Send_Safety_Checker(struct CANMessage *ptr, uint8_t *faults,
+		uint8_t *warnings, uint8_t *states) {
  80020b8:	b580      	push	{r7, lr}
  80020ba:	b086      	sub	sp, #24
  80020bc:	af00      	add	r7, sp, #0
@@ -3725,7 +3725,7 @@ void CAN_Send_Safety_Checker(struct CANMessage *ptr, uint8_t* faults, uint8_t* w
  80020c0:	60b9      	str	r1, [r7, #8]
  80020c2:	607a      	str	r2, [r7, #4]
  80020c4:	603b      	str	r3, [r7, #0]
-	uint16_t CAN_ID = 0x600;
+	uint16_t CAN_ID = CAN_SAFETY_CHECKER_ID;
  80020c6:	f44f 63c0 	mov.w	r3, #1536	; 0x600
  80020ca:	82fb      	strh	r3, [r7, #22]
 	Set_CAN_Id(ptr, CAN_ID);
@@ -4581,9 +4581,9 @@ __STATIC_FORCEINLINE void __disable_irq(void)
 	...
 
 08002610 <Get_Actual_Temps>:
-				{ 0x69, 0x08, 0x0F, 0xA9, 0x7F, 0xF9 }, { 0x69, 0x08, 0x0F,
-						0x99, 0x7F, 0xF9 },
-				{ 0x69, 0x08, 0x0F, 0x89, 0x7F, 0xF9 } };
+		{ 0x69, 0x08, 0x0F, 0xB9, 0x7F, 0xF9 }, { 0x69, 0x08, 0x0F, 0xA9, 0x7F,
+				0xF9 }, { 0x69, 0x08, 0x0F, 0x99, 0x7F, 0xF9 }, { 0x69, 0x08,
+				0x0F, 0x89, 0x7F, 0xF9 } };
 
 void Get_Actual_Temps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
 		uint16_t data) {
