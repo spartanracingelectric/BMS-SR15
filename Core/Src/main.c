@@ -153,7 +153,7 @@ int main(void) {
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
 			Wakeup_Sleep();
 			Read_Volt(modPackInfo.cell_volt);
-			//print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
+			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
 
 			//related to reading temperatures
 			for (uint8_t i = tempindex; i < indexpause; i++) {
@@ -175,7 +175,7 @@ int main(void) {
 				indexpause = 8;
 				tempindex = 0;
 			}
-			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
+			print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
 
 			//getting the summary of all cells in the pack
 			Cell_Summary(&modPackInfo);
@@ -186,15 +186,17 @@ int main(void) {
 				if (safetyFaults != 0) {
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 				}
+				//Passive balancing is called unless a fault has occurred
+				if (safetyFaults == 0 && BALANCE) {
+					Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES,
+							modPackInfo.cell_volt_lowest);
+				}
+				else{
+					End_Balance();
+				}
 
 			} else {
 				loop_count--;
-			}
-
-			//Passive balancing is called unless a fault has occurred
-			if (safetyFaults == 0 && BALANCE) {
-				Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES,
-						modPackInfo.cell_volt_lowest);
 			}
 
 			//calling all CAN realated methods
