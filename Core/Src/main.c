@@ -55,16 +55,18 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-typedef struct _GpioTimePacket {
-	GPIO_TypeDef *gpio_port; //Port
-	uint16_t gpio_pin;	//Pin number
-	uint32_t ts_prev;	//Previous timestamp
-	uint32_t ts_curr; 	//Current timestamp
+typedef struct _GpioTimePacket
+{
+	GPIO_TypeDef *gpio_port; // Port
+	uint16_t gpio_pin;		 // Pin number
+	uint32_t ts_prev;		 // Previous timestamp
+	uint32_t ts_curr;		 // Current timestamp
 } GpioTimePacket;
-typedef struct _TimerPacket {
-	uint32_t ts_prev;	//Previous timestamp
-	uint32_t ts_curr; 	//Current timestamp
-	uint32_t delay;		//Amount to delay
+typedef struct _TimerPacket
+{
+	uint32_t ts_prev; // Previous timestamp
+	uint32_t ts_curr; // Current timestamp
+	uint32_t delay;	  // Amount to delay
 } TimerPacket;
 /* USER CODE END PV */
 
@@ -74,106 +76,117 @@ void SystemClock_Config(void);
 void GpioTimePacket_Init(GpioTimePacket *gtp, GPIO_TypeDef *port, uint16_t pin);
 void TimerPacket_Init(TimerPacket *tp, uint32_t delay);
 void GpioFixedToggle(GpioTimePacket *gtp, uint16_t update_ms);
-//Returns 1 at every tp->delay interval
+// Returns 1 at every tp->delay interval
 uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static uint8_t BMS_SWT[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, { 0x69,
-		0x08, 0x0F, 0x09, 0x7F, 0xF9 } };
+static uint8_t BMS_SWT[2][6] = {{0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9}, {0x69, 0x08, 0x0F, 0x09, 0x7F, 0xF9}};
 /* USER CODE END 0 */
 
 /**
- * @brief  The application entry point.
- * @retval int
- */
-int main(void) {
-	/* USER CODE BEGIN 1 */
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+  /* USER CODE BEGIN 1 */
 	GpioTimePacket tp_led_heartbeat;
 	TimerPacket timerpacket_ltc;
 
-	struct batteryModuleVoltage modVoltage = { .cell_volt = (uint16_t*) malloc(
-	NUM_CELLS * sizeof(uint16_t)), .cell_temp = (uint16_t*) malloc(
-	NUM_THERM_TOTAL * sizeof(uint16_t)), .read_auxreg = (uint16_t*) malloc(
-	NUM_AUXES * sizeof(uint16_t)) };
+	struct batteryModuleVoltage modVoltage = {.cell_volt = (uint16_t *)malloc(
+												  NUM_CELLS * sizeof(uint16_t)),
+											  .cell_temp = (uint16_t *)malloc(
+												  NUM_THERM_TOTAL * sizeof(uint16_t)),
+											  .read_auxreg = (uint16_t *)malloc(
+												  NUM_AUXES * sizeof(uint16_t))};
 
 	struct CANMessage msg;
 	uint8_t safetyFaults = 0;
 	uint8_t safetyWarnings = 0;
 
-	/* USER CODE END 1 */
+	uint16_t current_adc_read;
+	uint16_t HV_adc_read;
 
-	/* MCU Configuration--------------------------------------------------------*/
+  /* USER CODE END 1 */
 
-	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-	HAL_Init();
+  /* MCU Configuration--------------------------------------------------------*/
 
-	/* USER CODE BEGIN Init */
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
 
-	/* USER CODE END Init */
+  /* USER CODE BEGIN Init */
 
-	/* Configure the system clock */
-	SystemClock_Config();
+  /* USER CODE END Init */
 
-	/* USER CODE BEGIN SysInit */
+  /* Configure the system clock */
+  SystemClock_Config();
 
-	/* USER CODE END SysInit */
+  /* USER CODE BEGIN SysInit */
 
-	/* Initialize all configured peripherals */
-	MX_GPIO_Init();
-	MX_ADC1_Init();
-	MX_ADC2_Init();
-	MX_TIM7_Init();
-	MX_SPI1_Init();
-	MX_USB_DEVICE_Init();
-	MX_CAN2_Init();
-	/* USER CODE BEGIN 2 */
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_ADC1_Init();
+  MX_ADC2_Init();
+  MX_TIM7_Init();
+  MX_SPI1_Init();
+  MX_USB_DEVICE_Init();
+  MX_CAN2_Init();
+  /* USER CODE BEGIN 2 */
 	CAN_SettingsInit(&msg); // Start CAN at 0x00
-	//Start timer
+	// Start timer
 	GpioTimePacket_Init(&tp_led_heartbeat, MCU_HEARTBEAT_LED_GPIO_Port,
-	MCU_HEARTBEAT_LED_Pin);
+						MCU_HEARTBEAT_LED_Pin);
 	TimerPacket_Init(&timerpacket_ltc, LTC_DELAY);
-	//Pull SPI1 nCS HIGH (deselect)
+	// Pull SPI1 nCS HIGH (deselect)
 	LTC_nCS_High();
 	set_num_devices(NUM_DEVICES);
 	set_series_groups(NUM_CELL_SERIES_GROUP);
-	/* USER CODE END 2 */
+  /* USER CODE END 2 */
 
-	/* Infinite loop */
-	/* USER CODE BEGIN WHILE */
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
 	uint8_t loop_count = 3;
 
-	// Config Balancing controls: 
-	// 4'b1111 for no balance 
-	// 4'b0000 for balance 
+	// Config Balancing controls:
+	// 4'b1111 for no balance
+	// 4'b0000 for balance
 
-	while (1) {
-		/* USER CODE END WHILE */
+	while (1)
+	{
+    /* USER CODE END WHILE */
 
-		/* USER CODE BEGIN 3 */
+    /* USER CODE BEGIN 3 */
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
-		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
+		if (TimerPacket_FixedPulse(&timerpacket_ltc))
+		{
 			wakeup_sleep();
 			readVolt(modVoltage.cell_volt);
-			print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
+			print(NUM_CELLS, (uint16_t *)modVoltage.cell_volt);
 
-			//related to reading temperatures
+			// related to reading temperatures
 			wakeup_sleep();
-			for (uint8_t i = tempindex; i < indexpause; i++) {
+			for (uint8_t i = tempindex; i < indexpause; i++)
+			{
 				readTemp(i, modVoltage.cell_temp, modVoltage.read_auxreg);
 				HAL_Delay(100);
 			}
-			if (indexpause == 8) {
+			if (indexpause == 8)
+			{
 				tempindex = 8;
 				indexpause = 12;
 				wakeup_idle();
 				ltc_wrcomm(NUM_DEVICES, BMS_SWT[0]);
 				wakeup_idle();
 				ltc_stcomm(2);
-			} else if (indexpause == 12) {
+			}
+			else if (indexpause == 12)
+			{
 				wakeup_idle();
 				ltc_wrcomm(NUM_DEVICES, BMS_SWT[1]);
 				wakeup_idle();
@@ -181,141 +194,158 @@ int main(void) {
 				indexpause = 8;
 				tempindex = 0;
 			}
-			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
+			// print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
 
-			//getting the summary of all cells in the pack
+			// getting the summary of all cells in the pack
 			cellSummary(&modVoltage);
 
-			//waiting for 3 loops of the while look to occur before checking for faults
-			if (loop_count == 0) {
+			// waiting for 3 loops of the while look to occur before checking for faults
+			if (loop_count == 0)
+			{
 				fault_and_warning(&modVoltage, &safetyFaults, &safetyWarnings);
-				if (safetyFaults != 0) {
+				if (safetyFaults != 0)
+				{
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 				}
-
-			} else {
+			}
+			else
+			{
 				loop_count--;
 			}
 
-			//Passive balancing
-			// startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
-			// 		modVoltage.cell_volt_lowest);
+			// Passive balancing
+			//  startBalance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
+			//  		modVoltage.cell_volt_lowest);
 
-			// Current sense: 
-			GPIO_PinState curr_sense_val = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_4);
-			// TODO VV      WRONG PARAMETER TYPES. 
-			print_curr(curr_sense_val); 
+			// Current sense:
 
+			HAL_ADC_Start(&hadc1);							  // &hadc1 is configured for current sense.
+			HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY); // pauses runtime until process read finishes.
 
-			//calling all CAN realated methods
+			current_adc_read = HAL_ADC_GetValue(&hadc1);
+
+			print_curr(current_adc_read);
+
+			// calling all CAN realated methods
 			CAN_Send_Safety_Checker(&msg, &safetyFaults, &safetyWarnings);
 			CAN_Send_Cell_Summary(&msg, &modVoltage);
 			CAN_Send_Voltage(&msg, modVoltage.cell_volt);
 			CAN_Send_Temperature(&msg, modVoltage.cell_temp);
 		}
-
 	}
-	/* USER CODE END 3 */
+  /* USER CODE END 3 */
 }
 
 /**
- * @brief System Clock Configuration
- * @retval None
- */
-void SystemClock_Config(void) {
-	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
-	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
-	RCC_PeriphCLKInitTypeDef PeriphClkInit = { 0 };
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-	/** Initializes the RCC Oscillators according to the specified parameters
-	 * in the RCC_OscInitTypeDef structure.
-	 */
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-	RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV5;
-	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-	RCC_OscInitStruct.Prediv1Source = RCC_PREDIV1_SOURCE_PLL2;
-	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-	RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
-	RCC_OscInitStruct.PLL2.PLL2State = RCC_PLL2_ON;
-	RCC_OscInitStruct.PLL2.PLL2MUL = RCC_PLL2_MUL8;
-	RCC_OscInitStruct.PLL2.HSEPrediv2Value = RCC_HSE_PREDIV2_DIV5;
-	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-		Error_Handler();
-	}
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV5;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.Prediv1Source = RCC_PREDIV1_SOURCE_PLL2;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+  RCC_OscInitStruct.PLL2.PLL2State = RCC_PLL2_ON;
+  RCC_OscInitStruct.PLL2.PLL2MUL = RCC_PLL2_MUL8;
+  RCC_OscInitStruct.PLL2.HSEPrediv2Value = RCC_HSE_PREDIV2_DIV5;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
+    Error_Handler();
+  }
 
-	/** Initializes the CPU, AHB and APB buses clocks
-	 */
-	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
-			| RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+  /** Initializes the CPU, AHB and APB buses clocks
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
-		Error_Handler();
-	}
-	PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC | RCC_PERIPHCLK_USB;
-	PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
-	PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV3;
-	if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
-		Error_Handler();
-	}
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC|RCC_PERIPHCLK_USB;
+  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
+  PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV3;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+  {
+    Error_Handler();
+  }
 
-	/** Configure the Systick interrupt time
-	 */
-	__HAL_RCC_PLLI2S_ENABLE();
+  /** Configure the Systick interrupt time
+  */
+  __HAL_RCC_PLLI2S_ENABLE();
 }
 
 /* USER CODE BEGIN 4 */
-//Initialize struct values
-//Will initialize GPIO to LOW!
-void GpioTimePacket_Init(GpioTimePacket *gtp, GPIO_TypeDef *port, uint16_t pin) {
-	HAL_GPIO_WritePin(port, pin, GPIO_PIN_RESET); //Set GPIO LOW
+// Initialize struct values
+// Will initialize GPIO to LOW!
+void GpioTimePacket_Init(GpioTimePacket *gtp, GPIO_TypeDef *port, uint16_t pin)
+{
+	HAL_GPIO_WritePin(port, pin, GPIO_PIN_RESET); // Set GPIO LOW
 	gtp->gpio_port = port;
 	gtp->gpio_pin = pin;
-	gtp->ts_prev = 0; //Init to 0
-	gtp->ts_curr = 0; //Init to 0
+	gtp->ts_prev = 0; // Init to 0
+	gtp->ts_curr = 0; // Init to 0
 }
-//update_ms = update after X ms
-void GpioFixedToggle(GpioTimePacket *gtp, uint16_t update_ms) {
-	gtp->ts_curr = HAL_GetTick(); //Record current timestamp
-	if (gtp->ts_curr - gtp->ts_prev > update_ms) {
+// update_ms = update after X ms
+void GpioFixedToggle(GpioTimePacket *gtp, uint16_t update_ms)
+{
+	gtp->ts_curr = HAL_GetTick(); // Record current timestamp
+	if (gtp->ts_curr - gtp->ts_prev > update_ms)
+	{
 		HAL_GPIO_TogglePin(gtp->gpio_port, gtp->gpio_pin); // Toggle GPIO
 		gtp->ts_prev = gtp->ts_curr;
 	}
 }
-//Initialize struct values
-//Will initialize GPIO to LOW!
-void TimerPacket_Init(TimerPacket *tp, uint32_t delay) {
-	tp->ts_prev = 0;		//Init to 0
-	tp->ts_curr = 0; 		//Init to 0
-	tp->delay = delay;	//Init to user value
+// Initialize struct values
+// Will initialize GPIO to LOW!
+void TimerPacket_Init(TimerPacket *tp, uint32_t delay)
+{
+	tp->ts_prev = 0;   // Init to 0
+	tp->ts_curr = 0;   // Init to 0
+	tp->delay = delay; // Init to user value
 }
-//update_ms = update after X ms
-uint8_t TimerPacket_FixedPulse(TimerPacket *tp) {
-	tp->ts_curr = HAL_GetTick(); //Record current timestamp
-	if (tp->ts_curr - tp->ts_prev > tp->delay) {
-		tp->ts_prev = tp->ts_curr; //Update prev timestamp to current
-		return 1; //Enact event (time interval is a go)
+// update_ms = update after X ms
+uint8_t TimerPacket_FixedPulse(TimerPacket *tp)
+{
+	tp->ts_curr = HAL_GetTick(); // Record current timestamp
+	if (tp->ts_curr - tp->ts_prev > tp->delay)
+	{
+		tp->ts_prev = tp->ts_curr; // Update prev timestamp to current
+		return 1;				   // Enact event (time interval is a go)
 	}
-	return 0; //Do not enact event
+	return 0; // Do not enact event
 }
 /* USER CODE END 4 */
 
 /**
- * @brief  This function is executed in case of error occurrence.
- * @retval None
- */
-void Error_Handler(void) {
-	/* USER CODE BEGIN Error_Handler_Debug */
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
 	__disable_irq();
-	while (1) {
+	while (1)
+	{
 	}
-	/* USER CODE END Error_Handler_Debug */
+  /* USER CODE END Error_Handler_Debug */
 }
 
 #ifdef  USE_FULL_ASSERT
@@ -329,8 +359,8 @@ void Error_Handler(void) {
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+	/* User can add his own implementation to report the file name and line number,
+	   ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
