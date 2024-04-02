@@ -186,13 +186,16 @@ int main(void) {
 				if (safetyFaults != 0) {
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 				}
+
 				//Passive balancing is called unless a fault has occurred
 				if (safetyFaults == 0 && BALANCE) {
 					Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES,
 							modPackInfo.cell_volt_lowest);
 				}
-				else{
-					End_Balance();
+				else {
+					if(BALANCE){
+						End_Balance();
+					}
 				}
 
 			} else {

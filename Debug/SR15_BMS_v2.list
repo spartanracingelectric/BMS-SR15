@@ -39,9 +39,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_macro  000242c2  00000000  00000000  0003e7e2  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0001f210  00000000  00000000  00062aa4  2**0
+ 18 .debug_line   0001f212  00000000  00000000  00062aa4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000bf2a5  00000000  00000000  00081cb4  2**0
+ 19 .debug_str    000bf2a5  00000000  00000000  00081cb6  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  20 .debug_frame  000066ec  00000000  00000000  00140f5c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -4726,6 +4726,7 @@ int main(void) {
  8002724:	481a      	ldr	r0, [pc, #104]	; (8002790 <main+0x1f4>)
  8002726:	f001 fc89 	bl	800403c <HAL_GPIO_WritePin>
 				}
+
 				//Passive balancing is called unless a fault has occurred
 				if (safetyFaults == 0 && BALANCE) {
  800272a:	78fb      	ldrb	r3, [r7, #3]
@@ -4740,10 +4741,12 @@ int main(void) {
  800273c:	e007      	b.n	800274e <main+0x1b2>
 							modPackInfo.cell_volt_lowest);
 				}
-				else{
-					End_Balance();
+				else {
+					if(BALANCE){
+						End_Balance();
  800273e:	f7ff fb19 	bl	8001d74 <End_Balance>
  8002742:	e004      	b.n	800274e <main+0x1b2>
+					}
 				}
 
 			} else {
