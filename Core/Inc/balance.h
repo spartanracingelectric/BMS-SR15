@@ -4,6 +4,7 @@
 #include "main.h"
 
 void Start_Balance(uint16_t *read_volt, uint8_t length, uint16_t lowest);
+void End_Balance();
 void Discharge_Algo(uint16_t *read_volt, uint8_t total_ic, uint16_t lowest);
 void Set_Cfg(uint8_t dev_idx, uint8_t *DCC);
 

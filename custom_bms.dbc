@@ -28,17 +28,20 @@ BU_: CUSTOM_BMS
 
 
 BO_ 1536 BMS_Safety_Checker: 2 [CUSTOM_BMS]
+ SG_ Balancing_State : 23|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Pack_High_Volt_Warning : 15|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Pack_Low_Volt_Warning : 14|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Cell_Low_Volt_Warning : 13|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Cell_High_Volt_Warning : 12|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Cell_High_Temp_Warning : 11|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Cell_Low_Temp_Warning : 10|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_Volt_Imbalance_Warning : 9|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Pack_High_Volt_Fault : 7|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Pack_Low_Volt_Fault : 6|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Cell_Low_Volt_Fault : 5|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Cell_High_Volt_Fault : 4|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Cell_High_Temp_Fault : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_Volt_Imbalance_Fault : 2|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 1570 BMS_Cell_Summary: 8 [CUSTOM_BMS]
  SG_ Lowest_Cell_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
@@ -257,9 +260,9 @@ BO_ 1674 BMS_M4_Cell_Temperature_Data_2: 8 [CUSTOM_BMS]
  SG_ BMS_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1675 BMS_M4_Cell_Temperature_Data_3: 8 [CUSTOM_BMS]
- SG_ BMS_Cell_12_Temperature : 48|16@1+(1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_11_Temperature : 32|16@1+(1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_10_Temperature : 16|16@1+(1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
  SG_ BMS_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
  
 BO_ 1676 BMS_M5_Cell_Temperature_Data_1: 8 [CUSTOM_BMS] 

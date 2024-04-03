@@ -93,7 +93,7 @@ int main(void) {
 	GpioTimePacket tp_led_heartbeat;
 	TimerPacket timerpacket_ltc;
 
-	struct batteryModuleVoltage modVoltage = { .cell_volt = (uint16_t*) malloc(
+	struct batteryModule modPackInfo = { .cell_volt = (uint16_t*) malloc(
 	NUM_CELLS * sizeof(uint16_t)), .cell_temp = (uint16_t*) malloc(
 	NUM_THERM_TOTAL * sizeof(uint16_t)), .read_auxreg = (uint16_t*) malloc(
 	NUM_AUXES * sizeof(uint16_t)) };
@@ -101,6 +101,7 @@ int main(void) {
 	struct CANMessage msg;
 	uint8_t safetyFaults = 0;
 	uint8_t safetyWarnings = 0;
+	uint8_t safetyStates = 0;
 
 	/* USER CODE END 1 */
 
@@ -151,12 +152,12 @@ int main(void) {
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
 			Wakeup_Sleep();
-			Read_Volt(modVoltage.cell_volt);
-			//print(NUM_CELLS, (uint16_t*) modVoltage.cell_volt);
+			Read_Volt(modPackInfo.cell_volt);
+			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
 
 			//related to reading temperatures
 			for (uint8_t i = tempindex; i < indexpause; i++) {
-				Read_Temp(i, modVoltage.cell_temp, modVoltage.read_auxreg);
+				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
 				HAL_Delay(100);
 			}
 			if (indexpause == 8) {
@@ -174,33 +175,38 @@ int main(void) {
 				indexpause = 8;
 				tempindex = 0;
 			}
-			//print(NUM_THERM_TOTAL, (uint16_t*) modVoltage.cell_temp);
+			//print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
 
 			//getting the summary of all cells in the pack
-			Cell_Summary(&modVoltage);
+			Cell_Summary(&modPackInfo);
 
 			//waiting for 3 loops of the while look to occur before checking for faults
 			if (loop_count == 0) {
-				Fault_And_Warning(&modVoltage, &safetyFaults, &safetyWarnings);
+				Fault_Warning_State(&modPackInfo, &safetyFaults, &safetyWarnings, &safetyStates);
 				if (safetyFaults != 0) {
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
+				}
+
+				//Passive balancing is called unless a fault has occurred
+				if (safetyFaults == 0 && BALANCE) {
+					Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES,
+							modPackInfo.cell_volt_lowest);
+				}
+				else {
+					if(BALANCE){
+						End_Balance();
+					}
 				}
 
 			} else {
 				loop_count--;
 			}
 
-			//Passive balancing is called unless a fault has occurred
-			if (safetyFaults == 0 && BALANCE) {
-				Start_Balance((uint16_t*) modVoltage.cell_volt, NUM_DEVICES,
-									modVoltage.cell_volt_lowest);
-			}
-
 			//calling all CAN realated methods
-			CAN_Send_Safety_Checker(&msg, &safetyFaults, &safetyWarnings);
-			CAN_Send_Cell_Summary(&msg, &modVoltage);
-			CAN_Send_Voltage(&msg, modVoltage.cell_volt);
-			CAN_Send_Temperature(&msg, modVoltage.cell_temp);
+			CAN_Send_Safety_Checker(&msg, &safetyFaults, &safetyWarnings, &safetyStates);
+			CAN_Send_Cell_Summary(&msg, &modPackInfo);
+			CAN_Send_Voltage(&msg, modPackInfo.cell_volt);
+			CAN_Send_Temperature(&msg, modPackInfo.cell_temp);
 		}
 
 	}

@@ -1,2 +1,2 @@
-../Core/Src/safety.c:24:6:Cell_Summary	7
-../Core/Src/safety.c:57:6:Fault_And_Warning	8
+../Core/Src/safety.c:25:6:Cell_Summary	7
+../Core/Src/safety.c:57:6:Fault_Warning_State	10
