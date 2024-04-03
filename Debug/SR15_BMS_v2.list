@@ -29,23 +29,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
  12 .comment      00000043  00000000  00000000  000202c1  2**0
                   CONTENTS, READONLY
- 13 .debug_info   00017167  00000000  00000000  00020304  2**0
+ 13 .debug_info   0001724c  00000000  00000000  00020304  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 000047ec  00000000  00000000  0003746b  2**0
+ 14 .debug_abbrev 000047ff  00000000  00000000  00037550  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 000016f0  00000000  00000000  0003bc58  2**3
+ 15 .debug_aranges 000016f8  00000000  00000000  0003bd50  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_rnglists 0000115e  00000000  00000000  0003d348  2**0
+ 16 .debug_rnglists 00001165  00000000  00000000  0003d448  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  00023ee6  00000000  00000000  0003e4a6  2**0
+ 17 .debug_macro  00023ee6  00000000  00000000  0003e5ad  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   0001e82a  00000000  00000000  0006238c  2**0
+ 18 .debug_line   0001e8c7  00000000  00000000  00062493  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000bf280  00000000  00000000  00080bb6  2**0
+ 19 .debug_str    000bf369  00000000  00000000  00080d5a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  00006480  00000000  00000000  0013fe38  2**2
+ 20 .debug_frame  000064a8  00000000  00000000  001400c4  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000006c  00000000  00000000  001462b8  2**0
+ 21 .debug_line_str 0000006c  00000000  00000000  0014656c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -6186,44 +6186,23 @@ void OTG_FS_IRQHandler(void)
  8002f48:	200010b4 	.word	0x200010b4
 
 08002f4c <_sbrk>:
- *
- * @param incr Memory size
- * @return Pointer to allocated memory
- */
-void *_sbrk(ptrdiff_t incr)
-{
  8002f4c:	b580      	push	{r7, lr}
  8002f4e:	b086      	sub	sp, #24
  8002f50:	af00      	add	r7, sp, #0
  8002f52:	6078      	str	r0, [r7, #4]
-  extern uint8_t _end; /* Symbol defined in the linker script */
-  extern uint8_t _estack; /* Symbol defined in the linker script */
-  extern uint32_t _Min_Stack_Size; /* Symbol defined in the linker script */
-  const uint32_t stack_limit = (uint32_t)&_estack - (uint32_t)&_Min_Stack_Size;
  8002f54:	4a14      	ldr	r2, [pc, #80]	; (8002fa8 <_sbrk+0x5c>)
  8002f56:	4b15      	ldr	r3, [pc, #84]	; (8002fac <_sbrk+0x60>)
  8002f58:	1ad3      	subs	r3, r2, r3
  8002f5a:	617b      	str	r3, [r7, #20]
-  const uint8_t *max_heap = (uint8_t *)stack_limit;
  8002f5c:	697b      	ldr	r3, [r7, #20]
  8002f5e:	613b      	str	r3, [r7, #16]
-  uint8_t *prev_heap_end;
-
-  /* Initialize heap end at first call */
-  if (NULL == __sbrk_heap_end)
  8002f60:	4b13      	ldr	r3, [pc, #76]	; (8002fb0 <_sbrk+0x64>)
  8002f62:	681b      	ldr	r3, [r3, #0]
  8002f64:	2b00      	cmp	r3, #0
  8002f66:	d102      	bne.n	8002f6e <_sbrk+0x22>
-  {
-    __sbrk_heap_end = &_end;
  8002f68:	4b11      	ldr	r3, [pc, #68]	; (8002fb0 <_sbrk+0x64>)
  8002f6a:	4a12      	ldr	r2, [pc, #72]	; (8002fb4 <_sbrk+0x68>)
  8002f6c:	601a      	str	r2, [r3, #0]
-  }
-
-  /* Protect heap from growing into the reserved MSP stack */
-  if (__sbrk_heap_end + incr > max_heap)
  8002f6e:	4b10      	ldr	r3, [pc, #64]	; (8002fb0 <_sbrk+0x64>)
  8002f70:	681a      	ldr	r2, [r3, #0]
  8002f72:	687b      	ldr	r3, [r7, #4]
@@ -6231,32 +6210,22 @@ void *_sbrk(ptrdiff_t incr)
  8002f76:	693a      	ldr	r2, [r7, #16]
  8002f78:	429a      	cmp	r2, r3
  8002f7a:	d207      	bcs.n	8002f8c <_sbrk+0x40>
-  {
-    errno = ENOMEM;
  8002f7c:	f007 f94c 	bl	800a218 <__errno>
  8002f80:	4603      	mov	r3, r0
  8002f82:	220c      	movs	r2, #12
  8002f84:	601a      	str	r2, [r3, #0]
-    return (void *)-1;
  8002f86:	f04f 33ff 	mov.w	r3, #4294967295
  8002f8a:	e009      	b.n	8002fa0 <_sbrk+0x54>
-  }
-
-  prev_heap_end = __sbrk_heap_end;
  8002f8c:	4b08      	ldr	r3, [pc, #32]	; (8002fb0 <_sbrk+0x64>)
  8002f8e:	681b      	ldr	r3, [r3, #0]
  8002f90:	60fb      	str	r3, [r7, #12]
-  __sbrk_heap_end += incr;
  8002f92:	4b07      	ldr	r3, [pc, #28]	; (8002fb0 <_sbrk+0x64>)
  8002f94:	681a      	ldr	r2, [r3, #0]
  8002f96:	687b      	ldr	r3, [r7, #4]
  8002f98:	4413      	add	r3, r2
  8002f9a:	4a05      	ldr	r2, [pc, #20]	; (8002fb0 <_sbrk+0x64>)
  8002f9c:	6013      	str	r3, [r2, #0]
-
-  return (void *)prev_heap_end;
  8002f9e:	68fb      	ldr	r3, [r7, #12]
-}
  8002fa0:	4618      	mov	r0, r3
  8002fa2:	3718      	adds	r7, #24
  8002fa4:	46bd      	mov	sp, r7
@@ -6267,20 +6236,8 @@ void *_sbrk(ptrdiff_t incr)
  8002fb4:	20001920 	.word	0x20001920
 
 08002fb8 <SystemInit>:
-  * @note   This function should be used only after reset.
-  * @param  None
-  * @retval None
-  */
-void SystemInit (void)
-{
  8002fb8:	b480      	push	{r7}
  8002fba:	af00      	add	r7, sp, #0
-
-  /* Configure the Vector Table location -------------------------------------*/
-#if defined(USER_VECT_TAB_ADDRESS)
-  SCB->VTOR = VECT_TAB_BASE_ADDRESS | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM. */
-#endif /* USER_VECT_TAB_ADDRESS */
-}
  8002fbc:	bf00      	nop
  8002fbe:	46bd      	mov	sp, r7
  8002fc0:	bc80      	pop	{r7}
