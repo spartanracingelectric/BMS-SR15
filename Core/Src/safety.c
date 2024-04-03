@@ -19,7 +19,7 @@
 #define CELL_HIGH_TEMP_WARNING		55
 #define CELL_LOW_TEMP_WARNING		0
 
-#define CELL_VOLT_IMBALANCE_FAULT   5000
+#define CELL_VOLT_IMBALANCE_FAULT   5000 //0.5 V
 #define CELL_VOLT_IMBALANCE_WARNING	1000 //0.1 V
 
 void Cell_Summary(struct batteryModule *batt) {

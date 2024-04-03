@@ -175,7 +175,7 @@ int main(void) {
 				indexpause = 8;
 				tempindex = 0;
 			}
-			print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
+			//print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
 
 			//getting the summary of all cells in the pack
 			Cell_Summary(&modPackInfo);
