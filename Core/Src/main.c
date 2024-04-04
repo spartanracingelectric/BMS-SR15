@@ -156,6 +156,7 @@ int main(void) {
 			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
 
 			//related to reading temperatures
+			Wakeup_Sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
 				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
 				HAL_Delay(100);
@@ -175,7 +176,7 @@ int main(void) {
 				indexpause = 8;
 				tempindex = 0;
 			}
-			//print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
+			print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
 
 			//getting the summary of all cells in the pack
 			Cell_Summary(&modPackInfo);
