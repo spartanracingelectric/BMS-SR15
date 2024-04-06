@@ -37,7 +37,7 @@ void Wakeup_Sleep(void) {
 		LTC_nCS_Low();
 		HAL_Delay(300);
 		LTC_nCS_High();
-		HAL_Delay(300);
+		HAL_Delay(10);
 	}
 }
 
