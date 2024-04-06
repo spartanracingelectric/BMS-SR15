@@ -32,7 +32,7 @@ void Start_Balance(uint16_t *read_volt, uint8_t length, uint16_t lowest) {
 }
 
 void End_Balance() {
-	Wakeup_Idle();
+	Wakeup_Sleep();
 	LTC6811_WRCFG(NUM_DEVICES, defaultConfig);
 }
 

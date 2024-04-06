@@ -3221,8 +3221,8 @@ void Start_Balance(uint16_t *read_volt, uint8_t length, uint16_t lowest) {
 void End_Balance() {
  8001d68:	b580      	push	{r7, lr}
  8001d6a:	af00      	add	r7, sp, #0
-	Wakeup_Idle();
- 8001d6c:	f7ff fb16 	bl	800139c <Wakeup_Idle>
+	Wakeup_Sleep();
+ 8001d6c:	f7ff fb36 	bl	80013dc <Wakeup_Sleep>
 	LTC6811_WRCFG(NUM_DEVICES, defaultConfig);
  8001d70:	4902      	ldr	r1, [pc, #8]	; (8001d7c <End_Balance+0x14>)
  8001d72:	2001      	movs	r0, #1
