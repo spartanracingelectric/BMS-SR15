@@ -1,4 +1,4 @@
 ../Core/Src/balance.c:27:6:Start_Balance	16	static
-../Core/Src/balance.c:33:6:End_Balance	8	static
-../Core/Src/balance.c:45:6:Discharge_Algo	32	static
-../Core/Src/balance.c:69:6:Set_Cfg	24	static
+../Core/Src/balance.c:34:6:End_Balance	8	static
+../Core/Src/balance.c:46:6:Discharge_Algo	32	static
+../Core/Src/balance.c:70:6:Set_Cfg	24	static
