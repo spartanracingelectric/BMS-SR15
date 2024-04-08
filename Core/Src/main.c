@@ -156,20 +156,20 @@ int main(void) {
 			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
 
 			//related to reading temperatures
-			Wakeup_Sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
+				Wakeup_Sleep();
 				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
 				HAL_Delay(100);
 			}
 			if (indexpause == 8) {
 				tempindex = 8;
 				indexpause = NUM_THERM_PER_MOD;
-				Wakeup_Idle();
+				Wakeup_Sleep();
 				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
 				Wakeup_Idle();
 				LTC_STCOMM(2);
 			} else if (indexpause == NUM_THERM_PER_MOD) {
-				Wakeup_Idle();
+				Wakeup_Sleep();
 				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
 				Wakeup_Idle();
 				LTC_STCOMM(2);

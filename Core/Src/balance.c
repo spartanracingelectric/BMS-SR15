@@ -24,9 +24,8 @@ static uint8_t defaultConfig[8][6] = { { 0xF8, 0x00, 0x00, 0x00, 0x00, 0xF0 }, {
 		0x00, 0x00, 0x00, 0x00, 0xF0 }, { 0xF8, 0x00, 0x00, 0x00, 0x00, 0xF0 } };
 
 void Start_Balance(uint16_t *read_volt, uint8_t length, uint16_t lowest) {
-	Wakeup_Sleep();
 	Discharge_Algo(read_volt, NUM_DEVICES, lowest);
-	Wakeup_Idle();
+	Wakeup_Sleep();
 	LTC6811_WRCFG(NUM_DEVICES, config);
 }
 
