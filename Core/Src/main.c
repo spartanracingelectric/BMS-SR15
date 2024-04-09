@@ -156,7 +156,9 @@ int main(void) {
 			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
 
 			//related to reading temperatures
+			Wakeup_Sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
+				Wakeup_Idle();
 				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
 				HAL_Delay(100);
 			}
@@ -188,7 +190,7 @@ int main(void) {
 				}
 
 				//Passive balancing is called unless a fault has occurred
-				if (safetyFaults == 0 && BALANCE) {
+				if (safetyFaults != 0 && BALANCE) {
 					Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES,
 							modPackInfo.cell_volt_lowest);
 				}

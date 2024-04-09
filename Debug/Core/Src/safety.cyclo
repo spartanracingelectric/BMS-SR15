@@ -1,2 +1,3 @@
 ../Core/Src/safety.c:25:6:Cell_Summary	7
 ../Core/Src/safety.c:57:6:Fault_Warning_State	10
+../Core/Src/safety.c:119:6:Module_Averages	11

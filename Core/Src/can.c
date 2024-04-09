@@ -21,10 +21,6 @@
 #include "can.h"
 
 /* USER CODE BEGIN 0 */
-#define CAN_VOLT_ID 0x630
-#define CAN_TEMP_ID 0x680
-#define CAN_CELL_SUMMARY_ID 0x622
-#define CAN_SAFETY_CHECKER_ID 0x600
 /* USER CODE END 0 */
 
 CAN_HandleTypeDef hcan2;
@@ -143,7 +139,7 @@ void Set_CAN_Id(struct CANMessage *ptr, uint32_t id) {
 }
 
 void CAN_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt) {
-	uint16_t CAN_ID = CAN_VOLT_ID;
+	uint16_t CAN_ID = 0x630;
 	Set_CAN_Id(ptr, CAN_ID);
 	for (int i = 0; i < NUM_CELLS; i++) {
 		if (i % 4 == 0) {
@@ -171,7 +167,7 @@ void CAN_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt) {
 }
 
 void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp) {
-	uint16_t CAN_ID = CAN_TEMP_ID;
+	uint16_t CAN_ID = 0x680;
 	Set_CAN_Id(ptr, CAN_ID);
 	for (uint8_t i = 0; i < NUM_THERM_TOTAL; i++) {
 		if (i % 4 == 0) {
@@ -199,7 +195,7 @@ void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp) {
 }
 
 void CAN_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModule *batt) {
-	uint16_t CAN_ID = CAN_CELL_SUMMARY_ID;
+	uint16_t CAN_ID = 0x622;
 	Set_CAN_Id(ptr, CAN_ID);
 
 	ptr->data[0] = batt->cell_volt_highest;
@@ -217,7 +213,7 @@ void CAN_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModule *batt) {
 
 void CAN_Send_Safety_Checker(struct CANMessage *ptr, uint8_t *faults,
 		uint8_t *warnings, uint8_t *states) {
-	uint16_t CAN_ID = CAN_SAFETY_CHECKER_ID;
+	uint16_t CAN_ID = 0x600;
 	Set_CAN_Id(ptr, CAN_ID);
 	ptr->data[0] = *faults;
 	ptr->data[1] = *warnings;
