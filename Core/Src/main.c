@@ -190,7 +190,7 @@ int main(void) {
 				}
 
 				//Passive balancing is called unless a fault has occurred
-				if (safetyFaults != 0 && BALANCE) {
+				if (safetyFaults == 0 && BALANCE) {
 					Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES,
 							modPackInfo.cell_volt_lowest);
 				}
