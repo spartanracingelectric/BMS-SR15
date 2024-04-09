@@ -80,8 +80,8 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static uint8_t BMS_MUX_PAUSE[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, { 0x69,
-		0x08, 0x0F, 0x09, 0x7F, 0xF9 } };
+static uint8_t BMS_MUX_PAUSE[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, {
+		0x69, 0x08, 0x0F, 0x09, 0x7F, 0xF9 } };
 /* USER CODE END 0 */
 
 /**
@@ -184,20 +184,18 @@ int main(void) {
 
 			//waiting for 3 loops of the while look to occur before checking for faults
 			if (loop_count == 0) {
-				Fault_Warning_State(&modPackInfo, &safetyFaults, &safetyWarnings, &safetyStates);
+				Fault_Warning_State(&modPackInfo, &safetyFaults,
+						&safetyWarnings, &safetyStates);
 				if (safetyFaults != 0) {
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 				}
 
 				//Passive balancing is called unless a fault has occurred
-				if (safetyFaults == 0 && BALANCE) {
-					Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES,
-							modPackInfo.cell_volt_lowest);
-				}
-				else {
-					if(BALANCE){
-						End_Balance();
-					}
+				if (safetyFaults == 0 && BALANCE && ((modPackInfo.cell_volt_highest - modPackInfo.cell_volt_lowest) > 50)) {
+					Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES, modPackInfo.cell_volt_lowest);
+
+				} else if (BALANCE) {
+					End_Balance();
 				}
 
 			} else {
