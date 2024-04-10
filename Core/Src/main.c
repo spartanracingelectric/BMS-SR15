@@ -191,7 +191,7 @@ int main(void) {
 				}
 
 				//Passive balancing is called unless a fault has occurred
-				if (safetyFaults == 0 && BALANCE && ((modPackInfo.cell_volt_highest - modPackInfo.cell_volt_lowest) > 50)) {
+				if (safetyFaults != 0 && BALANCE && ((modPackInfo.cell_volt_highest - modPackInfo.cell_volt_lowest) > 50)) {
 					Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES, modPackInfo.cell_volt_lowest);
 
 				} else if (BALANCE) {

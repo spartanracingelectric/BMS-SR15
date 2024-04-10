@@ -1635,7 +1635,7 @@ void Wakeup_Idle(void) {
  80013c2:	3301      	adds	r3, #1
  80013c4:	607b      	str	r3, [r7, #4]
  80013c6:	687b      	ldr	r3, [r7, #4]
- 80013c8:	2b07      	cmp	r3, #7
+ 80013c8:	2b01      	cmp	r3, #1
  80013ca:	ddef      	ble.n	80013ac <Wakeup_Idle+0x10>
 	}
 }
@@ -1674,7 +1674,7 @@ void Wakeup_Sleep(void) {
  8001400:	3301      	adds	r3, #1
  8001402:	607b      	str	r3, [r7, #4]
  8001404:	687b      	ldr	r3, [r7, #4]
- 8001406:	2b07      	cmp	r3, #7
+ 8001406:	2b01      	cmp	r3, #1
  8001408:	ddee      	ble.n	80013e8 <Wakeup_Sleep+0xc>
 	}
 }
@@ -1699,7 +1699,7 @@ LTC_SPI_StatusTypeDef Read_Cell_Volt(uint16_t *read_voltages) {
  8001424:	77fb      	strb	r3, [r7, #31]
 	LTC_SPI_StatusTypeDef hal_ret;
 	const uint8_t ARR_SIZE_REG = NUM_DEVICES * REG_LEN;
- 8001426:	2340      	movs	r3, #64	; 0x40
+ 8001426:	2310      	movs	r3, #16
  8001428:	773b      	strb	r3, [r7, #28]
 	uint8_t read_voltages_reg[ARR_SIZE_REG]; // Increased in size to handle multiple devices
  800142a:	7f3b      	ldrb	r3, [r7, #28]
@@ -1869,7 +1869,7 @@ LTC_SPI_StatusTypeDef Read_Cell_Volt(uint16_t *read_voltages) {
  8001552:	3301      	adds	r3, #1
  8001554:	777b      	strb	r3, [r7, #29]
  8001556:	7f7b      	ldrb	r3, [r7, #29]
- 8001558:	2b07      	cmp	r3, #7
+ 8001558:	2b01      	cmp	r3, #1
  800155a:	d9e1      	bls.n	8001520 <Read_Cell_Volt+0x10c>
 					REG_LEN - 2);
 		}
@@ -2159,7 +2159,7 @@ LTC_SPI_StatusTypeDef Read_Cell_Temps(uint16_t *read_auxiliary) {
  800170c:	77fb      	strb	r3, [r7, #31]
 	LTC_SPI_StatusTypeDef hal_ret;
 	const uint8_t ARR_SIZE_REG = NUM_DEVICES * REG_LEN;
- 800170e:	2340      	movs	r3, #64	; 0x40
+ 800170e:	2310      	movs	r3, #16
  8001710:	773b      	strb	r3, [r7, #28]
 	uint8_t read_auxiliary_reg[ARR_SIZE_REG]; // Increased in size to handle multiple devices
  8001712:	7f3b      	ldrb	r3, [r7, #28]
@@ -2329,7 +2329,7 @@ LTC_SPI_StatusTypeDef Read_Cell_Temps(uint16_t *read_auxiliary) {
  800183a:	3301      	adds	r3, #1
  800183c:	777b      	strb	r3, [r7, #29]
  800183e:	7f7b      	ldrb	r3, [r7, #29]
- 8001840:	2b07      	cmp	r3, #7
+ 8001840:	2b01      	cmp	r3, #1
  8001842:	d9e1      	bls.n	8001808 <Read_Cell_Temps+0x10c>
 					REG_LEN - 2);
 		}
@@ -3453,7 +3453,7 @@ void CAN_Send_Voltage(struct CANMessage *ptr, uint16_t *read_volt) {
  8001eec:	3301      	adds	r3, #1
  8001eee:	613b      	str	r3, [r7, #16]
  8001ef0:	693b      	ldr	r3, [r7, #16]
- 8001ef2:	2b5f      	cmp	r3, #95	; 0x5f
+ 8001ef2:	2b17      	cmp	r3, #23
  8001ef4:	dd87      	ble.n	8001e06 <CAN_Send_Voltage+0x20>
 	}
 
@@ -3616,7 +3616,7 @@ void CAN_Send_Temperature(struct CANMessage *ptr, uint16_t *read_temp) {
  800200a:	3301      	adds	r3, #1
  800200c:	737b      	strb	r3, [r7, #13]
  800200e:	7b7b      	ldrb	r3, [r7, #13]
- 8002010:	2b5f      	cmp	r3, #95	; 0x5f
+ 8002010:	2b17      	cmp	r3, #23
  8002012:	d985      	bls.n	8001f20 <CAN_Send_Temperature+0x20>
 	}
 
@@ -4016,18 +4016,18 @@ int main(void) {
  800229e:	60da      	str	r2, [r3, #12]
  80022a0:	611a      	str	r2, [r3, #16]
  80022a2:	615a      	str	r2, [r3, #20]
- 80022a4:	20c0      	movs	r0, #192	; 0xc0
+ 80022a4:	2030      	movs	r0, #48	; 0x30
  80022a6:	f007 fd55 	bl	8009d54 <malloc>
  80022aa:	4603      	mov	r3, r0
  80022ac:	62bb      	str	r3, [r7, #40]	; 0x28
 	NUM_CELLS * sizeof(uint16_t)), .cell_temp = (uint16_t*) malloc(
- 80022ae:	20c0      	movs	r0, #192	; 0xc0
+ 80022ae:	2030      	movs	r0, #48	; 0x30
  80022b0:	f007 fd50 	bl	8009d54 <malloc>
  80022b4:	4603      	mov	r3, r0
 	struct batteryModule modPackInfo = { .cell_volt = (uint16_t*) malloc(
  80022b6:	62fb      	str	r3, [r7, #44]	; 0x2c
 	NUM_THERM_TOTAL * sizeof(uint16_t)), .read_auxreg = (uint16_t*) malloc(
- 80022b8:	2060      	movs	r0, #96	; 0x60
+ 80022b8:	2018      	movs	r0, #24
  80022ba:	f007 fd4b 	bl	8009d54 <malloc>
  80022be:	4603      	mov	r3, r0
 	struct batteryModule modPackInfo = { .cell_volt = (uint16_t*) malloc(
@@ -4177,7 +4177,7 @@ int main(void) {
  80023a6:	f7fe fff9 	bl	800139c <Wakeup_Idle>
 				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
  80023aa:	492e      	ldr	r1, [pc, #184]	; (8002464 <main+0x1d8>)
- 80023ac:	2008      	movs	r0, #8
+ 80023ac:	2002      	movs	r0, #2
  80023ae:	f7ff f8e9 	bl	8001584 <LTC_WRCOMM>
 				Wakeup_Idle();
  80023b2:	f7fe fff3 	bl	800139c <Wakeup_Idle>
@@ -4193,7 +4193,7 @@ int main(void) {
  80023c6:	f7fe ffe9 	bl	800139c <Wakeup_Idle>
 				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
  80023ca:	4927      	ldr	r1, [pc, #156]	; (8002468 <main+0x1dc>)
- 80023cc:	2008      	movs	r0, #8
+ 80023cc:	2002      	movs	r0, #2
  80023ce:	f7ff f8d9 	bl	8001584 <LTC_WRCOMM>
 				Wakeup_Idle();
  80023d2:	f7fe ffe3 	bl	800139c <Wakeup_Idle>
@@ -4792,7 +4792,7 @@ void Read_Temp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
  800279c:	4a1a      	ldr	r2, [pc, #104]	; (8002808 <Read_Temp+0x84>)
  800279e:	4413      	add	r3, r2
  80027a0:	4619      	mov	r1, r3
- 80027a2:	2008      	movs	r0, #8
+ 80027a2:	2002      	movs	r0, #2
  80027a4:	f7fe feee 	bl	8001584 <LTC_WRCOMM>
 	Wakeup_Idle();
  80027a8:	f7fe fdf8 	bl	800139c <Wakeup_Idle>
@@ -4845,7 +4845,7 @@ void Read_Temp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
  80027f6:	3301      	adds	r3, #1
  80027f8:	75fb      	strb	r3, [r7, #23]
  80027fa:	7dfb      	ldrb	r3, [r7, #23]
- 80027fc:	2b07      	cmp	r3, #7
+ 80027fc:	2b01      	cmp	r3, #1
  80027fe:	d9e9      	bls.n	80027d4 <Read_Temp+0x50>
 
 		}
@@ -4964,7 +4964,7 @@ void Cell_Summary(struct batteryModule *batt) {
  80028aa:	3301      	adds	r3, #1
  80028ac:	60fb      	str	r3, [r7, #12]
  80028ae:	68fb      	ldr	r3, [r7, #12]
- 80028b0:	2b5f      	cmp	r3, #95	; 0x5f
+ 80028b0:	2b17      	cmp	r3, #23
  80028b2:	ddc9      	ble.n	8002848 <Cell_Summary+0x3c>
 	}
 
@@ -5019,7 +5019,7 @@ void Cell_Summary(struct batteryModule *batt) {
  8002904:	3301      	adds	r3, #1
  8002906:	60bb      	str	r3, [r7, #8]
  8002908:	68bb      	ldr	r3, [r7, #8]
- 800290a:	2b5f      	cmp	r3, #95	; 0x5f
+ 800290a:	2b17      	cmp	r3, #23
  800290c:	ddd5      	ble.n	80028ba <Cell_Summary+0xae>
 		}
 	}
