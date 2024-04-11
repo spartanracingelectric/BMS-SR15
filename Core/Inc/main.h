@@ -44,7 +44,7 @@ struct batteryModule {
 	uint16_t cell_volt_highest;
 	uint16_t cell_temp_lowest;
 	uint16_t cell_temp_highest;
-	uint16_t pack_voltage;
+	uint32_t pack_voltage;
 	uint16_t *read_auxreg;
 
 };

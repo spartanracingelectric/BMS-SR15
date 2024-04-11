@@ -153,7 +153,7 @@ int main(void) {
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
 			Wakeup_Sleep();
 			Read_Volt(modPackInfo.cell_volt);
-			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
+			print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
 
 			//related to reading temperatures
 			Wakeup_Sleep();
@@ -177,7 +177,7 @@ int main(void) {
 				indexpause = 8;
 				tempindex = 0;
 			}
-			//print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
+			print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
 
 			//getting the summary of all cells in the pack
 			Cell_Summary(&modPackInfo);
