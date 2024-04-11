@@ -5065,7 +5065,7 @@ void Cell_Summary(struct batteryModule *batt) {
  80029a6:	811a      	strh	r2, [r3, #8]
 		}
 
-		batt->pack_voltage += batt->cell_volt[i];
+		batt->pack_voltage += (uint32_t) batt->cell_volt[i];
  80029a8:	687b      	ldr	r3, [r7, #4]
  80029aa:	691b      	ldr	r3, [r3, #16]
  80029ac:	687a      	ldr	r2, [r7, #4]
