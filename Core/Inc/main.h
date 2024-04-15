@@ -40,6 +40,7 @@ extern "C" {
 struct batteryModule {
 	uint16_t *cell_volt;
 	uint16_t *cell_temp;
+	uint16_t *module_averages;
 	uint16_t cell_volt_lowest;
 	uint16_t cell_volt_highest;
 	uint16_t cell_temp_lowest;

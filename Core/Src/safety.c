@@ -117,14 +117,6 @@ void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
 }
 
 void Module_Averages(struct batteryModule *batt){
-	uint16_t module1_cell_average = 0;
-	uint16_t module2_cell_average = 0;
-	uint16_t module3_cell_average = 0;
-	uint16_t module4_cell_average = 0;
-	uint16_t module5_cell_average = 0;
-	uint16_t module6_cell_average = 0;
-	uint16_t module7_cell_average = 0;
-	uint16_t module8_cell_average = 0;
 
 	for(int i = 0; i < NUM_CELLS; i+=12){
 		uint16_t temp_sum = 0;
@@ -133,32 +125,32 @@ void Module_Averages(struct batteryModule *batt){
 			temp_sum += batt->cell_volt[i];
 		}
 
-		uint16_t average  = temp_sum / 12;
+		uint16_t average  = temp_sum / NUM_CELL_SERIES_GROUP;
 
 		switch (i / 12) {
 		case 0:
-			module1_cell_average = average;
+			batt->module_averages[i] = average;
 			break;
 		case 1:
-			module2_cell_average = average;
+			batt->module_averages[i] = average;
 			break;
 		case 2:
-			module3_cell_average = average;
+			batt->module_averages[i] = average;
 			break;
 		case 3:
-			module4_cell_average = average;
+			batt->module_averages[i] = average;
 			break;
 		case 4:
-			module5_cell_average = average;
+			batt->module_averages[i] = average;
 			break;
 		case 5:
-			module6_cell_average = average;
+			batt->module_averages[i] = average;
 			break;
 		case 6:
-			module7_cell_average = average;
+			batt->module_averages[i] = average;
 			break;
 		case 7:
-			module8_cell_average = average;
+			batt->module_averages[i] = average;
 			break;
 		}
 	}
