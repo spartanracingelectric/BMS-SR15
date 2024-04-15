@@ -96,7 +96,8 @@ int main(void) {
 	struct batteryModule modPackInfo = { .cell_volt = (uint16_t*) malloc(
 	NUM_CELLS * sizeof(uint16_t)), .cell_temp = (uint16_t*) malloc(
 	NUM_THERM_TOTAL * sizeof(uint16_t)), .read_auxreg = (uint16_t*) malloc(
-	NUM_AUXES * sizeof(uint16_t)), .module_averages = (uint16_t*) malloc((NUM_DEVICES) * sizeof(uint16_t))};
+	NUM_AUXES * sizeof(uint16_t)), .module_averages = (uint16_t*) malloc(
+			(NUM_DEVICES) * sizeof(uint16_t)) };
 
 	struct CANMessage msg;
 	uint8_t safetyFaults = 0;
@@ -142,8 +143,6 @@ int main(void) {
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
-	uint8_t tempindex = 0;
-	uint8_t indexpause = 8;
 	uint8_t loop_count = 5;
 	while (1) {
 		/* USER CODE END WHILE */
@@ -152,7 +151,8 @@ int main(void) {
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
 			//calling all CAN realated methods
-			CAN_Send_Safety_Checker(&msg, &modPackInfo, &safetyFaults, &safetyWarnings, &safetyStates);
+			CAN_Send_Safety_Checker(&msg, &modPackInfo, &safetyFaults,
+					&safetyWarnings, &safetyStates);
 			CAN_Send_Cell_Summary(&msg, &modPackInfo);
 			CAN_Send_Voltage(&msg, modPackInfo.cell_volt);
 			CAN_Send_Temperature(&msg, modPackInfo.cell_temp);
@@ -164,27 +164,23 @@ int main(void) {
 
 			//reading cell temperatures
 			Wakeup_Sleep();
-			for (uint8_t i = tempindex; i < indexpause; i++) {
+			for (uint8_t i = 0; i < NUM_THERM_TOTAL; i++) {
 				Wakeup_Idle();
 				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
+				if (i == 7) {
+					Wakeup_Idle();
+					LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
+					Wakeup_Idle();
+					LTC_STCOMM(2);
+				} else if (i == (NUM_THERM_PER_MOD-1)) {
+					Wakeup_Idle();
+					LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
+					Wakeup_Idle();
+					LTC_STCOMM(2);
+				}
 				//HAL_Delay(50);
 			}
-			if (indexpause == 8) {
-				tempindex = 8;
-				indexpause = NUM_THERM_PER_MOD;
-				Wakeup_Idle();
-				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
-				Wakeup_Idle();
-				LTC_STCOMM(2);
-			} else if (indexpause == NUM_THERM_PER_MOD) {
-				Wakeup_Idle();
-				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
-				Wakeup_Idle();
-				LTC_STCOMM(2);
-				indexpause = 8;
-				tempindex = 0;
-			}
-			for(uint8_t i = 0; i < NUM_THERM_TOTAL; i++){
+			for (uint8_t i = 0; i < NUM_THERM_TOTAL; i++) {
 				Get_Actual_Temps(i, modPackInfo.cell_temp);
 			}
 			//print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
@@ -201,8 +197,11 @@ int main(void) {
 				}
 
 				//Passive balancing is called unless a fault has occurred
-				if (safetyFaults == 0 && BALANCE && ((modPackInfo.cell_volt_highest - modPackInfo.cell_volt_lowest) > 50)){
-					Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES, modPackInfo.cell_volt_lowest);
+				if (safetyFaults == 0 && BALANCE
+						&& ((modPackInfo.cell_volt_highest
+								- modPackInfo.cell_volt_lowest) > 50)) {
+					Start_Balance((uint16_t*) modPackInfo.cell_volt,
+							NUM_DEVICES, modPackInfo.cell_volt_lowest);
 
 				} else if (BALANCE) {
 					End_Balance(&safetyFaults);
