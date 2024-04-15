@@ -144,7 +144,7 @@ int main(void) {
 	/* USER CODE BEGIN WHILE */
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
-	uint8_t loop_count = 3;
+	uint8_t loop_count = 5;
 	while (1) {
 		/* USER CODE END WHILE */
 
@@ -157,16 +157,17 @@ int main(void) {
 			CAN_Send_Voltage(&msg, modPackInfo.cell_volt);
 			CAN_Send_Temperature(&msg, modPackInfo.cell_temp);
 
+			//reading cell voltages
 			Wakeup_Sleep();
 			Read_Volt(modPackInfo.cell_volt);
 			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
 
-			//related to reading temperatures
+			//reading cell temperatures
 			Wakeup_Sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
 				Wakeup_Idle();
 				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
-				HAL_Delay(50);
+				//HAL_Delay(50);
 			}
 			if (indexpause == 8) {
 				tempindex = 8;
@@ -182,6 +183,9 @@ int main(void) {
 				LTC_STCOMM(2);
 				indexpause = 8;
 				tempindex = 0;
+			}
+			for(uint8_t i = 0; i < NUM_THERM_TOTAL; i++){
+				Get_Actual_Temps(i, modPackInfo.cell_temp);
 			}
 			//print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
 
