@@ -28,6 +28,7 @@ BU_: CUSTOM_BMS
 
 
 BO_ 1536 BMS_Safety_Checker: 2 [CUSTOM_BMS]
+ SG_ Pack_Voltage : 24|32@1+ (0.0001,0) [0|1000] "" Vector__XXX
  SG_ Balancing_State : 23|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Pack_High_Volt_Warning : 15|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Pack_Low_Volt_Warning : 14|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -42,6 +43,7 @@ BO_ 1536 BMS_Safety_Checker: 2 [CUSTOM_BMS]
  SG_ Cell_High_Volt_Fault : 4|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Cell_High_Temp_Fault : 3|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Cell_Volt_Imbalance_Fault : 2|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Balacing_End_Fault : 1|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 1570 BMS_Cell_Summary: 8 [CUSTOM_BMS]
  SG_ Lowest_Cell_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX

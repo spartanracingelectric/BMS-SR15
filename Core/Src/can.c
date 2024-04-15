@@ -211,13 +211,17 @@ void CAN_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModule *batt) {
 	CAN_Send(ptr);
 }
 
-void CAN_Send_Safety_Checker(struct CANMessage *ptr, uint8_t *faults,
+void CAN_Send_Safety_Checker(struct CANMessage *ptr, struct batteryModule *batt, uint8_t *faults,
 		uint8_t *warnings, uint8_t *states) {
 	uint16_t CAN_ID = 0x600;
 	Set_CAN_Id(ptr, CAN_ID);
 	ptr->data[0] = *faults;
 	ptr->data[1] = *warnings;
 	ptr->data[2] = *states;
+	ptr->data[3] = batt->pack_voltage;
+	ptr->data[4] = (batt->pack_voltage) >> 8;
+	ptr->data[5] = (batt->pack_voltage) >> 16;
+	ptr->data[6] = (batt->pack_voltage) >> 24;
 	HAL_Delay(10);
 	CAN_Send(ptr);
 }

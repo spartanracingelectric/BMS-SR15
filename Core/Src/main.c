@@ -80,8 +80,8 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static uint8_t BMS_MUX_PAUSE[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, { 0x69,
-		0x08, 0x0F, 0x09, 0x7F, 0xF9 } };
+static uint8_t BMS_MUX_PAUSE[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, {
+		0x69, 0x08, 0x0F, 0x09, 0x7F, 0xF9 } };
 /* USER CODE END 0 */
 
 /**
@@ -96,7 +96,8 @@ int main(void) {
 	struct batteryModule modPackInfo = { .cell_volt = (uint16_t*) malloc(
 	NUM_CELLS * sizeof(uint16_t)), .cell_temp = (uint16_t*) malloc(
 	NUM_THERM_TOTAL * sizeof(uint16_t)), .read_auxreg = (uint16_t*) malloc(
-	NUM_AUXES * sizeof(uint16_t)) };
+	NUM_AUXES * sizeof(uint16_t)), .module_averages = (uint16_t*) malloc(
+			(NUM_DEVICES) * sizeof(uint16_t)) };
 
 	struct CANMessage msg;
 	uint8_t safetyFaults = 0;
@@ -144,18 +145,26 @@ int main(void) {
 	/* USER CODE BEGIN WHILE */
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
-	uint8_t loop_count = 3;
+	uint8_t loop_count = 4;
 	while (1) {
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
+			//calling all CAN realated methods
+			CAN_Send_Safety_Checker(&msg, &modPackInfo, &safetyFaults,
+					&safetyWarnings, &safetyStates);
+			CAN_Send_Cell_Summary(&msg, &modPackInfo);
+			CAN_Send_Voltage(&msg, modPackInfo.cell_volt);
+			CAN_Send_Temperature(&msg, modPackInfo.cell_temp);
+
+			//reading cell voltages
 			Wakeup_Sleep();
 			Read_Volt(modPackInfo.cell_volt);
 			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
 
-			//related to reading temperatures
+			//reading cell temperatures
 			Wakeup_Sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
 				Wakeup_Idle();
@@ -184,31 +193,26 @@ int main(void) {
 
 			//waiting for 3 loops of the while look to occur before checking for faults
 			if (loop_count == 0) {
-				Fault_Warning_State(&modPackInfo, &safetyFaults, &safetyWarnings, &safetyStates);
+				Fault_Warning_State(&modPackInfo, &safetyFaults,
+						&safetyWarnings, &safetyStates);
 				if (safetyFaults != 0) {
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 				}
 
 				//Passive balancing is called unless a fault has occurred
-				if (safetyFaults == 0 && BALANCE) {
-					Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES,
-							modPackInfo.cell_volt_lowest);
-				}
-				else {
-					if(BALANCE){
-						End_Balance();
-					}
+				if (safetyFaults == 0 && BALANCE
+						&& ((modPackInfo.cell_volt_highest
+								- modPackInfo.cell_volt_lowest) > 50)) {
+					Start_Balance((uint16_t*) modPackInfo.cell_volt,
+							NUM_DEVICES, modPackInfo.cell_volt_lowest);
+
+				} else if (BALANCE) {
+					End_Balance(&safetyFaults);
 				}
 
 			} else {
 				loop_count--;
 			}
-
-			//calling all CAN realated methods
-			CAN_Send_Safety_Checker(&msg, &safetyFaults, &safetyWarnings, &safetyStates);
-			CAN_Send_Cell_Summary(&msg, &modPackInfo);
-			CAN_Send_Voltage(&msg, modPackInfo.cell_volt);
-			CAN_Send_Temperature(&msg, modPackInfo.cell_temp);
 		}
 
 	}

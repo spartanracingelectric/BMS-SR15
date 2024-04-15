@@ -29,9 +29,10 @@ void Start_Balance(uint16_t *read_volt, uint8_t length, uint16_t lowest) {
 	LTC6811_WRCFG(NUM_DEVICES, config);
 }
 
-void End_Balance() {
+void End_Balance(uint8_t *faults) {
 	Wakeup_Sleep();
 	LTC6811_WRCFG(NUM_DEVICES, defaultConfig);
+	*faults |= 0b00000010;
 }
 
 /**
