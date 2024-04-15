@@ -145,7 +145,7 @@ int main(void) {
 	/* USER CODE BEGIN WHILE */
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
-	uint8_t loop_count = 5;
+	uint8_t loop_count = 4;
 	while (1) {
 		/* USER CODE END WHILE */
 

@@ -4131,8 +4131,8 @@ int main(void) {
 	uint8_t indexpause = 8;
  800234a:	2308      	movs	r3, #8
  800234c:	f887 3066 	strb.w	r3, [r7, #102]	; 0x66
-	uint8_t loop_count = 5;
- 8002350:	2305      	movs	r3, #5
+	uint8_t loop_count = 4;
+ 8002350:	2304      	movs	r3, #4
  8002352:	f887 3065 	strb.w	r3, [r7, #101]	; 0x65
 	while (1) {
 		/* USER CODE END WHILE */
