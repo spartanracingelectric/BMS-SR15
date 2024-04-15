@@ -29,7 +29,7 @@ void Cell_Summary(struct batteryModule *batt) {
 	batt->cell_volt_lowest = batt->cell_volt[0];
 	batt->cell_temp_highest = batt->cell_temp[0];
 	batt->cell_temp_lowest = batt->cell_temp[0];
-	batt->pack_voltage = 0;
+	batt->pack_voltage = (uint32_t) batt->cell_volt[0];
 
 	for (int i = 1; i < NUM_CELLS; i++) {
 
