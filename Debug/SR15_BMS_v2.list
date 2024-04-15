@@ -4274,7 +4274,7 @@ int main(void) {
  8002466:	f001 fc13 	bl	8003c90 <HAL_GPIO_WritePin>
  800246a:	e766      	b.n	800233a <main+0xae>
 				} else if (BALANCE) {
-					End_Balance();
+					End_Balance(&safetyFaults);
 				}
 
 			} else {

@@ -201,7 +201,7 @@ int main(void) {
 					Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES, modPackInfo.cell_volt_lowest);
 
 				} else if (BALANCE) {
-					End_Balance();
+					End_Balance(&safetyFaults);
 				}
 
 			} else {

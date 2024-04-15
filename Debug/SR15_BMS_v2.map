@@ -341,12 +341,12 @@ Discarded input sections
  .text.Start_Balance
                 0x0000000000000000       0x34 ./Core/Src/balance.o
  .text.End_Balance
-                0x0000000000000000       0x18 ./Core/Src/balance.o
+                0x0000000000000000       0x30 ./Core/Src/balance.o
  .text.Discharge_Algo
                 0x0000000000000000       0x88 ./Core/Src/balance.o
  .text.Set_Cfg  0x0000000000000000      0x140 ./Core/Src/balance.o
- .debug_info    0x0000000000000000      0x25a ./Core/Src/balance.o
- .debug_abbrev  0x0000000000000000      0x13b ./Core/Src/balance.o
+ .debug_info    0x0000000000000000      0x269 ./Core/Src/balance.o
+ .debug_abbrev  0x0000000000000000      0x126 ./Core/Src/balance.o
  .debug_aranges
                 0x0000000000000000       0x38 ./Core/Src/balance.o
  .debug_rnglists
@@ -413,10 +413,10 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x29 ./Core/Src/balance.o
  .debug_macro   0x0000000000000000       0x16 ./Core/Src/balance.o
  .debug_macro   0x0000000000000000       0x20 ./Core/Src/balance.o
- .debug_line    0x0000000000000000      0xa0d ./Core/Src/balance.o
- .debug_str     0x0000000000000000    0xb6b89 ./Core/Src/balance.o
+ .debug_line    0x0000000000000000      0xa10 ./Core/Src/balance.o
+ .debug_str     0x0000000000000000    0xb6b90 ./Core/Src/balance.o
  .comment       0x0000000000000000       0x44 ./Core/Src/balance.o
- .debug_frame   0x0000000000000000       0x9c ./Core/Src/balance.o
+ .debug_frame   0x0000000000000000       0xa4 ./Core/Src/balance.o
  .ARM.attributes
                 0x0000000000000000       0x2d ./Core/Src/balance.o
  .group         0x0000000000000000        0xc ./Core/Src/can.o
