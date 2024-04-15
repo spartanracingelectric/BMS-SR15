@@ -143,6 +143,8 @@ int main(void) {
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
+	uint8_t tempindex = 0;
+	uint8_t indexpause = 8;
 	uint8_t loop_count = 5;
 	while (1) {
 		/* USER CODE END WHILE */
@@ -164,24 +166,25 @@ int main(void) {
 
 			//reading cell temperatures
 			Wakeup_Sleep();
-			for (uint8_t i = 0; i < NUM_THERM_TOTAL; i++) {
+			for (uint8_t i = tempindex; i < indexpause; i++) {
 				Wakeup_Idle();
 				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
-				if (i == 7) {
-					Wakeup_Idle();
-					LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
-					Wakeup_Idle();
-					LTC_STCOMM(2);
-				} else if (i == (NUM_THERM_PER_MOD-1)) {
-					Wakeup_Idle();
-					LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
-					Wakeup_Idle();
-					LTC_STCOMM(2);
-				}
-				//HAL_Delay(50);
+				HAL_Delay(100);
 			}
-			for (uint8_t i = 0; i < NUM_THERM_TOTAL; i++) {
-				Get_Actual_Temps(i, modPackInfo.cell_temp);
+			if (indexpause == 8) {
+				tempindex = 8;
+				indexpause = NUM_THERM_PER_MOD;
+				Wakeup_Idle();
+				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
+				Wakeup_Idle();
+				LTC_STCOMM(2);
+			} else if (indexpause == NUM_THERM_PER_MOD) {
+				Wakeup_Idle();
+				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
+				Wakeup_Idle();
+				LTC_STCOMM(2);
+				indexpause = 8;
+				tempindex = 0;
 			}
 			//print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
 

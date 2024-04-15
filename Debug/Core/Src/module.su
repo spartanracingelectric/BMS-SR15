@@ -1,3 +1,3 @@
 ../Core/Src/module.c:23:6:Get_Actual_Temps	24	static
-../Core/Src/module.c:39:6:Read_Volt	16	static
-../Core/Src/module.c:46:6:Read_Temp	32	static
+../Core/Src/module.c:40:6:Read_Volt	16	static
+../Core/Src/module.c:47:6:Read_Temp	32	static
