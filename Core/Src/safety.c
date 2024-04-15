@@ -12,8 +12,8 @@
 #define CELL_HIGH_TEMP_FAULT		60
 
 // ! Warnings Thresholds
-#define PACK_HIGH_VOLT_WARNING	    408500
-#define PACK_LOW_VOLT_WARNING       300000
+//#define PACK_HIGH_VOLT_WARNING	    408500
+//#define PACK_LOW_VOLT_WARNING       300000
 
 #define CELL_HIGH_VOLT_WARNING	    42500
 #define CELL_LOW_VOLT_WARNING	    32000
@@ -85,13 +85,13 @@ void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
 	}
 
 
-	if (batt->pack_voltage >= PACK_HIGH_VOLT_WARNING) {
-		*warnings |= 0b10000000;
-	}
-
-	if (batt->pack_voltage <= PACK_LOW_VOLT_WARNING) {
-		*warnings |= 0b01000000;
-	}
+//	if (batt->pack_voltage >= PACK_HIGH_VOLT_WARNING) {
+//		*warnings |= 0b10000000;
+//	}
+//
+//	if (batt->pack_voltage <= PACK_LOW_VOLT_WARNING) {
+//		*warnings |= 0b01000000;
+//	}
 
 	if (batt->cell_volt_lowest <= CELL_LOW_VOLT_WARNING) {
 		*warnings |= 0b00100000;
