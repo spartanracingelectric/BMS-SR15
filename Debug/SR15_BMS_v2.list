@@ -41,7 +41,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  18 .debug_line   0001df0b  00000000  00000000  00061ca6  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000bf187  00000000  00000000  0007fbb1  2**0
+ 19 .debug_str    000bf186  00000000  00000000  0007fbb1  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  20 .debug_frame  00006410  00000000  00000000  0013ed38  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -4885,8 +4885,8 @@ void Read_Temp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
 08002844 <Cell_Summary>:
 #define CELL_LOW_TEMP_WARNING		0
 
-#define CELL_VOLT_IMBALANCE_FAULT   5000 //0.5 V
-#define CELL_VOLT_IMBALANCE_WARNING	1000 //0.1 V
+#define CELL_VOLT_IMBALANCE_FAULT   1000 //0.1 V
+#define CELL_VOLT_IMBALANCE_WARNING	500 //0.05 V
 
 void Cell_Summary(struct batteryModule *batt) {
  8002844:	b480      	push	{r7}
@@ -5078,7 +5078,7 @@ void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
 	if (batt->cell_volt_lowest <= CELL_LOW_VOLT_FAULT) {
  8002964:	68fb      	ldr	r3, [r7, #12]
  8002966:	899b      	ldrh	r3, [r3, #12]
- 8002968:	f247 5230 	movw	r2, #30000	; 0x7530
+ 8002968:	f246 12a8 	movw	r2, #25000	; 0x61a8
  800296c:	4293      	cmp	r3, r2
  800296e:	d806      	bhi.n	800297e <Fault_Warning_State+0x28>
 		*fault |= 0b00100000;
@@ -5093,7 +5093,7 @@ void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
 	if (batt->cell_volt_highest >= CELL_HIGH_VOLT_FAULT) {
  800297e:	68fb      	ldr	r3, [r7, #12]
  8002980:	89db      	ldrh	r3, [r3, #14]
- 8002982:	f24a 72f7 	movw	r2, #42999	; 0xa7f7
+ 8002982:	f24a 420f 	movw	r2, #41999	; 0xa40f
  8002986:	4293      	cmp	r3, r2
  8002988:	d906      	bls.n	8002998 <Fault_Warning_State+0x42>
 		*fault |= 0b00010000;
@@ -5126,26 +5126,26 @@ void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
  80029b4:	68fb      	ldr	r3, [r7, #12]
  80029b6:	899b      	ldrh	r3, [r3, #12]
  80029b8:	1ad3      	subs	r3, r2, r3
- 80029ba:	f241 3287 	movw	r2, #4999	; 0x1387
- 80029be:	4293      	cmp	r3, r2
- 80029c0:	dd06      	ble.n	80029d0 <Fault_Warning_State+0x7a>
+ 80029ba:	f5b3 7f7a 	cmp.w	r3, #1000	; 0x3e8
+ 80029be:	db06      	blt.n	80029ce <Fault_Warning_State+0x78>
 			>= CELL_VOLT_IMBALANCE_FAULT) {
 		*fault |= 0b00000100;
- 80029c2:	68bb      	ldr	r3, [r7, #8]
- 80029c4:	781b      	ldrb	r3, [r3, #0]
- 80029c6:	f043 0304 	orr.w	r3, r3, #4
- 80029ca:	b2da      	uxtb	r2, r3
- 80029cc:	68bb      	ldr	r3, [r7, #8]
- 80029ce:	701a      	strb	r2, [r3, #0]
+ 80029c0:	68bb      	ldr	r3, [r7, #8]
+ 80029c2:	781b      	ldrb	r3, [r3, #0]
+ 80029c4:	f043 0304 	orr.w	r3, r3, #4
+ 80029c8:	b2da      	uxtb	r2, r3
+ 80029ca:	68bb      	ldr	r3, [r7, #8]
+ 80029cc:	701a      	strb	r2, [r3, #0]
 //
 //	if (batt->pack_voltage <= PACK_LOW_VOLT_WARNING) {
 //		*warnings |= 0b01000000;
 //	}
 
 	if (batt->cell_volt_lowest <= CELL_LOW_VOLT_WARNING) {
- 80029d0:	68fb      	ldr	r3, [r7, #12]
- 80029d2:	899b      	ldrh	r3, [r3, #12]
- 80029d4:	f5b3 4ffa 	cmp.w	r3, #32000	; 0x7d00
+ 80029ce:	68fb      	ldr	r3, [r7, #12]
+ 80029d0:	899b      	ldrh	r3, [r3, #12]
+ 80029d2:	f646 1278 	movw	r2, #27000	; 0x6978
+ 80029d6:	4293      	cmp	r3, r2
  80029d8:	d806      	bhi.n	80029e8 <Fault_Warning_State+0x92>
 		*warnings |= 0b00100000;
  80029da:	687b      	ldr	r3, [r7, #4]
@@ -5159,7 +5159,7 @@ void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
 	if (batt->cell_volt_highest >= CELL_HIGH_VOLT_WARNING) {
  80029e8:	68fb      	ldr	r3, [r7, #12]
  80029ea:	89db      	ldrh	r3, [r3, #14]
- 80029ec:	f24a 6203 	movw	r2, #42499	; 0xa603
+ 80029ec:	f649 423f 	movw	r2, #39999	; 0x9c3f
  80029f0:	4293      	cmp	r3, r2
  80029f2:	d906      	bls.n	8002a02 <Fault_Warning_State+0xac>
 		*warnings |= 0b00010000;
@@ -5206,7 +5206,7 @@ void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
  8002a34:	68fb      	ldr	r3, [r7, #12]
  8002a36:	899b      	ldrh	r3, [r3, #12]
  8002a38:	1ad3      	subs	r3, r2, r3
- 8002a3a:	f5b3 7f7a 	cmp.w	r3, #1000	; 0x3e8
+ 8002a3a:	f5b3 7ffa 	cmp.w	r3, #500	; 0x1f4
  8002a3e:	db06      	blt.n	8002a4e <Fault_Warning_State+0xf8>
 			>= CELL_VOLT_IMBALANCE_WARNING) {
 		*warnings |= 0b00000010;
