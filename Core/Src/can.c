@@ -220,6 +220,8 @@ void CAN_Send_Safety_Checker(struct CANMessage *ptr, struct batteryModule *batt,
 	ptr->data[2] = *states;
 	ptr->data[3] = batt->pack_voltage;
 	ptr->data[4] = (batt->pack_voltage) >> 8;
+	ptr->data[5] = (batt->pack_voltage) >> 16;
+	ptr->data[6] = (batt->pack_voltage) >> 24;
 	HAL_Delay(10);
 	CAN_Send(ptr);
 }
