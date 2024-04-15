@@ -53,15 +53,17 @@ void Read_Temp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
 	Wakeup_Idle();
 	LTC_ADAX(MD_7KHZ_3KHZ, 1); //doing GPIO all conversion
 	LTC_POLLADC();
+	Wakeup_Idle();
 	if (!Read_Cell_Temps((uint16_t*) read_auxreg)) // Set to read back all aux registers
 			{
 		for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
+			Wakeup_Idle();
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
 			// PEC for each device is the last two bytes of its data segment
 			uint16_t data = read_auxreg[dev_idx * NUM_AUX_GROUP];
 			//read_temp[dev_idx * NUM_THERM_PER_MOD + tempindex] = data;
 			Get_Actual_Temps(dev_idx, tempindex, (uint16_t*) read_temp, data); //+5 because vref is the last reg
-
+			Wakeup_Idle();
 		}
 	}
 }

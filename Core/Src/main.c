@@ -151,16 +151,21 @@ int main(void) {
 		/* USER CODE BEGIN 3 */
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
+			//calling all CAN realated methods
+			CAN_Send_Safety_Checker(&msg, &modPackInfo, &safetyFaults, &safetyWarnings, &safetyStates);
+			CAN_Send_Cell_Summary(&msg, &modPackInfo);
+			CAN_Send_Voltage(&msg, modPackInfo.cell_volt);
+			CAN_Send_Temperature(&msg, modPackInfo.cell_temp);
+
 			Wakeup_Sleep();
 			Read_Volt(modPackInfo.cell_volt);
-			print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
+			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
 
 			//related to reading temperatures
 			Wakeup_Sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
 				Wakeup_Idle();
 				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
-				HAL_Delay(100);
 			}
 			if (indexpause == 8) {
 				tempindex = 8;
@@ -177,7 +182,7 @@ int main(void) {
 				indexpause = 8;
 				tempindex = 0;
 			}
-			print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
+			//print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
 
 			//getting the summary of all cells in the pack
 			Cell_Summary(&modPackInfo);
@@ -191,7 +196,7 @@ int main(void) {
 				}
 
 				//Passive balancing is called unless a fault has occurred
-				if (safetyFaults == 0 && BALANCE && ((modPackInfo.cell_volt_highest - modPackInfo.cell_volt_lowest) > 50)) {
+				if (safetyFaults == 0 && BALANCE && ((modPackInfo.cell_volt_highest - modPackInfo.cell_volt_lowest) > 50)){
 					Start_Balance((uint16_t*) modPackInfo.cell_volt, NUM_DEVICES, modPackInfo.cell_volt_lowest);
 
 				} else if (BALANCE) {
@@ -201,12 +206,6 @@ int main(void) {
 			} else {
 				loop_count--;
 			}
-
-			//calling all CAN realated methods
-			CAN_Send_Safety_Checker(&msg, &modPackInfo, &safetyFaults, &safetyWarnings, &safetyStates);
-			CAN_Send_Cell_Summary(&msg, &modPackInfo);
-			CAN_Send_Voltage(&msg, modPackInfo.cell_volt);
-			CAN_Send_Temperature(&msg, modPackInfo.cell_temp);
 		}
 
 	}
