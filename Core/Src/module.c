@@ -63,7 +63,6 @@ void Read_Temp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
 			uint16_t data = read_auxreg[dev_idx * NUM_AUX_GROUP];
 			//read_temp[dev_idx * NUM_THERM_PER_MOD + tempindex] = data;
 			Get_Actual_Temps(dev_idx, tempindex, (uint16_t*) read_temp, data); //+5 because vref is the last reg
-			Wakeup_Idle();
 		}
 	}
 }
