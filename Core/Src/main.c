@@ -146,6 +146,7 @@ int main(void) {
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
 	uint8_t loop_count = 4;
+	uint8_t low_volt_hysteresis = 0;
 	while (1) {
 		/* USER CODE END WHILE */
 
@@ -194,7 +195,7 @@ int main(void) {
 			//waiting for 3 loops of the while look to occur before checking for faults
 			if (loop_count == 0) {
 				Fault_Warning_State(&modPackInfo, &safetyFaults,
-						&safetyWarnings, &safetyStates);
+						&safetyWarnings, &safetyStates, &low_volt_hysteresis);
 				if (safetyFaults != 0) {
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 				}
