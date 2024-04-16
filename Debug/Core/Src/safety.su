@@ -1,3 +1,3 @@
 ../Core/Src/safety.c:27:6:Cell_Summary	24	static
 ../Core/Src/safety.c:59:6:Fault_Warning_State	24	static
-../Core/Src/safety.c:122:6:Module_Averages	32	static
+../Core/Src/safety.c:130:6:Module_Averages	32	static

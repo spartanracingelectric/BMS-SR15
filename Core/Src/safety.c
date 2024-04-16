@@ -57,7 +57,7 @@ void Cell_Summary(struct batteryModule *batt) {
 }
 
 void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
-		uint8_t *warnings, uint8_t *states) {
+		uint8_t *warnings, uint8_t *states, uint8_t *low_volt_hysteresis) {
 //	TODO: 2024-2025 Season: Used Sum of Cell Voltages, thus just used MCU DC Bus Voltage, future addition could be nice
 //	if (batt->pack_voltage >= PACK_HIGH_VOLT_FAULT) {
 //		*fault |= 0b10000000;
@@ -67,9 +67,17 @@ void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
 //		*fault |= 0b01000000;
 //	}
 
-	if (batt->cell_volt_lowest <= CELL_LOW_VOLT_FAULT) {
-		*fault |= 0b00100000;
+	//low cell volt fault
+	if ((*low_volt_hysteresis) > 1) {
+			*fault |= 0b00100000;
 	}
+	if (batt->cell_volt_lowest <= CELL_LOW_VOLT_FAULT) {
+		*low_volt_hysteresis += 1;
+	}
+	else{
+		*low_volt_hysteresis = 0;
+	}
+	//end of low cell volt fault
 
 	if (batt->cell_volt_highest >= CELL_HIGH_VOLT_FAULT) {
 		*fault |= 0b00010000;

@@ -4,7 +4,8 @@
 #include "main.h"
 
 void Cell_Summary(struct batteryModule *batt);
-void Fault_Warning_State(struct batteryModule *batt, uint8_t *faults, uint8_t *warnings, uint8_t *states);
+void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
+		uint8_t *warnings, uint8_t *states, uint8_t *low_volt_hysteresis);
 void Module_Averages(struct batteryModule *batt);
 
 
