@@ -170,7 +170,7 @@ int main(void) {
 			for (uint8_t i = tempindex; i < indexpause; i++) {
 				Wakeup_Idle();
 				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
-				HAL_Delay(100);
+				//HAL_Delay(100);
 			}
 			if (indexpause == 8) {
 				tempindex = 8;
