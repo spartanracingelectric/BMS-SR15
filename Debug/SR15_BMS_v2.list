@@ -4324,23 +4324,23 @@ int main(void) {
  80024e8:	f897 3066 	ldrb.w	r3, [r7, #102]	; 0x66
  80024ec:	2b08      	cmp	r3, #8
  80024ee:	d111      	bne.n	8002514 <main+0x180>
-				tempindex = 8;
- 80024f0:	2308      	movs	r3, #8
- 80024f2:	f887 3067 	strb.w	r3, [r7, #103]	; 0x67
-				indexpause = NUM_THERM_PER_MOD;
- 80024f6:	230c      	movs	r3, #12
- 80024f8:	f887 3066 	strb.w	r3, [r7, #102]	; 0x66
+				Wakeup_Idle();
+ 80024f0:	f7fe ffca 	bl	8001488 <Wakeup_Idle>
+				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
+ 80024f4:	4924      	ldr	r1, [pc, #144]	; (8002588 <main+0x1f4>)
+ 80024f6:	2008      	movs	r0, #8
+ 80024f8:	f7ff f8ba 	bl	8001670 <LTC_WRCOMM>
 				Wakeup_Idle();
  80024fc:	f7fe ffc4 	bl	8001488 <Wakeup_Idle>
-				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
- 8002500:	4921      	ldr	r1, [pc, #132]	; (8002588 <main+0x1f4>)
- 8002502:	2008      	movs	r0, #8
- 8002504:	f7ff f8b4 	bl	8001670 <LTC_WRCOMM>
-				Wakeup_Idle();
- 8002508:	f7fe ffbe 	bl	8001488 <Wakeup_Idle>
 				LTC_STCOMM(2);
- 800250c:	2002      	movs	r0, #2
- 800250e:	f7ff f92b 	bl	8001768 <LTC_STCOMM>
+ 8002500:	2002      	movs	r0, #2
+ 8002502:	f7ff f931 	bl	8001768 <LTC_STCOMM>
+				tempindex = 8;
+ 8002506:	2308      	movs	r3, #8
+ 8002508:	f887 3067 	strb.w	r3, [r7, #103]	; 0x67
+				indexpause = NUM_THERM_PER_MOD;
+ 800250c:	230c      	movs	r3, #12
+ 800250e:	f887 3066 	strb.w	r3, [r7, #102]	; 0x66
  8002512:	e014      	b.n	800253e <main+0x1aa>
 			} else if (indexpause == NUM_THERM_PER_MOD) {
  8002514:	f897 3066 	ldrb.w	r3, [r7, #102]	; 0x66

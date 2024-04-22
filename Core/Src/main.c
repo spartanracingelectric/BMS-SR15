@@ -173,12 +173,12 @@ int main(void) {
 				//HAL_Delay(100);
 			}
 			if (indexpause == 8) {
-				tempindex = 8;
-				indexpause = NUM_THERM_PER_MOD;
 				Wakeup_Idle();
 				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
 				Wakeup_Idle();
 				LTC_STCOMM(2);
+				tempindex = 8;
+				indexpause = NUM_THERM_PER_MOD;
 			} else if (indexpause == NUM_THERM_PER_MOD) {
 				Wakeup_Idle();
 				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
