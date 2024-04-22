@@ -33,6 +33,11 @@ void Get_Actual_Temps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
 	steinhart = 1.0f / steinhart;                         // Invert
 	steinhart -= 273.15f;    // convert to degree
 
+	//error checking
+	if(steinhart < -50.0f || (float)data >= 30000.0f){
+		steinhart = 100.0f;
+	}
+
 	actual_temp[dev_idx * NUM_THERM_PER_MOD + tempindex] = steinhart;
 
 }
