@@ -33,6 +33,11 @@ void Get_Actual_Temps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
 	steinhart = 1.0f / steinhart;                         // Invert
 	steinhart -= 273.15f;    // convert to degree
 
+	//error checking
+	if(steinhart < -50.0f || (float)data >= 30000.0f){
+		steinhart = 100.0f;
+	}
+
 	actual_temp[dev_idx * NUM_THERM_PER_MOD + tempindex] = steinhart;
 
 }
@@ -53,6 +58,7 @@ void Read_Temp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
 	Wakeup_Idle();
 	LTC_ADAX(MD_7KHZ_3KHZ, 1); //doing GPIO all conversion
 	LTC_POLLADC();
+	Wakeup_Idle();
 	if (!Read_Cell_Temps((uint16_t*) read_auxreg)) // Set to read back all aux registers
 			{
 		for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
