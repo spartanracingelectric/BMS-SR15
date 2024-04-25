@@ -21,8 +21,8 @@
 #define CELL_HIGH_TEMP_WARNING		55
 #define CELL_LOW_TEMP_WARNING		0
 
-#define CELL_VOLT_IMBALANCE_FAULT   1000 //0.1 V
-#define CELL_VOLT_IMBALANCE_WARNING	500 //0.05 V
+#define CELL_VOLT_IMBALANCE_FAULT   2000 //0.1 V
+#define CELL_VOLT_IMBALANCE_WARNING	1000 //0.05 V
 
 void Cell_Summary(struct batteryModule *batt) {
 	batt->cell_volt_highest = batt->cell_volt[0];

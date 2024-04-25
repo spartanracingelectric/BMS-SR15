@@ -1,11 +1,11 @@
 ../Core/Src/6811.c:24:6:Wakeup_Idle	2
 ../Core/Src/6811.c:34:6:Wakeup_Sleep	2
 ../Core/Src/6811.c:45:23:Read_Cell_Volt	5
-../Core/Src/6811.c:100:6:LTC6811_WRPWM	3
-../Core/Src/6811.c:149:6:LTC6811_WRCFG	3
-../Core/Src/6811.c:199:6:LTC_WRCOMM	3
-../Core/Src/6811.c:244:6:LTC_STCOMM	2
-../Core/Src/6811.c:264:23:Read_Cell_Temps	5
+../Core/Src/6811.c:99:6:LTC6811_WRPWM	3
+../Core/Src/6811.c:148:6:LTC6811_WRCFG	3
+../Core/Src/6811.c:198:6:LTC_WRCOMM	3
+../Core/Src/6811.c:243:6:LTC_STCOMM	2
+../Core/Src/6811.c:263:23:Read_Cell_Temps	5
 ../Core/Src/6811.c:317:6:LTC_ADCV	1
 ../Core/Src/6811.c:339:6:LTC_ADAX	1
 ../Core/Src/6811.c:366:9:LTC_POLLADC	4
