@@ -57,7 +57,8 @@ void Cell_Summary(struct batteryModule *batt) {
 }
 
 void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
-		uint8_t *warnings, uint8_t *states, uint8_t *low_volt_hysteresis) {
+		uint8_t *warnings, uint8_t *states, uint8_t *low_volt_hysteresis,
+		uint8_t *high_volt_hysteresis, uint8_t *cell_imbalance_hysteresis) {
 //	TODO: 2024-2025 Season: Used Sum of Cell Voltages, thus just used MCU DC Bus Voltage, future addition could be nice
 //	if (batt->pack_voltage >= PACK_HIGH_VOLT_FAULT) {
 //		*fault |= 0b10000000;
@@ -69,29 +70,43 @@ void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
 
 	//low cell volt fault
 	if ((*low_volt_hysteresis) > 1) {
-			*fault |= 0b00100000;
+		*fault |= 0b00100000;
 	}
 	if (batt->cell_volt_lowest <= CELL_LOW_VOLT_FAULT) {
 		*low_volt_hysteresis += 1;
-	}
-	else{
+	} else {
 		*low_volt_hysteresis = 0;
 	}
 	//end of low cell volt fault
 
-	if (batt->cell_volt_highest >= CELL_HIGH_VOLT_FAULT) {
+	//high cell volt fault
+	if ((*high_volt_hysteresis) > 1) {
 		*fault |= 0b00010000;
 	}
+	if (batt->cell_volt_highest >= CELL_HIGH_VOLT_FAULT) {
+		*high_volt_hysteresis += 1;
+	} else {
+		*high_volt_hysteresis = 0;
+	}
+	//end of high cell volt fault
 
+
+	//highest cell temp fault
 	if (batt->cell_temp_highest >= CELL_HIGH_TEMP_FAULT) {
 		*fault |= 0b00001000;
 	}
 
-	if ((batt->cell_volt_highest - batt->cell_volt_lowest)
-			>= CELL_VOLT_IMBALANCE_FAULT) {
+	//cell volt imbalance fault
+	if ((*cell_imbalance_hysteresis) > 1) {
 		*fault |= 0b00000100;
 	}
-
+	if ((batt->cell_volt_highest - batt->cell_volt_lowest)
+			>= CELL_VOLT_IMBALANCE_FAULT) {
+		*cell_imbalance_hysteresis += 1;
+	} else {
+		*cell_imbalance_hysteresis = 0;
+	}
+	//end of cell volt imbalance fault
 
 //	if (batt->pack_voltage >= PACK_HIGH_VOLT_WARNING) {
 //		*warnings |= 0b10000000;
@@ -127,16 +142,16 @@ void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
 	}
 }
 
-void Module_Averages(struct batteryModule *batt){
+void Module_Averages(struct batteryModule *batt) {
 
-	for(int i = 0; i < NUM_CELLS; i+=12){
+	for (int i = 0; i < NUM_CELLS; i += 12) {
 		uint16_t temp_sum = 0;
 
-		for(int j = 0; j < i + 12; j++){
+		for (int j = 0; j < i + 12; j++) {
 			temp_sum += batt->cell_volt[i];
 		}
 
-		uint16_t average  = temp_sum / NUM_CELL_SERIES_GROUP;
+		uint16_t average = temp_sum / NUM_CELL_SERIES_GROUP;
 
 		switch (i / 12) {
 		case 0:

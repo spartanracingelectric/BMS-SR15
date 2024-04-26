@@ -139,6 +139,11 @@ int main(void) {
 	//Pull SPI1 nCS HIGH (deselect)
 	LTC_nCS_High();
 
+	//Sending a fault signal and reseting it
+	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_RESET);
+
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -147,9 +152,8 @@ int main(void) {
 	uint8_t indexpause = 8;
 	uint8_t loop_count = 3;
 	uint8_t low_volt_hysteresis = 0;
-	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
-	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_RESET);
+	uint8_t high_volt_hysteresis = 0;
+	uint8_t cell_imbalance_hysteresis = 0;
 	while (1) {
 		/* USER CODE END WHILE */
 
@@ -198,7 +202,8 @@ int main(void) {
 			//waiting for 3 loops of the while look to occur before checking for faults
 			if (loop_count == 0) {
 				Fault_Warning_State(&modPackInfo, &safetyFaults,
-						&safetyWarnings, &safetyStates, &low_volt_hysteresis);
+						&safetyWarnings, &safetyStates, &low_volt_hysteresis,
+						&high_volt_hysteresis, &cell_imbalance_hysteresis);
 				if (safetyFaults != 0) {
 					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 				}
@@ -208,7 +213,7 @@ int main(void) {
 						&& ((modPackInfo.cell_volt_highest
 								- modPackInfo.cell_volt_lowest) > 50)) {
 					Start_Balance((uint16_t*) modPackInfo.cell_volt,
-							NUM_DEVICES, modPackInfo.cell_volt_lowest);
+					NUM_DEVICES, modPackInfo.cell_volt_lowest);
 
 				} else if (BALANCE) {
 					End_Balance(&safetyFaults);
