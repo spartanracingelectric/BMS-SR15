@@ -73,6 +73,7 @@ LTC_SPI_StatusTypeDef Read_Cell_Volt(uint16_t *read_voltages) {
 		if (hal_ret) {									// Non-zero means error
 			ret |= (1 << (hal_ret + LTC_SPI_RX_BIT_OFFSET)); // RX error
 		}
+		LTC_nCS_High(); // Pull CS high
 
 		// Process the received data
 		for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
@@ -85,8 +86,6 @@ LTC_SPI_StatusTypeDef Read_Cell_Volt(uint16_t *read_voltages) {
 							+ i * LTC_SERIES_GROUPS_PER_RDCV], data_ptr,
 					REG_LEN - 2);
 		}
-
-		LTC_nCS_High(); // Pull CS high
 	}
 
 	return ret;
@@ -293,6 +292,8 @@ LTC_SPI_StatusTypeDef Read_Cell_Temps(uint16_t *read_auxiliary) {
 			ret |= (1 << (hal_ret + LTC_SPI_RX_BIT_OFFSET)); // RX error
 		}
 
+		LTC_nCS_High(); // Pull CS high
+
 		// Process the received data
 		for (uint8_t dev_idx = 0; dev_idx < NUM_DEVICES; dev_idx++) {
 			// Assuming data format is [cell voltage, cell voltage, ..., PEC, PEC]
@@ -305,7 +306,6 @@ LTC_SPI_StatusTypeDef Read_Cell_Temps(uint16_t *read_auxiliary) {
 					REG_LEN - 2);
 		}
 
-		LTC_nCS_High(); // Pull CS high
 	}
 
 	return ret;

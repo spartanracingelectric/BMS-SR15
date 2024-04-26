@@ -145,8 +145,11 @@ int main(void) {
 	/* USER CODE BEGIN WHILE */
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
-	uint8_t loop_count = 4;
+	uint8_t loop_count = 3;
 	uint8_t low_volt_hysteresis = 0;
+	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_RESET);
 	while (1) {
 		/* USER CODE END WHILE */
 
@@ -170,7 +173,7 @@ int main(void) {
 			for (uint8_t i = tempindex; i < indexpause; i++) {
 				Wakeup_Idle();
 				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
-				//HAL_Delay(100);
+				HAL_Delay(50);
 			}
 			if (indexpause == 8) {
 				Wakeup_Idle();
