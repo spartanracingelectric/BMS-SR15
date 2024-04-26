@@ -69,27 +69,26 @@ void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
 //	}
 
 	//low cell volt fault
-	if ((*low_volt_hysteresis) > 1) {
+	if ((batt->cell_volt_lowest <= CELL_LOW_VOLT_FAULT)
+			&& ((*low_volt_hysteresis) > 0)) {
 		*fault |= 0b00100000;
-	}
-	if (batt->cell_volt_lowest <= CELL_LOW_VOLT_FAULT) {
-		*low_volt_hysteresis += 1;
+	} else if (batt->cell_volt_lowest <= CELL_LOW_VOLT_FAULT) {
+		*low_volt_hysteresis = 1;
 	} else {
 		*low_volt_hysteresis = 0;
 	}
 	//end of low cell volt fault
 
 	//high cell volt fault
-	if ((*high_volt_hysteresis) > 1) {
+	if ((batt->cell_volt_highest >= CELL_HIGH_VOLT_FAULT)
+			&& ((*high_volt_hysteresis) > 0)) {
 		*fault |= 0b00010000;
-	}
-	if (batt->cell_volt_highest >= CELL_HIGH_VOLT_FAULT) {
-		*high_volt_hysteresis += 1;
+	} else if (batt->cell_volt_highest >= CELL_HIGH_VOLT_FAULT) {
+		*high_volt_hysteresis = 1;
 	} else {
 		*high_volt_hysteresis = 0;
 	}
 	//end of high cell volt fault
-
 
 	//highest cell temp fault
 	if (batt->cell_temp_highest >= CELL_HIGH_TEMP_FAULT) {
@@ -97,12 +96,13 @@ void Fault_Warning_State(struct batteryModule *batt, uint8_t *fault,
 	}
 
 	//cell volt imbalance fault
-	if ((*cell_imbalance_hysteresis) > 1) {
+	if (((batt->cell_volt_highest - batt->cell_volt_lowest)
+			>= CELL_VOLT_IMBALANCE_FAULT)
+			&& ((*cell_imbalance_hysteresis) > 0)) {
 		*fault |= 0b00000100;
-	}
-	if ((batt->cell_volt_highest - batt->cell_volt_lowest)
+	} else if ((batt->cell_volt_highest - batt->cell_volt_lowest)
 			>= CELL_VOLT_IMBALANCE_FAULT) {
-		*cell_imbalance_hysteresis += 1;
+		*cell_imbalance_hysteresis = 1;
 	} else {
 		*cell_imbalance_hysteresis = 0;
 	}
