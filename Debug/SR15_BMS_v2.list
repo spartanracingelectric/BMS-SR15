@@ -4136,6 +4136,7 @@ int main(void) {
  800235a:	488b      	ldr	r0, [pc, #556]	; (8002588 <main+0x2e0>)
  800235c:	f001 fd3c 	bl	8003dd8 <HAL_GPIO_WritePin>
 
+	//initializing variables
 	uint8_t tempindex = 0;
  8002360:	2300      	movs	r3, #0
  8002362:	f887 306f 	strb.w	r3, [r7, #111]	; 0x6f

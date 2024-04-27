@@ -144,6 +144,7 @@ int main(void) {
 	HAL_Delay(500);
 	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_RESET);
 
+	//initializing variables
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
 	uint8_t loop_count = 3;
