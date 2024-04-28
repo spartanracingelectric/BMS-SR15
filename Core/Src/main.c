@@ -147,7 +147,7 @@ int main(void) {
 	//initializing variables
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
-	uint8_t loop_count = 3;
+	uint8_t loop_count = 0;
 	uint8_t low_volt_hysteresis = 0;
 	uint8_t high_volt_hysteresis = 0;
 	uint8_t cell_imbalance_hysteresis = 0;

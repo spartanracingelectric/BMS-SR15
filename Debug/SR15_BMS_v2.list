@@ -4143,8 +4143,8 @@ int main(void) {
 	uint8_t indexpause = 8;
  8002366:	2308      	movs	r3, #8
  8002368:	f887 306e 	strb.w	r3, [r7, #110]	; 0x6e
-	uint8_t loop_count = 3;
- 800236c:	2303      	movs	r3, #3
+	uint8_t loop_count = 0;
+ 800236c:	2300      	movs	r3, #0
  800236e:	f887 306d 	strb.w	r3, [r7, #109]	; 0x6d
 	uint8_t low_volt_hysteresis = 0;
  8002372:	2300      	movs	r3, #0
