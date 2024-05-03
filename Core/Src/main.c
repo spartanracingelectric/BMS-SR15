@@ -229,29 +229,26 @@ int main(void) {
 			//getting the summary of all cells in the pack
 			Cell_Summary(&modPackInfo);
 
-			//waiting for 3 loops of the while look to occur before checking for faults
-			if (loop_count == 0) {
-				Fault_Warning_State(&modPackInfo, &safetyFaults,
-						&safetyWarnings, &safetyStates, &low_volt_hysteresis,
-						&high_volt_hysteresis, &cell_imbalance_hysteresis);
-				if (safetyFaults != 0) {
-					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
-				}
-
-				//Passive balancing is called unless a fault has occurred
-				if (safetyFaults == 0 && BALANCE
-						&& ((modPackInfo.cell_volt_highest
-								- modPackInfo.cell_volt_lowest) > 50)) {
-					Start_Balance((uint16_t*) modPackInfo.cell_volt,
-					NUM_DEVICES, modPackInfo.cell_volt_lowest);
-
-				} else if (BALANCE) {
-					End_Balance(&safetyFaults);
-				}
-
-			} else {
-				loop_count--;
+			//checking for faults
+			Fault_Warning_State(&modPackInfo, &safetyFaults,
+					&safetyWarnings, &safetyStates, &low_volt_hysteresis,
+					&high_volt_hysteresis, &cell_imbalance_hysteresis);
+			if (safetyFaults != 0) {
+				HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 			}
+
+			//Passive balancing is called unless a fault has occurred
+			if (safetyFaults == 0 && BALANCE
+					&& ((modPackInfo.cell_volt_highest
+							- modPackInfo.cell_volt_lowest) > 50)) {
+				Start_Balance((uint16_t*) modPackInfo.cell_volt,
+				NUM_DEVICES, modPackInfo.cell_volt_lowest);
+
+			} else if (BALANCE) {
+				End_Balance(&safetyFaults);
+			}
+
+
 		}
 
 	}
