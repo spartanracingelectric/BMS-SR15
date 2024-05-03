@@ -144,16 +144,46 @@ int main(void) {
 	HAL_Delay(500);
 	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_RESET);
 
+	//initializing variables
+	uint8_t tempindex = 0;
+	uint8_t indexpause = 8;
+	uint8_t loop_count = 0;
+	uint8_t low_volt_hysteresis = 0;
+	uint8_t high_volt_hysteresis = 0;
+	uint8_t cell_imbalance_hysteresis = 0;
+
+	//reading cell voltages
+	Wakeup_Sleep();
+	Read_Volt(modPackInfo.cell_volt);
+
+	//reading cell temperatures
+	Wakeup_Sleep();
+	for (uint8_t i = tempindex; i < indexpause; i++) {
+		Wakeup_Idle();
+		Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
+		HAL_Delay(50);
+	}
+	Wakeup_Idle();
+	LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
+	Wakeup_Idle();
+	LTC_STCOMM(2);
+
+	Wakeup_Sleep();
+	for (uint8_t i = indexpause; i < NUM_THERM_PER_MOD; i++) {
+		Wakeup_Idle();
+		Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
+		HAL_Delay(50);
+	}
+	Wakeup_Idle();
+	LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
+	Wakeup_Idle();
+	LTC_STCOMM(2);
+
+
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
-	uint8_t tempindex = 0;
-	uint8_t indexpause = 8;
-	uint8_t loop_count = 3;
-	uint8_t low_volt_hysteresis = 0;
-	uint8_t high_volt_hysteresis = 0;
-	uint8_t cell_imbalance_hysteresis = 0;
 	while (1) {
 		/* USER CODE END WHILE */
 
@@ -199,29 +229,26 @@ int main(void) {
 			//getting the summary of all cells in the pack
 			Cell_Summary(&modPackInfo);
 
-			//waiting for 3 loops of the while look to occur before checking for faults
-			if (loop_count == 0) {
-				Fault_Warning_State(&modPackInfo, &safetyFaults,
-						&safetyWarnings, &safetyStates, &low_volt_hysteresis,
-						&high_volt_hysteresis, &cell_imbalance_hysteresis);
-				if (safetyFaults != 0) {
-					HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
-				}
-
-				//Passive balancing is called unless a fault has occurred
-				if (safetyFaults == 0 && BALANCE
-						&& ((modPackInfo.cell_volt_highest
-								- modPackInfo.cell_volt_lowest) > 50)) {
-					Start_Balance((uint16_t*) modPackInfo.cell_volt,
-					NUM_DEVICES, modPackInfo.cell_volt_lowest);
-
-				} else if (BALANCE) {
-					End_Balance(&safetyFaults);
-				}
-
-			} else {
-				loop_count--;
+			//checking for faults
+			Fault_Warning_State(&modPackInfo, &safetyFaults,
+					&safetyWarnings, &safetyStates, &low_volt_hysteresis,
+					&high_volt_hysteresis, &cell_imbalance_hysteresis);
+			if (safetyFaults != 0) {
+				HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 			}
+
+			//Passive balancing is called unless a fault has occurred
+			if (safetyFaults == 0 && BALANCE
+					&& ((modPackInfo.cell_volt_highest
+							- modPackInfo.cell_volt_lowest) > 50)) {
+				Start_Balance((uint16_t*) modPackInfo.cell_volt,
+				NUM_DEVICES, modPackInfo.cell_volt_lowest);
+
+			} else if (BALANCE) {
+				End_Balance(&safetyFaults);
+			}
+
+
 		}
 
 	}
