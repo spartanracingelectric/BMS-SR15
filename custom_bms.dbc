@@ -27,7 +27,7 @@ BS_:
 BU_: CUSTOM_BMS
 
 
-BO_ 1536 BMS_Safety_Checker: 2 [CUSTOM_BMS]
+BO_ 1536 BMS_Safety_Checker: 8 [CUSTOM_BMS]
  SG_ Pack_Voltage : 24|32@1+ (0.0001,0) [0|1000] "" Vector__XXX
  SG_ Balancing_State : 23|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Pack_High_Volt_Warning : 15|1@1+ (1,0) [0|1] "" Vector__XXX
