@@ -52,292 +52,292 @@ BO_ 1570 BMS_Cell_Summary: 8 CUSTOM_BMS
  SG_ Highest_Cell_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1584 BMS_M1_Cell_Voltage_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M1_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M1_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M1_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M1_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1585 BMS_M1_Cell_Voltage_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M1_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M1_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M1_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M1_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1586 BMS_M1_Cell_Voltage_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M1_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M1_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M1_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M1_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1587 BMS_M2_Cell_Voltage_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M2_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M2_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M2_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
  SG_ BMS_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1588 BMS_M2_Cell_Voltage_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M2_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M2_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M2_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M2_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1589 BMS_M2_Cell_Voltage_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M2_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M2_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M2_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M2_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1590 BMS_M3_Cell_Voltage_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M3_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M3_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M3_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M3_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1591 BMS_M3_Cell_Voltage_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M3_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M3_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M3_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M3_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1592 BMS_M3_Cell_Voltage_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M3_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M3_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M3_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M3_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1593 BMS_M4_Cell_Voltage_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M4_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M4_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M4_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M4_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1594 BMS_M4_Cell_Voltage_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M4_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M4_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M4_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M4_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1595 BMS_M4_Cell_Voltage_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_11_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M4_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M4_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M4_Cell_11_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M4_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1596 BMS_M5_Cell_Voltage_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M5_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M5_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M5_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M5_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1597 BMS_M5_Cell_Voltage_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M5_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M5_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M5_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M5_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1598 BMS_M5_Cell_Voltage_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M5_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M5_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M5_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M5_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1599 BMS_M6_Cell_Voltage_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M6_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M6_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M6_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M6_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1600 BMS_M6_Cell_Voltage_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M6_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M6_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M6_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M6_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1601 BMS_M6_Cell_Voltage_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M6_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M6_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M6_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M6_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1602 BMS_M7_Cell_Voltage_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M7_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M7_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M7_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M7_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1603 BMS_M7_Cell_Voltage_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M7_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M7_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M7_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M7_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1604 BMS_M7_Cell_Voltage_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M7_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M7_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M7_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M7_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1605 BMS_M8_Cell_Voltage_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M8_Cell_4_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M8_Cell_3_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M8_Cell_2_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M8_Cell_1_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1606 BMS_M8_Cell_Voltage_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M8_Cell_8_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M8_Cell_7_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M8_Cell_6_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M8_Cell_5_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1607 BMS_M8_Cell_Voltage_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
- SG_ BMS_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M8_Cell_12_Voltage : 48|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M8_Cell_11_Voltage : 32|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M8_Cell_10_Voltage : 16|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
+ SG_ BMS_M8_Cell_9_Voltage : 0|16@1+ (0.0001,0) [0|5] "V" Vector__XXX
 
 BO_ 1664 BMS_M1_Cell_Temperature_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M1_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M1_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M1_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M1_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1665 BMS_M1_Cell_Temperature_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M1_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M1_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M1_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M1_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1666 BMS_M1_Cell_Temperature_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M1_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M1_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M1_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M1_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1667 BMS_M2_Cell_Temperature_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M2_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M2_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M2_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M2_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1668 BMS_M2_Cell_Temperature_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M2_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M2_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M2_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M2_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1669 BMS_M2_Cell_Temperature_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M2_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M2_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M2_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M2_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1670 BMS_M3_Cell_Temperature_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M3_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M3_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M3_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M3_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1671 BMS_M3_Cell_Temperature_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M3_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M3_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M3_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M3_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1672 BMS_M3_Cell_Temperature_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M3_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M3_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M3_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M3_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1673 BMS_M4_Cell_Temperature_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M4_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M4_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M4_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M4_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1674 BMS_M4_Cell_Temperature_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M4_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M4_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M4_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M4_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1675 BMS_M4_Cell_Temperature_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M4_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M4_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M4_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M4_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
  
 BO_ 1676 BMS_M5_Cell_Temperature_Data_1: 8 CUSTOM_BMS 
- SG_ BMS_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C"  Vector__XXX
- SG_ BMS_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M5_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C"  Vector__XXX
+ SG_ BMS_M5_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M5_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M5_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1677 BMS_M5_Cell_Temperature_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M5_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M5_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M5_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M5_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1678 BMS_M5_Cell_Temperature_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_9_Temperature : 0|16@1+  (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M5_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M5_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M5_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M5_Cell_9_Temperature : 0|16@1+  (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1679 BMS_M6_Cell_Temperature_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M6_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M6_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M6_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M6_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1680 BMS_M6_Cell_Temperature_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_5_Temperature : 0|16@1+  (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M6_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M6_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M6_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M6_Cell_5_Temperature : 0|16@1+  (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1681 BMS_M6_Cell_Temperature_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M6_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M6_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M6_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M6_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1682 BMS_M7_Cell_Temperature_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M7_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M7_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M7_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M7_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1683 BMS_M7_Cell_Temperature_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M7_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M7_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M7_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M7_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1684 BMS_M7_Cell_Temperature_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M7_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M7_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M7_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M7_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1685 BMS_M8_Cell_Temperature_Data_1: 8 CUSTOM_BMS
- SG_ BMS_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M8_Cell_4_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M8_Cell_3_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M8_Cell_2_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M8_Cell_1_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1686 BMS_M8_Cell_Temperature_Data_2: 8 CUSTOM_BMS
- SG_ BMS_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M8_Cell_8_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M8_Cell_7_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M8_Cell_6_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M8_Cell_5_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 BO_ 1687 BMS_M8_Cell_Temperature_Data_3: 8 CUSTOM_BMS
- SG_ BMS_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
- SG_ BMS_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M8_Cell_12_Temperature : 48|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M8_Cell_11_Temperature : 32|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M8_Cell_10_Temperature : 16|16@1+ (1,0) [0|100] "C" Vector__XXX
+ SG_ BMS_M8_Cell_9_Temperature : 0|16@1+ (1,0) [0|100] "C" Vector__XXX
 
 
 
