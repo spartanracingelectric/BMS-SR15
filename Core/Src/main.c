@@ -150,6 +150,7 @@ int main(void) {
 	uint8_t low_volt_hysteresis = 0;
 	uint8_t high_volt_hysteresis = 0;
 	uint8_t cell_imbalance_hysteresis = 0;
+	uint8_t SPI_ERROR = 0;
 	uint8_t spi_error_cell_volt = 0;
 	uint8_t spi_error_cell_temp = 0;
 
@@ -192,8 +193,7 @@ int main(void) {
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
 			//calling all CAN realated methods
-			CAN_Send_Safety_Checker(&msg, &modPackInfo, &safetyFaults,
-					&safetyWarnings, &safetyStates);
+			CAN_Send_Safety_Checker(&msg, &modPackInfo, &safetyFaults, &safetyWarnings, &safetyStates, &SPI_ERROR);
 			CAN_Send_Cell_Summary(&msg, &modPackInfo);
 			CAN_Send_Voltage(&msg, modPackInfo.cell_volt);
 			CAN_Send_Temperature(&msg, modPackInfo.cell_temp);
@@ -231,6 +231,12 @@ int main(void) {
 			Cell_Summary(&modPackInfo);
 
 			//checking for faults
+			if(spi_error_cell_temp || spi_error_cell_volt){
+				SPI_ERROR = 1;
+			}
+			else{
+				SPI_ERROR = 0;
+			}
 			Fault_Warning_State(&modPackInfo, &safetyFaults,
 					&safetyWarnings, &safetyStates, &low_volt_hysteresis,
 					&high_volt_hysteresis, &cell_imbalance_hysteresis);
