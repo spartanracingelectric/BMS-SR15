@@ -150,16 +150,18 @@ int main(void) {
 	uint8_t low_volt_hysteresis = 0;
 	uint8_t high_volt_hysteresis = 0;
 	uint8_t cell_imbalance_hysteresis = 0;
+	uint8_t spi_error_cell_volt = 0;
+	uint8_t spi_error_cell_temp = 0;
 
 	//reading cell voltages
 	Wakeup_Sleep();
-	Read_Volt(modPackInfo.cell_volt);
+	Read_Volt(modPackInfo.cell_volt, &spi_error_cell_volt);
 
 	//reading cell temperatures
 	Wakeup_Sleep();
 	for (uint8_t i = tempindex; i < indexpause; i++) {
 		Wakeup_Idle();
-		Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
+		Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg, &spi_error_cell_temp);
 		HAL_Delay(50);
 	}
 	Wakeup_Idle();
@@ -170,7 +172,7 @@ int main(void) {
 	Wakeup_Sleep();
 	for (uint8_t i = indexpause; i < NUM_THERM_PER_MOD; i++) {
 		Wakeup_Idle();
-		Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
+		Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg, &spi_error_cell_temp);
 		HAL_Delay(50);
 	}
 	Wakeup_Idle();
@@ -198,14 +200,14 @@ int main(void) {
 
 			//reading cell voltages
 			Wakeup_Sleep();
-			Read_Volt(modPackInfo.cell_volt);
+			Read_Volt(modPackInfo.cell_volt, &spi_error_cell_volt);
 			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
 
 			//reading cell temperatures
 			Wakeup_Sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
 				Wakeup_Idle();
-				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
+				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg, &spi_error_cell_temp);
 				HAL_Delay(50);
 			}
 			if (indexpause == 8) {
