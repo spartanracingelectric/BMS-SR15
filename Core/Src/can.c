@@ -211,6 +211,8 @@ void CAN_Send_Cell_Summary(struct CANMessage *ptr, struct batteryModule *batt) {
 	CAN_Send(ptr);
 }
 
+// TODO seperate out the fault to a separate CAN message 
+// 		CAN_Priority_Send_Safety_Checker
 void CAN_Send_Safety_Checker(struct CANMessage *ptr, struct batteryModule *batt, uint8_t *faults,
 		uint8_t *warnings, uint8_t *states) {
 	uint16_t CAN_ID = 0x600;
