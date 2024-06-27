@@ -156,6 +156,7 @@ int main(void) {
 	Read_Volt(modPackInfo.cell_volt);
 
 	//reading cell temperatures
+	// NOTE mux1 for thermistor control. 
 	Wakeup_Sleep();
 	for (uint8_t i = tempindex; i < indexpause; i++) {
 		Wakeup_Idle();
@@ -167,6 +168,7 @@ int main(void) {
 	Wakeup_Idle();
 	LTC_STCOMM(2);
 
+	// NOTE mux2 for thermistor control. 
 	Wakeup_Sleep();
 	for (uint8_t i = indexpause; i < NUM_THERM_PER_MOD; i++) {
 		Wakeup_Idle();
@@ -246,10 +248,7 @@ int main(void) {
 			} else if (BALANCE) {
 				End_Balance(&safetyFaults);
 			}
-
-
 		}
-
 	}
 	/* USER CODE END 3 */
 }
