@@ -1,3 +1,4 @@
+# ignore build and output files/directories 
 /build/
 /Debug/
 /Release/
@@ -14,3 +15,11 @@
 /*.axf
 /*.dmp
 /*.out
+/*.cyclo
+/*.su
+/*.mk
+
+# ignore system linker and temp files: 
+*.ld
+*.bak
+*.tmp
