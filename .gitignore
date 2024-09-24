@@ -1,1 +1,16 @@
-/Debug/*
+/build/
+/Debug/
+/Release/
+/*.o
+/*.d
+/*.map
+/*.lst
+/*.elf
+/*.bin
+/*.hex
+/*.srec
+/*.log
+/*.swo
+/*.axf
+/*.dmp
+/*.out
