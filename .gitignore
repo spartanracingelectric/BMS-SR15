@@ -1,0 +1,67 @@
+# STM32CubeIDE specific files
+/.settings
+/.metadata
+/Debug/
+/Release/
+/build/
+/.vscode/
+
+# Keil specific files
+*.axf
+*.uvoptx
+*.uvprojx
+*.uvguix
+*.uvgui.sdf
+*.bak
+
+# IAR specific files
+*.eww
+*.ewt
+*.ewp
+*.ewd
+*.ewt
+*.dep
+/settings/
+
+# GCC/Make specific files
+*.elf
+*.bin
+*.hex
+*.map
+*.o
+*.d
+*.suo
+*.out
+*.lst
+*.a
+*.dwo
+*.su
+*.log
+*.obj
+*.exp
+
+# CubeMX generated files
+*.ioc
+/Drivers/
+/Middlewares/
+/Core/
+
+# CMake generated files
+CMakeFiles/
+/CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Auto-generated files
+*.log
+*.dmp
+*.stackdump
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+*.swo
+*.swp
+*.DS_Store
+Thumbs.db

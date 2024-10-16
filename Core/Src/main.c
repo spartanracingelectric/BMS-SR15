@@ -93,12 +93,7 @@ int main(void) {
 	GpioTimePacket tp_led_heartbeat;
 	TimerPacket timerpacket_ltc;
 
-	struct batteryModule modPackInfo = { .cell_volt = (uint16_t*) malloc(
-	NUM_CELLS * sizeof(uint16_t)), .cell_temp = (uint16_t*) malloc(
-	NUM_THERM_TOTAL * sizeof(uint16_t)), .read_auxreg = (uint16_t*) malloc(
-	NUM_AUXES * sizeof(uint16_t)), .module_averages = (uint16_t*) malloc(
-			(NUM_DEVICES) * sizeof(uint16_t)) };
-
+	struct batteryModule modPackInfo;
 	struct CANMessage msg;
 	uint8_t safetyFaults = 0;
 	uint8_t safetyWarnings = 0;
