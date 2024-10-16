@@ -1,2 +1,0 @@
-../USB_DEVICE/App/usb_device.c:40:6:USB_Transmit	16	static
-../USB_DEVICE/App/usb_device.c:67:6:MX_USB_DEVICE_Init	8	static
