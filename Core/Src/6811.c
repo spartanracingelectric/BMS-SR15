@@ -118,7 +118,7 @@ void LTC6811_WRPWM(uint8_t total_ic, uint8_t pwm) {
 
 		pwm_pec = (uint16_t) LTC_Pec15_Calc(BYTES_IN_REG, &pwm); // calculating the PEC for each ICs configuration register data
 		wrpwm_buffer[cmd_index] = (uint8_t) (pwm_pec >> 8);
-		wrpwm_buffer[pmd_index + 1] = (uint8_t) pwm_pec;
+		wrpwm_buffer[cmd_index + 1] = (uint8_t) pwm_pec;
 		cmd_index = cmd_index + 2;
 	}
 
