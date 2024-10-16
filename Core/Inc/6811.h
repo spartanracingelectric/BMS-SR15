@@ -35,6 +35,8 @@ typedef enum {
 } LTC_SPI_StatusTypeDef;
 
 extern uint8_t wrpwm_buffer[4 + (8 * NUM_DEVICES)];
+extern uint8_t wrcfg_buffer[4 + (8 * NUM_DEVICES)];
+extern uint8_t wrcomm_buffer[4 + (8 * NUM_DEVICES)];
 
 void Wakeup_Idle(void);
 
