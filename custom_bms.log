@@ -1,0 +1,5 @@
+Conversion Warnings Log
+
+
+MSG_ID: 1536 	MSG_TYPE: S 	MSG_NAME: BMS_Safety_Checker
+	SIG_NAME: SPIError, STATUS: Invalid Max or Min value., ACTION: Value Set to default

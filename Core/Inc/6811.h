@@ -9,6 +9,21 @@
 
 #endif /* INC_6811_H_ */
 
+#define LTC_CMD_RDCVA 0x0004
+#define LTC_CMD_RDCVB 0x0006
+#define LTC_CMD_RDCVC 0x0008
+#define LTC_CMD_RDCVD 0x000A
+
+#define LTC_CMD_RDAUXA 0x000C
+#define LTC_CMD_RDAUXB 0x000E
+
+#define LTC_SPI_TX_BIT_OFFSET 0	// Num bits to shift RX status code
+#define LTC_SPI_RX_BIT_OFFSET 4	// Num bits to shift RX status code
+#define REG_LEN 8// number of bytes in the register + 2 bytes for the PEC
+#define LTC_SERIES_GROUPS_PER_RDCV 3 // Number of cell voltage groups per 8 byte register
+#define LTC_SERIES_GROUPS_PER_RDAUX 3
+#define NUM_AUX_SERIES_GROUPS 6 // Number of series groups
+
 typedef enum {
 	LTC_SPI_OK = 0x00U, //0b00000000
 	LTC_SPI_TX_ERROR = 0x02U, //0b00000010
@@ -18,6 +33,10 @@ typedef enum {
 	LTC_SPI_RX_BUSY = 0x40U, //0b01000000
 	LTC_SPI_RX_TIMEOUT = 0x80U	 //0b10000000
 } LTC_SPI_StatusTypeDef;
+
+extern uint8_t wrpwm_buffer[4 + (8 * NUM_DEVICES)];
+extern uint8_t wrcfg_buffer[4 + (8 * NUM_DEVICES)];
+extern uint8_t wrcomm_buffer[4 + (8 * NUM_DEVICES)];
 
 void Wakeup_Idle(void);
 
