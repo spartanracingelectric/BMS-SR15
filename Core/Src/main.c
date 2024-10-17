@@ -65,6 +65,7 @@ void SendCAN(
     uint8_t safetyStates
 );
 void PassiveBalance(struct batteryModule *modPackInfo, uint8_t *safetyFaults);
+void InitFaultSignal(void);
 
 static uint8_t BMS_MUX_PAUSE[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, {
 		0x69, 0x08, 0x0F, 0x09, 0x7F, 0xF9 } };
@@ -84,11 +85,7 @@ int main(void) {
 	uint8_t safetyStates = 0;
 
     InitPeripherals(&msg);
-
-	// Sending a fault signal and reseting it
-	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
-	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_RESET);
+    InitFaultSignal();
 
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
@@ -194,6 +191,16 @@ void SystemClock_Config(void) {
 	/** Configure the Systick interrupt time
 	 */
 	__HAL_RCC_PLLI2S_ENABLE();
+}
+
+/*
+ * Initialize fault signal
+ */
+void InitFaultSignal(void) {
+	// Sends and resets a fault signal
+	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_RESET);
 }
 
 /*
