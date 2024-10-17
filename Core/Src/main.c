@@ -76,6 +76,15 @@ void TimerPacket_Init(TimerPacket *tp, uint32_t delay);
 void GpioFixedToggle(GpioTimePacket *gtp, uint16_t update_ms);
 //Returns 1 at every tp->delay interval
 uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
+void InitPeripherals(struct CANMessage *msg);
+void SendCAN(
+    struct CANMessage *msg,
+    struct batteryModule *modPackInfo,
+    uint8_t safetyFaults,
+    uint8_t safetyWarnings,
+    uint8_t safetyStates
+);
+void PassiveBalance(struct batteryModule *modPackInfo, uint8_t *safetyFaults);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -89,7 +98,6 @@ static uint8_t BMS_MUX_PAUSE[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, {
  * @retval int
  */
 int main(void) {
-	/* USER CODE BEGIN 1 */
 	GpioTimePacket tp_led_heartbeat;
 	TimerPacket timerpacket_ltc;
 
@@ -99,40 +107,8 @@ int main(void) {
 	uint8_t safetyWarnings = 0;
 	uint8_t safetyStates = 0;
 
-	/* USER CODE END 1 */
-
-	/* MCU Configuration--------------------------------------------------------*/
-
-	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-	HAL_Init();
-
-	/* USER CODE BEGIN Init */
-
-	/* USER CODE END Init */
-
-	/* Configure the system clock */
-	SystemClock_Config();
-
-	/* USER CODE BEGIN SysInit */
-
-	/* USER CODE END SysInit */
-
-	/* Initialize all configured peripherals */
-	MX_GPIO_Init();
-	MX_ADC1_Init();
-	MX_ADC2_Init();
-	MX_TIM7_Init();
-	MX_SPI1_Init();
-	MX_USB_DEVICE_Init();
-	MX_CAN2_Init();
-	/* USER CODE BEGIN 2 */
-	CAN_SettingsInit(&msg); // Start CAN at 0x00
-	//Start timer
-	GpioTimePacket_Init(&tp_led_heartbeat, MCU_HEARTBEAT_LED_GPIO_Port,
-	MCU_HEARTBEAT_LED_Pin);
-	TimerPacket_Init(&timerpacket_ltc, LTC_DELAY);
-	//Pull SPI1 nCS HIGH (deselect)
-	LTC_nCS_High();
+    // Reset peripherals and initialize system
+    InitPeripherals(&msg);
 
 	//Sending a fault signal and reseting it
 	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
@@ -147,30 +123,21 @@ int main(void) {
 	uint8_t cell_imbalance_hysteresis = 0;
 
 	//reading cell voltages
-	Wakeup_Sleep();
 	Read_Volt(modPackInfo.cell_volt);
 
 	//reading cell temperatures
 	Wakeup_Sleep();
 	for (uint8_t i = tempindex; i < indexpause; i++) {
-		Wakeup_Idle();
 		Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
-		HAL_Delay(50);
 	}
-	Wakeup_Idle();
 	LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
-	Wakeup_Idle();
 	LTC_STCOMM(2);
 
 	Wakeup_Sleep();
 	for (uint8_t i = indexpause; i < NUM_THERM_PER_MOD; i++) {
-		Wakeup_Idle();
 		Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
-		HAL_Delay(50);
 	}
-	Wakeup_Idle();
 	LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
-	Wakeup_Idle();
 	LTC_STCOMM(2);
 
 
@@ -184,36 +151,27 @@ int main(void) {
 		/* USER CODE BEGIN 3 */
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
-			//calling all CAN realated methods
-			CAN_Send_Safety_Checker(&msg, &modPackInfo, &safetyFaults,
-					&safetyWarnings, &safetyStates);
-			CAN_Send_Cell_Summary(&msg, &modPackInfo);
-			CAN_Send_Voltage(&msg, modPackInfo.cell_volt);
-			CAN_Send_Temperature(&msg, modPackInfo.cell_temp);
+            // Send information to CAN
+            SendCAN(
+                &modPackInfo, &msg, &safetyFaults, &safetyWarnings, &safetyStates
+            );
 
 			//reading cell voltages
-			Wakeup_Sleep();
 			Read_Volt(modPackInfo.cell_volt);
 			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
 
 			//reading cell temperatures
 			Wakeup_Sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
-				Wakeup_Idle();
 				Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
-				HAL_Delay(50);
 			}
 			if (indexpause == 8) {
-				Wakeup_Idle();
 				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
-				Wakeup_Idle();
 				LTC_STCOMM(2);
 				tempindex = 8;
 				indexpause = NUM_THERM_PER_MOD;
 			} else if (indexpause == NUM_THERM_PER_MOD) {
-				Wakeup_Idle();
 				LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
-				Wakeup_Idle();
 				LTC_STCOMM(2);
 				indexpause = 8;
 				tempindex = 0;
@@ -224,25 +182,17 @@ int main(void) {
 			Cell_Summary(&modPackInfo);
 
 			//checking for faults
-			Fault_Warning_State(&modPackInfo, &safetyFaults,
-					&safetyWarnings, &safetyStates, &low_volt_hysteresis,
-					&high_volt_hysteresis, &cell_imbalance_hysteresis);
+			Fault_Warning_State(
+                &modPackInfo, &safetyFaults,
+                &safetyWarnings, &safetyStates, &low_volt_hysteresis,
+                &high_volt_hysteresis, &cell_imbalance_hysteresis
+            );
+
 			if (safetyFaults != 0) {
 				HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 			}
 
-			//Passive balancing is called unless a fault has occurred
-			if (safetyFaults == 0 && BALANCE
-					&& ((modPackInfo.cell_volt_highest
-							- modPackInfo.cell_volt_lowest) > 50)) {
-				Start_Balance((uint16_t*) modPackInfo.cell_volt,
-				NUM_DEVICES, modPackInfo.cell_volt_lowest);
-
-			} else if (BALANCE) {
-				End_Balance(&safetyFaults);
-			}
-
-
+            PassiveBalance(&modPackInfo, &safetyFaults);
 		}
 
 	}
@@ -301,6 +251,65 @@ void SystemClock_Config(void) {
 }
 
 /* USER CODE BEGIN 4 */
+
+// Call passive balancing unless a fault has occurred
+void PassiveBalance(struct batteryModule *modPackInfo, uint8_t *safetyFaults) {
+    if (
+        *safetyFaults == 0 && BALANCE &&
+        (modPackInfo.cell_volt_highest - modPackInfo.cell_volt_lowest) > 50
+    ) {
+        Start_Balance((uint16_t*) modPackInfo->cell_volt,
+        NUM_DEVICES, modPackInfo->cell_volt_lowest);
+    } else if (BALANCE) {
+        End_Balance(safetyFaults);
+    }
+}
+
+// Send cell information to CAN
+void SendCAN(
+    struct CANMessage *msg,
+    struct batteryModule *modPackInfo,
+    uint8_t *safetyFaults,
+    uint8_t *safetyWarnings,
+    uint8_t *safetyStates
+) {
+    CAN_Send_Safety_Checker(
+        msg,
+        modPackInfo,
+        safetyFaults,
+        safetyWarnings,
+        safetyStates
+    );
+    CAN_Send_Cell_Summary(msg, modPackInfo);
+    CAN_Send_Voltage(msg, modPackInfo->cell_volt);
+    CAN_Send_Temperature(msg, modPackInfo->cell_temp);
+}
+
+// Initialize configured Peripherals
+void InitPeripherals(struct CANMessage *msg) {
+	HAL_Init();
+	SystemClock_Config();
+
+	MX_GPIO_Init();
+	MX_ADC1_Init();
+	MX_ADC2_Init();
+	MX_TIM7_Init();
+	MX_SPI1_Init();
+	MX_USB_DEVICE_Init();
+	MX_CAN2_Init();
+
+	CAN_SettingsInit(msg); // Start CAN at 0x00
+                           
+	//Start timer
+	GpioTimePacket_Init(&tp_led_heartbeat, MCU_HEARTBEAT_LED_GPIO_Port,
+	MCU_HEARTBEAT_LED_Pin);
+	TimerPacket_Init(&timerpacket_ltc, LTC_DELAY);
+
+	//Pull SPI1 nCS HIGH (deselect)
+	LTC_nCS_High();
+}
+
+
 //Initialize struct values
 //Will initialize GPIO to LOW!
 void GpioTimePacket_Init(GpioTimePacket *gtp, GPIO_TypeDef *port, uint16_t pin) {

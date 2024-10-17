@@ -38,19 +38,17 @@ void Get_Actual_Temps(uint8_t dev_idx, uint8_t tempindex, uint16_t *actual_temp,
 }
 
 void Read_Volt(uint16_t *read_volt) {
+    Wakeup_Sleep();
 	LTC_ADCV(MD_7KHZ_3KHZ, DCP_DISABLED, CELL_CH_ALL);
 	LTC_POLLADC();
-	Wakeup_Idle();
 	Read_Cell_Volt((uint16_t*) read_volt);
 }
 
 void Read_Temp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
 	LTC_WRCOMM(NUM_DEVICES, BMS_THERM[tempindex]);
-	Wakeup_Idle();
 	LTC_STCOMM(2);
 	//end sending to mux to read temperatures
 
-	Wakeup_Idle();
 	LTC_ADAX(MD_7KHZ_3KHZ, 1); //doing GPIO all conversion
 	LTC_POLLADC();
 	Wakeup_Idle();
@@ -66,4 +64,5 @@ void Read_Temp(uint8_t tempindex, uint16_t *read_temp, uint16_t *read_auxreg) {
 
 		}
 	}
+    HAL_Delay(50);
 }

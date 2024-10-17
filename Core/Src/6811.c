@@ -189,6 +189,7 @@ void LTC_WRCOMM(uint8_t total_ic, uint8_t comm[6]) {
 	wrcomm_buffer[2] = (uint8_t) (cmd_pec >> 8);
 	wrcomm_buffer[3] = (uint8_t) (cmd_pec);
 
+    Wakeup_Idle();
 	cmd_index = 4;
 	for (uint8_t current_ic = total_ic; current_ic > 0; current_ic--) // executes for each ltc6811 in daisy chain, this loops starts with
 			{
@@ -218,7 +219,6 @@ void LTC_WRCOMM(uint8_t total_ic, uint8_t comm[6]) {
  * Shifts data in COMM register out over ltc6811 SPI/I2C port
  */
 void LTC_STCOMM(uint8_t len) {
-
 	uint8_t cmd[4];
 	uint16_t cmd_pec;
 
@@ -228,7 +228,7 @@ void LTC_STCOMM(uint8_t len) {
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
 	cmd[3] = (uint8_t) (cmd_pec);
 
-	Wakeup_Idle(); // This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+	Wakeup_Idle();
 	LTC_nCS_Low();
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
 	for (int i = 0; i < len * 3; i++) {
@@ -307,7 +307,7 @@ void LTC_ADCV(uint8_t MD,  // ADC Mode
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
 	cmd[3] = (uint8_t) (cmd_pec);
 
-	Wakeup_Idle(); // This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+	Wakeup_Idle();
 	LTC_nCS_Low();
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
 	LTC_nCS_High();
@@ -329,12 +329,12 @@ void LTC_ADAX(uint8_t MD, // ADC Mode
 	cmd[3] = (uint8_t) (cmd_pec);
 
 	/*
-	 Wakeup_Idle (); //This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+	 Wakeup_Idle ();
 	 output_low(LTC6811_CS);
 	 spi_write_array(4,cmd);
 	 output_high(LTC6811_CS);
 	 */
-	Wakeup_Idle(); // This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+	Wakeup_Idle();
 	LTC_nCS_Low();
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
 	LTC_nCS_High();
@@ -353,7 +353,7 @@ int32_t LTC_POLLADC() {
 	cmd[2] = (uint8_t) (cmd_pec >> 8);
 	cmd[3] = (uint8_t) (cmd_pec);
 
-	Wakeup_Idle(); // This will guarantee that the ltc6811 isoSPI port is awake. This command can be removed.
+	Wakeup_Idle();
 
 	LTC_nCS_Low();
 	HAL_SPI_Transmit(&hspi1, (uint8_t*) cmd, 4, 100);
