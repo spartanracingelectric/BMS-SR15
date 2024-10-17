@@ -76,7 +76,11 @@ void TimerPacket_Init(TimerPacket *tp, uint32_t delay);
 void GpioFixedToggle(GpioTimePacket *gtp, uint16_t update_ms);
 //Returns 1 at every tp->delay interval
 uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
-void InitPeripherals(struct CANMessage *msg);
+void InitPeripherals(
+    struct CANMessage *msg
+    GpioTimePacket *tp_led_heartbeat,
+    TimerPacket *timerpacket_ltc
+);
 void SendCAN(
     struct CANMessage *msg,
     struct batteryModule *modPackInfo,
@@ -256,7 +260,7 @@ void SystemClock_Config(void) {
 void PassiveBalance(struct batteryModule *modPackInfo, uint8_t *safetyFaults) {
     if (
         *safetyFaults == 0 && BALANCE &&
-        (modPackInfo.cell_volt_highest - modPackInfo.cell_volt_lowest) > 50
+        (modPackInfo->cell_volt_highest - modPackInfo->cell_volt_lowest) > 50
     ) {
         Start_Balance((uint16_t*) modPackInfo->cell_volt,
         NUM_DEVICES, modPackInfo->cell_volt_lowest);
@@ -286,7 +290,11 @@ void SendCAN(
 }
 
 // Initialize configured Peripherals
-void InitPeripherals(struct CANMessage *msg) {
+void InitPeripherals(
+    struct CANMessage *msg,
+    GpioTimePacket *tp_led_heartbeat,
+    TimerPacket *timerpacket_ltc
+) {
 	HAL_Init();
 	SystemClock_Config();
 
@@ -301,9 +309,9 @@ void InitPeripherals(struct CANMessage *msg) {
 	CAN_SettingsInit(msg); // Start CAN at 0x00
                            
 	//Start timer
-	GpioTimePacket_Init(&tp_led_heartbeat, MCU_HEARTBEAT_LED_GPIO_Port,
+	GpioTimePacket_Init(tp_led_heartbeat, MCU_HEARTBEAT_LED_GPIO_Port,
 	MCU_HEARTBEAT_LED_Pin);
-	TimerPacket_Init(&timerpacket_ltc, LTC_DELAY);
+	TimerPacket_Init(timerpacket_ltc, LTC_DELAY);
 
 	//Pull SPI1 nCS HIGH (deselect)
 	LTC_nCS_High();
