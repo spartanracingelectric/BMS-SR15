@@ -25,6 +25,9 @@
 #include "usb_device.h"
 #include "gpio.h"
 
+#include <stdio.h>
+#include <time.h>
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "string.h"
@@ -76,6 +79,10 @@ void TimerPacket_Init(TimerPacket *tp, uint32_t delay);
 void GpioFixedToggle(GpioTimePacket *gtp, uint16_t update_ms);
 //Returns 1 at every tp->delay interval
 uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
+
+void TimeLogStart(const char *str);
+void TimeLogEnd(void);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -104,20 +111,25 @@ int main(void) {
 	/* MCU Configuration--------------------------------------------------------*/
 
 	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+    TimeLogStart("reset periphs, init flash and systick");
 	HAL_Init();
+    TimeLogEnd();
 
 	/* USER CODE BEGIN Init */
 
 	/* USER CODE END Init */
 
 	/* Configure the system clock */
+    TimeLogStart("configure sys clock");
 	SystemClock_Config();
+    TimeLogEnd();
 
 	/* USER CODE BEGIN SysInit */
 
 	/* USER CODE END SysInit */
 
 	/* Initialize all configured peripherals */
+    TimeLogStart("init periphs");
 	MX_GPIO_Init();
 	MX_ADC1_Init();
 	MX_ADC2_Init();
@@ -133,11 +145,14 @@ int main(void) {
 	TimerPacket_Init(&timerpacket_ltc, LTC_DELAY);
 	//Pull SPI1 nCS HIGH (deselect)
 	LTC_nCS_High();
+    TimeLogEnd();
 
+    TimeLogStart("send fault signal and reset");
 	//Sending a fault signal and reseting it
 	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 	HAL_Delay(500);
 	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_RESET);
+    TimeLogEnd();
 
 	//initializing variables
 	uint8_t tempindex = 0;
@@ -147,10 +162,13 @@ int main(void) {
 	uint8_t cell_imbalance_hysteresis = 0;
 
 	//reading cell voltages
+    TimeLogStart("read cell volts");
 	Wakeup_Sleep();
 	Read_Volt(modPackInfo.cell_volt);
+    TimeLogEnd();
 
 	//reading cell temperatures
+    TimeLogStart("read cell temps");
 	Wakeup_Sleep();
 	for (uint8_t i = tempindex; i < indexpause; i++) {
 		Wakeup_Idle();
@@ -172,31 +190,39 @@ int main(void) {
 	LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
 	Wakeup_Idle();
 	LTC_STCOMM(2);
+    TimeLogEnd();
 
 
+    printf("=======START LOOP========\n");
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
+        printf("========NEW CYCLE=========\n");
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
 			//calling all CAN realated methods
+            TimeLogStart("send info to CAN");
 			CAN_Send_Safety_Checker(&msg, &modPackInfo, &safetyFaults,
 					&safetyWarnings, &safetyStates);
 			CAN_Send_Cell_Summary(&msg, &modPackInfo);
 			CAN_Send_Voltage(&msg, modPackInfo.cell_volt);
 			CAN_Send_Temperature(&msg, modPackInfo.cell_temp);
+            TimeLogEnd();
 
 			//reading cell voltages
+            TimeLogStart("read cell volts");
 			Wakeup_Sleep();
 			Read_Volt(modPackInfo.cell_volt);
 			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
+            TimeLogEnd();
 
 			//reading cell temperatures
+            TimeLogStart("read cell temps");
 			Wakeup_Sleep();
 			for (uint8_t i = tempindex; i < indexpause; i++) {
 				Wakeup_Idle();
@@ -219,27 +245,35 @@ int main(void) {
 				tempindex = 0;
 			}
 			//print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
+            TimeLogEnd();
 
+            TimeLogStart("get cell summary");
 			//getting the summary of all cells in the pack
 			Cell_Summary(&modPackInfo);
+            TimeLogEnd();
 
 			//checking for faults
+            TimeLogStart("check for faults");
 			Fault_Warning_State(&modPackInfo, &safetyFaults,
 					&safetyWarnings, &safetyStates, &low_volt_hysteresis,
 					&high_volt_hysteresis, &cell_imbalance_hysteresis);
 			if (safetyFaults != 0) {
 				HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 			}
+            TimeLogEnd();
 
 			//Passive balancing is called unless a fault has occurred
 			if (safetyFaults == 0 && BALANCE
 					&& ((modPackInfo.cell_volt_highest
 							- modPackInfo.cell_volt_lowest) > 50)) {
+                TimeLogStart("passive balancing");
 				Start_Balance((uint16_t*) modPackInfo.cell_volt,
 				NUM_DEVICES, modPackInfo.cell_volt_lowest);
-
+                TimeLogEnd();
 			} else if (BALANCE) {
+                TimeLogStart("fault occurred end balancing");
 				End_Balance(&safetyFaults);
+                TimeLogEnd();
 			}
 
 
@@ -247,6 +281,22 @@ int main(void) {
 
 	}
 	/* USER CODE END 3 */
+}
+
+/**
+ * @brief Start Timestamp Log
+ * @retval None
+ */
+void TimeLogStart(const char *str) {
+    printf("%s:\nstart: %ds\n", (double) clock() / CLOCKS_PER_SEC);
+}
+
+/**
+ * @brief End Timestamp Log
+ * @retval None
+ */
+void TimeLogEnd(void) {
+    printf("end: %ds\n", (double) clock() / CLOCKS_PER_SEC);
 }
 
 /**
