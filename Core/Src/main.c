@@ -84,14 +84,14 @@ int main(void) {
 	uint8_t safetyWarnings = 0;
 	uint8_t safetyStates = 0;
 
-    InitPeripherals(&msg);
-    InitFaultSignal();
-
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
 	uint8_t low_volt_hysteresis = 0;
 	uint8_t high_volt_hysteresis = 0;
 	uint8_t cell_imbalance_hysteresis = 0;
+
+    InitPeripherals(&msg);
+    InitFaultSignal();
 
 	Read_Volt(modPackInfo.cell_volt);
     ReadCellThermTemps(&modPackInfo);
