@@ -1,4 +1,3 @@
-/* USER CODE BEGIN Header */
 /**
  ******************************************************************************
  * @file           : main.c
@@ -15,8 +14,6 @@
  *
  ******************************************************************************
  */
-/* USER CODE END Header */
-/* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
 #include "can.h"
@@ -25,8 +22,6 @@
 #include "usb_device.h"
 #include "gpio.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
 #include "string.h"
 #include "6811.h"
 #include "print.h"
@@ -35,52 +30,33 @@
 #include "usbd_cdc_if.h"
 #include "balance.h"
 
-/* USER CODE END Includes */
 
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
-
-/* USER CODE BEGIN PV */
 typedef struct _GpioTimePacket {
 	GPIO_TypeDef *gpio_port; //Port
 	uint16_t gpio_pin;	//Pin number
 	uint32_t ts_prev;	//Previous timestamp
 	uint32_t ts_curr; 	//Current timestamp
 } GpioTimePacket;
+
 typedef struct _TimerPacket {
 	uint32_t ts_prev;	//Previous timestamp
 	uint32_t ts_curr; 	//Current timestamp
 	uint32_t delay;		//Amount to delay
 } TimerPacket;
-/* USER CODE END PV */
 
-/* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-/* USER CODE BEGIN PFP */
+
 void GpioTimePacket_Init(GpioTimePacket *gtp, GPIO_TypeDef *port, uint16_t pin);
 void TimerPacket_Init(TimerPacket *tp, uint32_t delay);
 void GpioFixedToggle(GpioTimePacket *gtp, uint16_t update_ms);
-//Returns 1 at every tp->delay interval
 uint8_t TimerPacket_FixedPulse(TimerPacket *tp);
+
 void InitPeripherals(
     struct CANMessage *msg
     GpioTimePacket *tp_led_heartbeat,
     TimerPacket *timerpacket_ltc
 );
+void ReadCellThermTemps(struct batteryModule *modPackInfo);
 void SendCAN(
     struct CANMessage *msg,
     struct batteryModule *modPackInfo,
@@ -89,13 +65,9 @@ void SendCAN(
     uint8_t safetyStates
 );
 void PassiveBalance(struct batteryModule *modPackInfo, uint8_t *safetyFaults);
-/* USER CODE END PFP */
 
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
 static uint8_t BMS_MUX_PAUSE[2][6] = { { 0x69, 0x28, 0x0F, 0x09, 0x7F, 0xF9 }, {
 		0x69, 0x08, 0x0F, 0x09, 0x7F, 0xF9 } };
-/* USER CODE END 0 */
 
 /**
  * @brief  The application entry point.
@@ -111,56 +83,29 @@ int main(void) {
 	uint8_t safetyWarnings = 0;
 	uint8_t safetyStates = 0;
 
-    // Reset peripherals and initialize system
     InitPeripherals(&msg);
 
-	//Sending a fault signal and reseting it
+	// Sending a fault signal and reseting it
 	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_SET);
 	HAL_Delay(500);
 	HAL_GPIO_WritePin(Fault_GPIO_Port, Fault_Pin, GPIO_PIN_RESET);
 
-	//initializing variables
 	uint8_t tempindex = 0;
 	uint8_t indexpause = 8;
 	uint8_t low_volt_hysteresis = 0;
 	uint8_t high_volt_hysteresis = 0;
 	uint8_t cell_imbalance_hysteresis = 0;
 
-	//reading cell voltages
 	Read_Volt(modPackInfo.cell_volt);
+    ReadCellThermTemps(&modPackInfo);
 
-	//reading cell temperatures
-	Wakeup_Sleep();
-	for (uint8_t i = tempindex; i < indexpause; i++) {
-		Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
-	}
-	LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
-	LTC_STCOMM(2);
-
-	Wakeup_Sleep();
-	for (uint8_t i = indexpause; i < NUM_THERM_PER_MOD; i++) {
-		Read_Temp(i, modPackInfo.cell_temp, modPackInfo.read_auxreg);
-	}
-	LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
-	LTC_STCOMM(2);
-
-
-	/* USER CODE END 2 */
-
-	/* Infinite loop */
-	/* USER CODE BEGIN WHILE */
 	while (1) {
-		/* USER CODE END WHILE */
-
-		/* USER CODE BEGIN 3 */
 		GpioFixedToggle(&tp_led_heartbeat, LED_HEARTBEAT_DELAY_MS);
 		if (TimerPacket_FixedPulse(&timerpacket_ltc)) {
-            // Send information to CAN
             SendCAN(
                 &modPackInfo, &msg, &safetyFaults, &safetyWarnings, &safetyStates
             );
 
-			//reading cell voltages
 			Read_Volt(modPackInfo.cell_volt);
 			//print(NUM_CELLS, (uint16_t*) modPackInfo.cell_volt);
 
@@ -182,7 +127,6 @@ int main(void) {
 			}
 			//print(NUM_THERM_TOTAL, (uint16_t*) modPackInfo.cell_temp);
 
-			//getting the summary of all cells in the pack
 			Cell_Summary(&modPackInfo);
 
 			//checking for faults
@@ -198,9 +142,7 @@ int main(void) {
 
             PassiveBalance(&modPackInfo, &safetyFaults);
 		}
-
 	}
-	/* USER CODE END 3 */
 }
 
 /**
@@ -254,9 +196,28 @@ void SystemClock_Config(void) {
 	__HAL_RCC_PLLI2S_ENABLE();
 }
 
-/* USER CODE BEGIN 4 */
+/*
+ * Read cell temperatures from thermistors
+ */
+void ReadCellThermTemps(struct batteryModule *modPackInfo) {
+	Wakeup_Sleep();
+	for (uint8_t i = 0; i < 8; i++) {
+		Read_Temp(i, modPackInfo->cell_temp, modPackInfo->read_auxreg);
+	}
+	LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[0]);
+	LTC_STCOMM(2);
 
-// Call passive balancing unless a fault has occurred
+	Wakeup_Sleep();
+	for (uint8_t i = 8; i < NUM_THERM_PER_MOD; i++) {
+		Read_Temp(i, modPackInfo->cell_temp, modPackInfo->read_auxreg);
+	}
+	LTC_WRCOMM(NUM_DEVICES, BMS_MUX_PAUSE[1]);
+	LTC_STCOMM(2);
+}
+
+/*
+ * Call passive balancing unless a fault has occurred
+ */
 void PassiveBalance(struct batteryModule *modPackInfo, uint8_t *safetyFaults) {
     if (
         *safetyFaults == 0 && BALANCE &&
@@ -269,7 +230,10 @@ void PassiveBalance(struct batteryModule *modPackInfo, uint8_t *safetyFaults) {
     }
 }
 
-// Send cell information to CAN
+
+/**
+ * Send cell information to CAN
+ */
 void SendCAN(
     struct CANMessage *msg,
     struct batteryModule *modPackInfo,
@@ -289,7 +253,9 @@ void SendCAN(
     CAN_Send_Temperature(msg, modPackInfo->cell_temp);
 }
 
-// Initialize configured Peripherals
+/**
+ * Initialize configured Peripherals
+ */
 void InitPeripherals(
     struct CANMessage *msg,
     GpioTimePacket *tp_led_heartbeat,
@@ -306,7 +272,8 @@ void InitPeripherals(
 	MX_USB_DEVICE_Init();
 	MX_CAN2_Init();
 
-	CAN_SettingsInit(msg); // Start CAN at 0x00
+    // Start CAN at 0x00
+	CAN_SettingsInit(msg);
                            
 	//Start timer
 	GpioTimePacket_Init(tp_led_heartbeat, MCU_HEARTBEAT_LED_GPIO_Port,
@@ -317,9 +284,10 @@ void InitPeripherals(
 	LTC_nCS_High();
 }
 
-
-//Initialize struct values
-//Will initialize GPIO to LOW!
+/**
+ * Intialize GpioTimePacket struct values
+ * NOTE: Will initialize GPIO to LOW!
+ */
 void GpioTimePacket_Init(GpioTimePacket *gtp, GPIO_TypeDef *port, uint16_t pin) {
 	HAL_GPIO_WritePin(port, pin, GPIO_PIN_RESET); //Set GPIO LOW
 	gtp->gpio_port = port;
@@ -327,23 +295,29 @@ void GpioTimePacket_Init(GpioTimePacket *gtp, GPIO_TypeDef *port, uint16_t pin) 
 	gtp->ts_prev = 0; //Init to 0
 	gtp->ts_curr = 0; //Init to 0
 }
-//update_ms = update after X ms
+
 void GpioFixedToggle(GpioTimePacket *gtp, uint16_t update_ms) {
+    // update_ms = update after X ms
 	gtp->ts_curr = HAL_GetTick(); //Record current timestamp
 	if (gtp->ts_curr - gtp->ts_prev > update_ms) {
 		HAL_GPIO_TogglePin(gtp->gpio_port, gtp->gpio_pin); // Toggle GPIO
 		gtp->ts_prev = gtp->ts_curr;
 	}
 }
-//Initialize struct values
-//Will initialize GPIO to LOW!
+
+/**
+ * Intialize TimerPacket struct values
+ * NOTE: Will initialize GPIO to LOW!
+ */
 void TimerPacket_Init(TimerPacket *tp, uint32_t delay) {
 	tp->ts_prev = 0;		//Init to 0
 	tp->ts_curr = 0; 		//Init to 0
 	tp->delay = delay;	//Init to user value
 }
-//update_ms = update after X ms
+
 uint8_t TimerPacket_FixedPulse(TimerPacket *tp) {
+    // update_ms = update after X ms
+    // Returns 1 at every tp->delay interval
 	tp->ts_curr = HAL_GetTick(); //Record current timestamp
 	if (tp->ts_curr - tp->ts_prev > tp->delay) {
 		tp->ts_prev = tp->ts_curr; //Update prev timestamp to current
@@ -351,7 +325,6 @@ uint8_t TimerPacket_FixedPulse(TimerPacket *tp) {
 	}
 	return 0; //Do not enact event
 }
-/* USER CODE END 4 */
 
 /**
  * @brief  This function is executed in case of error occurrence.
